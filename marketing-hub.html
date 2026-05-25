@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Hub — New Age AI</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0E;--sb:#111118;--card:#16161F;--b:rgba(255,255,255,.07);
+  --acc:#7C6FFF;--acc2:#9789FF;--t1:#F4F4F8;--t2:#8B8BA0;--t3:#55556B;
+  --ok:#34D399;--err:#F87171;--inp:#0F0F17;
+}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden}
+input,select,textarea,button{font-family:inherit;font-size:14px}
+button{cursor:pointer}
+/* ── Auth ── */
+#auth{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.auth-box{background:var(--sb);border:1px solid var(--b);border-radius:16px;padding:36px 40px;width:100%;max-width:420px}
+.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.auth-logo-icon{width:36px;height:36px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px}
+.auth-logo span{font-size:18px;font-weight:700}
+.auth-tabs{display:flex;background:var(--inp);border-radius:9px;padding:3px;gap:3px;margin-bottom:24px}
+.auth-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--t2);border-radius:7px;font-weight:500;transition:.15s}
+.auth-tab.active{background:var(--card);color:var(--t1)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:6px}
+.field input{width:100%;padding:10px 13px;background:var(--inp);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;transition:.15s}
+.field input:focus{border-color:var(--acc)}
+.btn-primary{width:100%;padding:11px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:14px;transition:.15s}
+.btn-primary:hover{background:var(--acc2)}
+.btn-primary:disabled{opacity:.5;cursor:default}
+.err-msg{color:var(--err);font-size:12px;margin-top:8px}
+.ok-msg{color:var(--ok);font-size:12px;margin-top:8px}
+/* ── App Layout ── */
+#app{display:none;height:100vh}
+.layout{display:flex;height:100vh;overflow:hidden}
+/* ── Sidebar ── */
+.sidebar{width:225px;flex-shrink:0;background:var(--sb);border-right:1px solid var(--b);display:flex;flex-direction:column;height:100vh}
+.sb-top{padding:18px 14px 14px;border-bottom:1px solid var(--b)}
+.sb-brand{display:flex;align-items:center;gap:9px}
+.sb-icon{width:30px;height:30px;border-radius:8px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sb-name{font-size:13.5px;font-weight:700}
+.sb-sub{font-size:10.5px;color:var(--t3)}
+.sb-nav{padding:12px 8px;flex:1;overflow-y:auto}
+.sb-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;padding:0 10px;margin-bottom:6px;display:block}
+.sb-item{display:flex;align-items:center;gap:9px;width:100%;padding:9px 10px;border-radius:8px;border:none;background:transparent;color:var(--t2);text-align:left;transition:.15s;cursor:pointer}
+.sb-item:hover{background:rgba(255,255,255,.04);color:var(--t1)}
+.sb-item.active{background:rgba(124,111,255,.12);color:var(--acc)}
+.sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-item-label{flex:1;font-size:13px}
+.sb-count{font-size:11px;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--t3)}
+.sb-item.active .sb-count{background:rgba(124,111,255,.18);color:var(--acc)}
+.sb-divider{height:1px;background:var(--b);margin:10px 0}
+.sb-bottom{padding:10px 8px;border-top:1px solid var(--b)}
+.user-chip{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03)}
+.user-avatar{width:28px;height:28px;border-radius:7px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-email{font-size:11.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:10px;color:var(--t3)}
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:16px 28px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-title{font-size:18px;font-weight:700}
+.topbar-sub{font-size:12.5px;color:var(--t2);margin-top:2px}
+.content{flex:1;overflow-y:auto;padding:22px 28px}
+/* ── Cards ── */
+.template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px}
+.template-card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:18px 20px;cursor:pointer;text-align:left;transition:.15s;display:flex;flex-direction:column;gap:10px}
+.template-card:hover{border-color:rgba(124,111,255,.3);background:#1a1a26}
+.card-cat{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:99px}
+.card-title{font-size:14px;font-weight:600;color:var(--t1);line-height:1.35}
+.card-desc{font-size:12.5px;color:var(--t2);line-height:1.5}
+.card-meta{font-size:11.5px;color:var(--t3)}
+/* ── Search ── */
+.search-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.search-wrap{position:relative;flex:1;max-width:300px}
+.search-wrap input{width:100%;padding:9px 12px 9px 34px;background:var(--card);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none}
+.search-wrap::before{content:'🔎';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.4}
+/* ── Run View ── */
+.run-layout{display:flex;flex:1;overflow:hidden}
+.run-inputs{width:360px;flex-shrink:0;border-right:1px solid var(--b);padding:22px 22px;overflow-y:auto}
+.run-output{flex:1;padding:22px 26px;overflow-y:auto}
+.section-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;display:block}
+.var-input{width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;transition:.15s}
+.var-input:focus{border-color:var(--acc)}
+.var-key{font-size:10px;color:var(--t3);font-family:monospace;margin-left:5px;font-weight:400}
+.btn-gen{width:100%;padding:12px;background:var(--acc);border:none;border-radius:9px;color:#fff;font-weight:600;font-size:14px;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
+.btn-gen:hover:not(:disabled){background:var(--acc2)}
+.btn-gen:disabled{opacity:.5;cursor:default}
+.output-box{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:20px 22px;white-space:pre-wrap;font-size:13.5px;line-height:1.75;color:var(--t1)}
+.output-actions{display:flex;gap:8px;margin-bottom:14px}
+.btn-sm{display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--card);border:1px solid var(--b);border-radius:7px;color:var(--t2);font-size:12px}
+.btn-sm:hover{border-color:rgba(255,255,255,.15);color:var(--t1)}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t3);gap:10px;text-align:center}
+.empty-icon{width:52px;height:52px;border-radius:14px;background:rgba(124,111,255,.1);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:4px}
+/* ── Back button ── */
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t2);font-size:13px;padding:0;margin-right:12px}
+.back-btn:hover{color:var(--t1)}
+.topbar-left{display:flex;align-items:center}
+/* ── Admin ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:16px 18px}
+.stat-label{font-size:11px;color:var(--t3);margin-bottom:6px}
+.stat-value{font-size:28px;font-weight:700;color:var(--t1)}
+.stat-sub{font-size:11px;color:var(--t2);margin-top:4px}
+.table-wrap{background:var(--card);border:1px solid var(--b);border-radius:10px;overflow:hidden;margin-bottom:22px}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--b)}
+.table-title{font-size:13.5px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:10px 16px;border-bottom:1px solid var(--b)}
+td{font-size:13px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--t2)}
+td:first-child{color:var(--t1);font-weight:500}
+tr:last-child td{border-bottom:none}
+.role-badge{display:inline-flex;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.role-admin{background:rgba(124,111,255,.18);color:var(--acc)}
+.role-user{background:rgba(255,255,255,.06);color:var(--t3)}
+.btn-tiny{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;border:1px solid var(--b);background:transparent;color:var(--t2)}
+.btn-tiny:hover{color:var(--t1);border-color:rgba(255,255,255,.2)}
+.btn-tiny.promote{color:var(--acc);border-color:rgba(124,111,255,.3)}
+.settings-section{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:20px 22px;margin-bottom:16px}
+.settings-title{font-size:13.5px;font-weight:600;margin-bottom:14px}
+.settings-row{display:flex;gap:10px;align-items:center}
+.settings-row input{flex:1;padding:10px 12px;background:var(--inp);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none}
+.settings-row button{padding:10px 18px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:13px}
+/* ── Spinner ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+/* ── Loading overlay ── */
+#loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;font-size:14px;color:var(--t2)}
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+</style>
+</head>
+<body>
+
+<div id="loading">Loading…</div>
+
+<!-- ── AUTH ── -->
+<div id="auth">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">⚡</div>
+      <div>
+        <div style="font-size:15px;font-weight:700">Marketing Hub</div>
+        <div style="font-size:11px;color:var(--t3)">New Age AI</div>
+      </div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+      <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+    <div id="login-form">
+      <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@newageai.com" /></div>
+      <div class="field"><label>Password</label><input type="password" id="login-pw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+      <button class="btn-primary" id="login-btn" onclick="doLogin()">Login</button>
+      <div id="login-err" class="err-msg"></div>
+    </div>
+    <div id="signup-form" style="display:none">
+      <div class="field"><label>Full Name</label><input type="text" id="su-name" placeholder="Your name" /></div>
+      <div class="field"><label>Email</label><input type="email" id="su-email" placeholder="you@newageai.com" /></div>
+      <div class="field"><label>Password</label><input type="password" id="su-pw" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doSignup()" /></div>
+      <button class="btn-primary" id="signup-btn" onclick="doSignup()">Create Account</button>
+      <div id="signup-err" class="err-msg"></div>
+      <div id="signup-ok" class="ok-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sb-top">
+        <div class="sb-brand">
+          <div class="sb-icon">⚡</div>
+          <div><div class="sb-name">Marketing Hub</div><div class="sb-sub">New Age AI</div></div>
+        </div>
+      </div>
+      <nav class="sb-nav">
+        <span class="sb-label">Categories</span>
+        <div id="sb-cats"></div>
+        <div class="sb-divider"></div>
+        <div id="sb-admin-link" style="display:none">
+          <button class="sb-item" id="sb-admin-btn" onclick="showView('admin')">
+            <span style="font-size:15px">🛡</span>
+            <span class="sb-item-label">Admin Panel</span>
+          </button>
+        </div>
+      </nav>
+      <div class="sb-bottom">
+        <div class="user-chip">
+          <div class="user-avatar" id="user-av">?</div>
+          <div class="user-info">
+            <div class="user-email" id="user-em">—</div>
+            <div class="user-role" id="user-ro">user</div>
+          </div>
+          <button onclick="doLogout()" title="Sign out" style="background:none;border:none;color:var(--t3);font-size:16px;padding:2px">↩</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main" id="main-area"></main>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://xvucakstcmtfoanmgcql.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2dWNha3N0Y210Zm9hbm1nY3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMjI0NjUsImV4cCI6MjA4Mjg5ODQ2NX0.7Uh38WHaPfrgp9lxX-BG7PXehR_-2ETG4cyQ55YfD-o';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ─── State ───────────────────────────────────────
+let currentUser = null, currentProfile = null, anthropicKey = null;
+let activeView = 'browse', selectedCat = 'all', activeTemplate = null;
+let varValues = {}, aiResponse = '', searching = '';
+
+// ─── Templates ───────────────────────────────────
+const CATS = [
+  {id:'all',label:'All Templates',color:'#7C6FFF'},
+  {id:'google-ads',label:'Google Ads',color:'#4285F4'},
+  {id:'seo',label:'SEO',color:'#34A853'},
+  {id:'meta-ads',label:'Meta Ads',color:'#0866FF'},
+  {id:'marketing-automation',label:'Automation',color:'#F59E0B'},
+];
+
+const TEMPLATES = [
+  {id:'ga-1',cat:'google-ads',title:'Search Ad Copy (RSA)',desc:'10 headlines & 4 descriptions with char counts',
+   prompt:`You are a Google Ads expert. Create RSA copy for:\n\nBusiness: [BUSINESS]\nKeyword: [KEYWORD]\nUSP: [USP]\nCTA: [CTA]\n\nGenerate 10 headlines (≤30 chars each, show count) and 4 descriptions (≤90 chars each, show count). Mark top 3 headlines with ★.`,
+   vars:[{k:'BUSINESS',l:'Business / Product',p:'e.g., New Age AI – AI marketing platform'},{k:'KEYWORD',l:'Target Keyword',p:'e.g., AI marketing automation'},{k:'USP',l:'Unique Selling Point',p:'e.g., 10x faster campaign setup with AI'},{k:'CTA',l:'Call to Action',p:'e.g., Start Free Trial'}]},
+
+  {id:'ga-2',cat:'google-ads',title:'Keyword Research Brief',desc:'Match types, CPCs, negatives & ad group structure',
+   prompt:`Act as a Google Ads specialist. Keyword brief for:\n\nIndustry: [INDUSTRY]\nProduct: [PRODUCT]\nLocation: [LOCATION]\nBudget: [BUDGET]\n\nProvide: 15 exact match, 10 phrase match, 5 broad keywords, 10 negative keywords, estimated CPC range, and ad group structure.`,
+   vars:[{k:'INDUSTRY',l:'Industry / Niche',p:'e.g., B2B SaaS / AI tools'},{k:'PRODUCT',l:'Product / Service',p:'e.g., Marketing automation platform'},{k:'LOCATION',l:'Target Location',p:'e.g., India, US, UK'},{k:'BUDGET',l:'Monthly Budget',p:'e.g., ₹50,000 / $1000'}]},
+
+  {id:'ga-3',cat:'google-ads',title:'Campaign Performance Audit',desc:'Diagnose metrics & get 5-point action plan',
+   prompt:`Google Ads expert. Analyze:\n\nCampaign: [CAMPAIGN] | Type: [TYPE] | Period: [PERIOD] | Goal: [GOAL]\nImpressions: [IMP] | Clicks: [CLICKS] | CTR: [CTR] | CPC: [CPC]\nConversions: [CONV] | Cost: [COST] | ROAS/CPA: [ROAS]\n\nDiagnose, give top 5 optimizations, budget reallocation suggestion, 30-day plan.`,
+   vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'e.g., Brand Awareness Q2'},{k:'TYPE',l:'Campaign Type',p:'e.g., Search / PMax'},{k:'PERIOD',l:'Date Range',p:'e.g., May 1–31'},{k:'GOAL',l:'Goal',p:'e.g., Lead generation'},{k:'IMP',l:'Impressions',p:'e.g., 45,000'},{k:'CLICKS',l:'Clicks',p:'e.g., 1,200'},{k:'CTR',l:'CTR',p:'e.g., 2.67%'},{k:'CPC',l:'Avg CPC',p:'e.g., ₹18.50'},{k:'CONV',l:'Conversions',p:'e.g., 45'},{k:'COST',l:'Total Cost',p:'e.g., ₹22,200'},{k:'ROAS',l:'ROAS / CPA',p:'e.g., 3.2x or ₹493 CPA'}]},
+
+  {id:'ga-4',cat:'google-ads',title:'Ad Extensions Copy',desc:'Sitelinks, callouts, structured snippets',
+   prompt:`Google Ads extension specialist. Create extensions for:\n\nBusiness: [BUSINESS]\nService: [SERVICE]\nBenefits: [BENEFITS]\nContact: [CONTACT]\n\nGenerate: 6 sitelinks (title + 2-line desc each), 8 callouts (≤25 chars), structured snippets (Services, 8 values), call extension suggestions.`,
+   vars:[{k:'BUSINESS',l:'Business Name',p:'e.g., New Age AI'},{k:'SERVICE',l:'Main Service',p:'e.g., AI marketing platform'},{k:'BENEFITS',l:'Top 3 Benefits',p:'e.g., Saves 10hrs/week, 3x ROI, No code'},{k:'CONTACT',l:'Phone / Contact',p:'e.g., +91-9876543210'}]},
+
+  {id:'seo-1',cat:'seo',title:'Meta Title & Description',desc:'3 options each, character-counted & optimized',
+   prompt:`SEO expert. Write meta tags for:\n\nPage: [PAGE_TYPE] | Keyword: [KEYWORD]\nSecondary: [SECONDARY] | Brand: [BRAND]\nTopic: [TOPIC]\n\nGenerate 3 title options (50–60 chars, show count) and 3 description options (150–160 chars, show count). Recommend the best combo with reasoning.`,
+   vars:[{k:'PAGE_TYPE',l:'Page Type',p:'e.g., Blog Post, Homepage, Product Page'},{k:'KEYWORD',l:'Primary Keyword',p:'e.g., AI marketing tools'},{k:'SECONDARY',l:'Secondary Keywords',p:'e.g., marketing automation, AI ads'},{k:'BRAND',l:'Brand Name',p:'e.g., New Age AI'},{k:'TOPIC',l:'Page Topic',p:'e.g., AI-powered marketing platform'}]},
+
+  {id:'seo-2',cat:'seo',title:'Blog Post SEO Brief',desc:'Outline, LSI keywords, word counts per section',
+   prompt:`SEO content strategist. Blog brief for:\n\nKeyword: [KEYWORD] | Intent: [INTENT] | Audience: [AUDIENCE] | Word count: [WORDS]\n\nProvide: 3 H1 options, full H2/H3 outline with word counts, 15 LSI keywords, featured snippet tip, internal linking suggestions, meta tags.`,
+   vars:[{k:'KEYWORD',l:'Target Keyword',p:'e.g., best AI tools for marketing'},{k:'INTENT',l:'Search Intent',p:'e.g., Informational / Transactional'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Marketing managers at SMBs'},{k:'WORDS',l:'Word Count',p:'e.g., 2000 words'}]},
+
+  {id:'seo-3',cat:'seo',title:'On-Page SEO Audit',desc:'Score out of 100 with fix recommendations',
+   prompt:`On-page SEO expert. Audit:\n\nURL: [URL] | Keyword: [KEYWORD]\nTitle: [TITLE] | Meta: [META]\nH1: [H1] | Content: [CONTENT]\n\nScore each area (title, meta, headers, keyword use, URL, internal links, images, schema) out of 100. Give specific fixes for each.`,
+   vars:[{k:'URL',l:'Page URL',p:'e.g., https://newageai.com/blog/ai-marketing'},{k:'KEYWORD',l:'Target Keyword',p:'e.g., AI marketing platform'},{k:'TITLE',l:'Current Page Title',p:'e.g., AI Marketing – New Age AI'},{k:'META',l:'Current Meta Description',p:'Paste current meta description...'},{k:'H1',l:'H1 Tag',p:'e.g., AI-Powered Marketing Platform'},{k:'CONTENT',l:'Content Summary',p:'Brief description of page content...'}]},
+
+  {id:'seo-4',cat:'seo',title:'Competitor Content Gap',desc:'Find keyword & content gaps vs competitors',
+   prompt:`SEO strategist. Content gap analysis:\n\nMy Brand: [BRAND] | My Topics: [TOPICS]\nCompetitor 1: [COMP1] | Competitor 2: [COMP2]\nKeyword Themes: [KEYWORDS]\n\nIdentify: topics I'm missing, top 10 keyword opportunities, content types working for competitors, quick-win pieces to create first, 3-month content strategy.`,
+   vars:[{k:'BRAND',l:'My Brand / Website',p:'e.g., New Age AI, newageai.com'},{k:'TOPICS',l:'My Current Topics',p:'e.g., AI tools, marketing automation'},{k:'COMP1',l:'Competitor 1',p:'e.g., HubSpot, hubspot.com'},{k:'COMP2',l:'Competitor 2',p:'e.g., Hootsuite, hootsuite.com'},{k:'KEYWORDS',l:'Target Keyword Themes',p:'e.g., marketing automation, AI ads'}]},
+
+  {id:'meta-1',cat:'meta-ads',title:'Facebook/Instagram Ad Copy',desc:'Feed, Story & Carousel with hooks and CTAs',
+   prompt:`Meta Ads specialist. Write ad copy for:\n\nProduct: [PRODUCT] | Audience: [AUDIENCE]\nObjective: [OBJ] | Offer: [OFFER] | Tone: [TONE]\n\nGenerate:\n1. FEED AD: primary text (125 chars), headline (40 chars), description (30 chars)\n2. STORY AD: 3-line punchy copy with hook\n3. CAROUSEL (3 cards): Problem → Solution → CTA, each 40-char title + 2-line body\n4. Top 3 CTA button recommendations`,
+   vars:[{k:'PRODUCT',l:'Product / Service',p:'e.g., New Age AI marketing platform'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Marketing managers 25–40, B2B'},{k:'OBJ',l:'Campaign Objective',p:'e.g., Lead gen / Conversions'},{k:'OFFER',l:'Offer / Hook',p:'e.g., Free 14-day trial, No credit card'},{k:'TONE',l:'Tone of Voice',p:'e.g., Professional, Bold, Conversational'}]},
+
+  {id:'meta-2',cat:'meta-ads',title:'Audience Targeting Strategy',desc:'Core, lookalike & custom for full funnel',
+   prompt:`Meta audience strategist. Build targeting for:\n\nBusiness: [BUSINESS] | Product: [PRODUCT]\nGoal: [GOAL] | Budget: [BUDGET] | Countries: [COUNTRIES]\n\nCreate: 3 core audience segments (with estimated size), lookalike strategy, custom audience recommendations, TOFU/MOFU/BOFU funnel targeting, exclusions, first 2-week A/B test plan.`,
+   vars:[{k:'BUSINESS',l:'Business Name',p:'e.g., New Age AI'},{k:'PRODUCT',l:'Product / Service',p:'e.g., AI marketing SaaS'},{k:'GOAL',l:'Campaign Goal',p:'e.g., Lead generation'},{k:'BUDGET',l:'Monthly Budget',p:'e.g., ₹30,000 / $500'},{k:'COUNTRIES',l:'Target Countries',p:'e.g., India, UAE, Singapore'}]},
+
+  {id:'meta-3',cat:'meta-ads',title:'Meta Campaign Analysis',desc:'Performance diagnosis, fatigue check & scaling',
+   prompt:`Meta Ads expert. Analyze:\n\nCampaign: [CAMPAIGN] | Objective: [OBJ] | Period: [PERIOD]\nSpend: [SPEND] | Reach: [REACH] | Impressions: [IMP] | CPM: [CPM]\nClicks: [CLICKS] | CTR: [CTR] | CPC: [CPC]\nResults: [RESULTS] | CPR: [CPR] | ROAS: [ROAS]\n\nDiagnose performance, check creative fatigue, give 5 optimization actions, scaling or kill recommendation, next test ideas.`,
+   vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'e.g., Lead Gen – May 2025'},{k:'OBJ',l:'Objective',p:'e.g., Lead Generation'},{k:'PERIOD',l:'Date Range',p:'e.g., May 1–31'},{k:'SPEND',l:'Spend',p:'e.g., ₹18,500'},{k:'REACH',l:'Reach',p:'e.g., 85,000'},{k:'IMP',l:'Impressions',p:'e.g., 1,20,000'},{k:'CPM',l:'CPM',p:'e.g., ₹154'},{k:'CLICKS',l:'Clicks',p:'e.g., 2,400'},{k:'CTR',l:'CTR',p:'e.g., 2.0%'},{k:'CPC',l:'CPC',p:'e.g., ₹7.70'},{k:'RESULTS',l:'Results',p:'e.g., 62 leads'},{k:'CPR',l:'Cost per Result',p:'e.g., ₹298'},{k:'ROAS',l:'ROAS',p:'e.g., 4.2x or N/A'}]},
+
+  {id:'meta-4',cat:'meta-ads',title:'Creative Brief for Designer',desc:'Full creative direction for Meta ad visuals',
+   prompt:`Creative director. Write a Meta Ads creative brief:\n\nBrand: [BRAND] | Theme: [THEME] | Audience: [AUDIENCE]\nFormat: [FORMAT] | Message: [MSG] | Style: [STYLE]\n\nInclude: campaign concept, visual direction, copy hierarchy, specs (dimensions, safe zones, text overlay %), do's/don'ts, 3 creative concept variations.`,
+   vars:[{k:'BRAND',l:'Brand Name',p:'e.g., New Age AI'},{k:'THEME',l:'Campaign Theme',p:'e.g., AI makes marketing effortless'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Young marketing professionals'},{k:'FORMAT',l:'Ad Format',p:'e.g., 1:1 Feed + 9:16 Story'},{k:'MSG',l:'Key Message',p:'e.g., Save 10 hours/week with AI ads'},{k:'STYLE',l:'Visual Style',p:'e.g., Clean, minimal, dark mode, tech-forward'}]},
+
+  {id:'ma-1',cat:'marketing-automation',title:'Email Drip Sequence',desc:'Full multi-email sequence with subject lines & body',
+   prompt:`Email marketing expert. Create a [NUM]-email drip sequence for:\n\nProduct: [PRODUCT] | Lead Source: [SOURCE]\nGoal: [GOAL] | Pain Point: [PAIN] | Benefit: [BENEFIT] | Tone: [TONE]\n\nFor EACH email: email # & send timing, 3 subject line options (incl. emoji variant), preview text (90 chars), full body (200–250 words), CTA button text, email goal.`,
+   vars:[{k:'NUM',l:'Number of Emails',p:'e.g., 5'},{k:'PRODUCT',l:'Product / Service',p:'e.g., New Age AI platform'},{k:'SOURCE',l:'Lead Source',p:'e.g., Free trial signup'},{k:'GOAL',l:'Sequence Goal',p:'e.g., Convert trial to paid'},{k:'PAIN',l:'Pain Point',p:'e.g., Wasting time on manual ad management'},{k:'BENEFIT',l:'Key Benefit',p:'e.g., Save 10 hours/week with AI'},{k:'TONE',l:'Tone',p:'e.g., Friendly & professional'}]},
+
+  {id:'ma-2',cat:'marketing-automation',title:'Subject Line Generator',desc:'20 high open-rate lines across 5 styles',
+   prompt:`Subject line specialist. Generate for:\n\nTopic: [TOPIC] | Audience: [AUDIENCE]\nGoal: [GOAL] | Hook: [HOOK] | Voice: [VOICE]\n\nGenerate 20 subject lines (4 each): curiosity-gap, benefit-driven, urgency/scarcity, question-based, personalization. For each: line + open rate prediction (Low/Med/High) + preview text.`,
+   vars:[{k:'TOPIC',l:'Email Topic',p:'e.g., New AI feature launch'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Marketing managers'},{k:'GOAL',l:'Email Goal',p:'e.g., Drive feature adoption'},{k:'HOOK',l:'Key Hook',p:'e.g., AI reporting saves 3 hrs/week'},{k:'VOICE',l:'Brand Voice',p:'e.g., Bold, modern, tech-forward'}]},
+
+  {id:'ma-3',cat:'marketing-automation',title:'Automation Workflow Design',desc:'Trigger-based flow with branching logic & timing',
+   prompt:`Marketing automation architect. Design workflow for:\n\nPlatform: [PLATFORM] | Trigger: [TRIGGER]\nAudience: [AUDIENCE] | Goal: [GOAL] | Timeline: [TIMELINE]\n\nCreate: entry trigger & conditions, step-by-step flow with delays, if/then branching logic (YES/NO paths), content at each step, exit conditions, KPIs, A/B test recommendation.`,
+   vars:[{k:'PLATFORM',l:'Automation Platform',p:'e.g., HubSpot, Mailchimp, ActiveCampaign'},{k:'TRIGGER',l:'Trigger Event',p:'e.g., User signs up for free trial'},{k:'AUDIENCE',l:'Audience Segment',p:'e.g., SMB marketers in India'},{k:'GOAL',l:'Workflow Goal',p:'e.g., Onboard & convert trial users'},{k:'TIMELINE',l:'Timeline',p:'e.g., 14-day trial period'}]},
+
+  {id:'ma-4',cat:'marketing-automation',title:'Re-engagement Campaign',desc:'Win back cold leads & inactive subscribers',
+   prompt:`Retention expert. Re-engagement campaign for:\n\nBrand: [BRAND] | Why cold: [REASON]\nLast active: [LAST] | Incentive: [OFFER] | Segment: [SIZE]\n\nCreate: 3-email sequence with full copy, SMS/push variants, ranked win-back offers, subject A/B tests, sunset policy, success benchmarks to aim for.`,
+   vars:[{k:'BRAND',l:'Brand Name',p:'e.g., New Age AI'},{k:'REASON',l:'Why They Went Cold',p:"e.g., Didn't convert after free trial"},{k:'LAST',l:'Last Active',p:'e.g., 60–90 days ago'},{k:'OFFER',l:'Incentive / Offer',p:'e.g., 20% discount, extended trial'},{k:'SIZE',l:'Segment Size',p:'e.g., ~500 cold subscribers'}]},
+];
+
+// ─── Auth ─────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  document.getElementById('login-form').style.display = tab==='login'?'':'none';
+  document.getElementById('signup-form').style.display = tab==='signup'?'':'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw = document.getElementById('login-pw').value;
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-err');
+  err.textContent = '';
+  if (!email || !pw) { err.textContent = 'Please fill in all fields.'; return; }
+  btn.disabled = true; btn.textContent = 'Logging in…';
+  const { error } = await db.auth.signInWithPassword({ email, password: pw });
+  if (error) { err.textContent = error.message; btn.disabled = false; btn.textContent = 'Login'; }
+}
+
+async function doSignup() {
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const pw = document.getElementById('su-pw').value;
+  const btn = document.getElementById('signup-btn');
+  const err = document.getElementById('signup-err');
+  const ok = document.getElementById('signup-ok');
+  err.textContent = ''; ok.textContent = '';
+  if (!name || !email || !pw) { err.textContent = 'Please fill in all fields.'; return; }
+  if (pw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+  btn.disabled = true; btn.textContent = 'Creating account…';
+  const { error } = await db.auth.signUp({ email, password: pw, options: { data: { full_name: name } } });
+  btn.disabled = false; btn.textContent = 'Create Account';
+  if (error) { err.textContent = error.message; }
+  else { ok.textContent = 'Account created! Check your email to confirm, then login.'; }
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  currentUser = null; currentProfile = null; anthropicKey = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth').style.display = 'flex';
+}
+
+// ─── Boot ─────────────────────────────────────────
+db.auth.onAuthStateChange(async (event, session) => {
+  document.getElementById('loading').style.display = 'none';
+  if (session?.user) {
+    currentUser = session.user;
+    await loadProfile();
+    await loadApiKey();
+    showApp();
+  } else {
+    document.getElementById('auth').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+  }
+});
+
+async function loadProfile() {
+  const { data } = await db.from('profiles').select('*').eq('id', currentUser.id).single();
+  currentProfile = data;
+  // Update last_seen
+  await db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUser.id);
+}
+
+async function loadApiKey() {
+  const { data } = await db.from('app_settings').select('value').eq('key', 'anthropic_api_key').single();
+  anthropicKey = data?.value || null;
+}
+
+function showApp() {
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  // User chip
+  const name = currentProfile?.full_name || currentUser.email;
+  document.getElementById('user-av').textContent = name[0].toUpperCase();
+  document.getElementById('user-em').textContent = currentUser.email;
+  document.getElementById('user-ro').textContent = currentProfile?.role || 'user';
+  // Admin link
+  if (currentProfile?.role === 'admin') document.getElementById('sb-admin-link').style.display = '';
+  // Build sidebar cats
+  buildSidebar();
+  showView('browse');
+}
+
+// ─── Sidebar ─────────────────────────────────────
+function buildSidebar() {
+  const el = document.getElementById('sb-cats');
+  el.innerHTML = CATS.map(c => {
+    const count = c.id === 'all' ? TEMPLATES.length : TEMPLATES.filter(t => t.cat === c.id).length;
+    return `<button class="sb-item${c.id===selectedCat?' active':''}" onclick="selectCat('${c.id}')" id="sbi-${c.id}">
+      <span class="sb-dot" style="background:${c.color}"></span>
+      <span class="sb-item-label">${c.label}</span>
+      <span class="sb-count">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+function selectCat(id) {
+  selectedCat = id;
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('sbi-'+id);
+  if (el) el.classList.add('active');
+  showView('browse');
+}
+
+// ─── Views ───────────────────────────────────────
+function showView(view) {
+  activeView = view;
+  const main = document.getElementById('main-area');
+  if (view === 'browse') renderBrowse(main);
+  else if (view === 'run') renderRun(main);
+  else if (view === 'admin') renderAdmin(main);
+}
+
+function catColor(catId) { return CATS.find(c=>c.id===catId)?.color || '#7C6FFF'; }
+function catLabel(catId) { return CATS.find(c=>c.id===catId)?.label || catId; }
+
+// ─── Browse View ─────────────────────────────────
+function renderBrowse(main) {
+  const cat = CATS.find(c=>c.id===selectedCat);
+  const filtered = TEMPLATES.filter(t => {
+    const catMatch = selectedCat==='all' || t.cat===selectedCat;
+    const q = searching.toLowerCase();
+    const searchMatch = !q || t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q);
+    return catMatch && searchMatch;
+  });
+
+  main.innerHTML = `
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">${cat?.label || 'All Templates'}</div>
+        <div class="topbar-sub">${filtered.length} template${filtered.length!==1?'s':''} available</div>
+      </div>
+      <div class="search-wrap">
+        <input type="text" id="search-inp" placeholder="Search templates…" value="${searching}"
+          oninput="searching=this.value;renderBrowse(document.getElementById('main-area'))" />
+      </div>
+    </div>
+    <div class="content">
+      ${filtered.length === 0
+        ? `<div class="empty-state" style="height:60vh"><div class="empty-icon">🔎</div><div style="font-size:15px;font-weight:500">No templates found</div><div style="font-size:13px">Try a different search or category</div></div>`
+        : `<div class="template-grid">${filtered.map(t => `
+          <button class="template-card" onclick="openTemplate('${t.id}')">
+            <div><span class="card-cat" style="background:${catColor(t.cat)}18;color:${catColor(t.cat)}">${catLabel(t.cat)}</span></div>
+            <div><div class="card-title">${t.title}</div><div class="card-desc" style="margin-top:5px">${t.desc}</div></div>
+            <div class="card-meta">${t.vars.length} input${t.vars.length!==1?'s':''} required →</div>
+          </button>`).join('')}</div>`
+      }
+    </div>`;
+}
+
+// ─── Run View ────────────────────────────────────
+function openTemplate(id) {
+  activeTemplate = TEMPLATES.find(t => t.id === id);
+  varValues = {}; aiResponse = '';
+  showView('run');
+}
+
+function renderRun(main) {
+  if (!activeTemplate) { showView('browse'); return; }
+  const t = activeTemplate;
+  main.innerHTML = `
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="back-btn" onclick="showView('browse')">← Back</button>
+        <div style="width:1px;height:18px;background:var(--b);margin-right:12px"></div>
+        <div>
+          <div class="topbar-title" style="font-size:15px">${t.title}</div>
+          <div class="topbar-sub">${t.desc}</div>
+        </div>
+      </div>
+      <span class="card-cat" style="background:${catColor(t.cat)}18;color:${catColor(t.cat)}">${catLabel(t.cat)}</span>
+    </div>
+    <div class="run-layout">
+      <div class="run-inputs">
+        <span class="section-label">Fill in your details</span>
+        ${t.vars.map(v => `
+          <div style="margin-bottom:15px">
+            <label style="display:block;font-size:12.5px;font-weight:500;color:var(--t2);margin-bottom:6px">
+              ${v.l}<span class="var-key">[${v.k}]</span>
+            </label>
+            <input class="var-input" type="text" id="var-${v.k}" placeholder="${v.p}"
+              value="${(varValues[v.k]||'').replace(/"/g,'&quot;')}"
+              oninput="varValues['${v.k}']=this.value" />
+          </div>`).join('')}
+        <button class="btn-gen" id="gen-btn" onclick="runGenerate()">
+          <span>⚡</span> Generate with Claude
+        </button>
+        ${!anthropicKey ? `<div style="margin-top:12px;padding:10px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:8px;font-size:12px;color:var(--err)">
+          ⚠ No API key set. Ask your admin to add the Anthropic API key in Admin Panel → Settings.
+        </div>` : ''}
+      </div>
+      <div class="run-output" id="run-output">
+        <div class="empty-state" style="height:100%">
+          <div class="empty-icon">⚡</div>
+          <div style="font-size:14px">Fill in the fields and click Generate</div>
+          <div style="font-size:12px">Your AI output will appear here</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function runGenerate() {
+  if (!activeTemplate) return;
+  if (!anthropicKey) { alert('No Anthropic API key configured. Contact your admin.'); return; }
+
+  const btn = document.getElementById('gen-btn');
+  const out = document.getElementById('run-output');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Generating…';
+  out.innerHTML = `<div style="display:flex;align-items:center;gap:10px;color:var(--t2);padding:8px 0">
+    <div style="width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 1s infinite"></div>
+    Claude is thinking…
+  </div>`;
+
+  let prompt = activeTemplate.prompt;
+  for (const v of activeTemplate.vars) {
+    const val = varValues[v.k] || `[${v.k}]`;
+    prompt = prompt.replaceAll(`[${v.k}]`, val);
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': anthropicKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    aiResponse = data.content?.filter(b => b.type === 'text').map(b => b.text).join('\n') || 'No response.';
+
+    // Track usage
+    await db.from('template_usage').insert({
+      user_id: currentUser.id, user_email: currentUser.email,
+      template_id: activeTemplate.id, template_title: activeTemplate.title,
+      template_category: activeTemplate.cat
+    });
+  } catch (e) {
+    aiResponse = '⚠ Error: ' + (e.message || 'Could not get response. Please try again.');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span>⚡</span> Generate with Claude';
+  out.innerHTML = `
+    <div class="output-actions">
+      <button class="btn-sm" onclick="copyOutput(this)">📋 Copy</button>
+      <button class="btn-sm" onclick="runGenerate()">↺ Regenerate</button>
+    </div>
+    <div class="output-box">${escHtml(aiResponse)}</div>`;
+}
+
+function copyOutput(btn) {
+  navigator.clipboard.writeText(aiResponse).catch(()=>{});
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => btn.textContent = '📋 Copy', 2000);
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── Admin View ───────────────────────────────────
+async function renderAdmin(main) {
+  if (currentProfile?.role !== 'admin') {
+    main.innerHTML = `<div class="empty-state" style="height:100vh"><div class="empty-icon">🛡</div><div>Admin access required</div></div>`;
+    return;
+  }
+
+  main.innerHTML = `<div style="padding:20px 28px;border-bottom:1px solid var(--b)">
+    <div class="topbar-title">🛡 Admin Panel</div>
+    <div class="topbar-sub">User management & usage analytics</div>
+  </div>
+  <div class="content" id="admin-content"><div style="color:var(--t3);padding:40px 0;text-align:center">Loading data…</div></div>`;
+
+  // Fetch data
+  const [{ data: users }, { data: usage }, { data: settings }] = await Promise.all([
+    db.from('profiles').select('*').order('created_at', { ascending: false }),
+    db.from('template_usage').select('*').order('created_at', { ascending: false }).limit(200),
+    db.from('app_settings').select('*'),
+  ]);
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const activeToday = (users||[]).filter(u => u.last_seen && new Date(u.last_seen) >= today).length;
+  const savedKey = (settings||[]).find(s=>s.key==='anthropic_api_key')?.value || '';
+
+  const catMap = {};
+  (usage||[]).forEach(u => { catMap[u.template_category] = (catMap[u.template_category]||0)+1; });
+  const topCat = Object.entries(catMap).sort((a,b)=>b[1]-a[1])[0];
+
+  document.getElementById('admin-content').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value">${(users||[]).length}</div><div class="stat-sub">registered accounts</div></div>
+      <div class="stat-card"><div class="stat-label">Active Today</div><div class="stat-value">${activeToday}</div><div class="stat-sub">visited today</div></div>
+      <div class="stat-card"><div class="stat-label">Total Runs</div><div class="stat-value">${(usage||[]).length}</div><div class="stat-sub">templates generated</div></div>
+      <div class="stat-card"><div class="stat-label">Top Category</div><div class="stat-value" style="font-size:18px">${topCat ? catLabel(topCat[0]) : '—'}</div><div class="stat-sub">${topCat?topCat[1]+' runs':''}</div></div>
+    </div>
+
+    <!-- API Key Settings -->
+    <div class="settings-section">
+      <div class="settings-title">⚙ API Key Settings</div>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:14px">The Anthropic API key is used by all logged-in users to generate content. Get yours from <a href="https://console.anthropic.com" target="_blank" style="color:var(--acc)">console.anthropic.com</a>.</p>
+      <div class="settings-row">
+        <input type="password" id="api-key-input" value="${savedKey}" placeholder="sk-ant-api03-…" />
+        <button onclick="saveApiKey()">Save Key</button>
+      </div>
+      <div id="key-msg" style="font-size:12px;margin-top:8px"></div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="table-title">Users (${(users||[]).length})</div>
+      </div>
+      <table>
+        <thead><tr>
+          <th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Last Active</th><th>Runs</th><th>Action</th>
+        </tr></thead>
+        <tbody>
+          ${(users||[]).map(u => {
+            const userRuns = (usage||[]).filter(r => r.user_id === u.id).length;
+            const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) : '—';
+            const lastSeen = u.last_seen ? timeAgo(u.last_seen) : '—';
+            const isMe = u.id === currentUser.id;
+            return `<tr>
+              <td>${u.full_name||'—'}${isMe?' <span style="font-size:10px;color:var(--acc)">(you)</span>':''}</td>
+              <td style="font-size:12px">${u.email}</td>
+              <td><span class="role-badge role-${u.role||'user'}">${u.role||'user'}</span></td>
+              <td>${joined}</td>
+              <td>${lastSeen}</td>
+              <td>${userRuns}</td>
+              <td>${isMe?'—':`<button class="btn-tiny${u.role==='admin'?'':' promote'}" onclick="toggleRole('${u.id}','${u.role||'user'}')">${u.role==='admin'?'Revoke Admin':'Make Admin'}</button>`}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Recent Usage -->
+    <div class="table-wrap">
+      <div class="table-head"><div class="table-title">Recent Activity (last 50)</div></div>
+      <table>
+        <thead><tr><th>User</th><th>Template</th><th>Category</th><th>Time</th></tr></thead>
+        <tbody>
+          ${(usage||[]).slice(0,50).map(u => `<tr>
+            <td style="font-size:12px">${u.user_email||'—'}</td>
+            <td>${u.template_title||'—'}</td>
+            <td><span class="card-cat" style="background:${catColor(u.template_category)}18;color:${catColor(u.template_category)};font-size:10.5px;padding:2px 8px;border-radius:99px">${catLabel(u.template_category)}</span></td>
+            <td style="font-size:12px;color:var(--t3)">${timeAgo(u.created_at)}</td>
+          </tr>`).join('')}
+          ${(usage||[]).length===0?'<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px">No usage data yet</td></tr>':''}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+async function saveApiKey() {
+  const val = document.getElementById('api-key-input').value.trim();
+  const msg = document.getElementById('key-msg');
+  if (!val) { msg.style.color='var(--err)'; msg.textContent='Please enter a valid API key.'; return; }
+  const { error } = await db.from('app_settings').upsert({ key: 'anthropic_api_key', value: val, updated_at: new Date().toISOString() });
+  if (error) { msg.style.color='var(--err)'; msg.textContent='Error saving: '+error.message; }
+  else { msg.style.color='var(--ok)'; msg.textContent='✓ API key saved! Users can now generate content.'; anthropicKey = val; }
+}
+
+async function toggleRole(userId, currentRole) {
+  const newRole = currentRole === 'admin' ? 'user' : 'admin';
+  const { error } = await db.from('profiles').update({ role: newRole }).eq('id', userId);
+  if (!error) renderAdmin(document.getElementById('main-area'));
+}
+
+function timeAgo(ts) {
+  if (!ts) return '—';
+  const diff = Date.now() - new Date(ts).getTime();
+  const m = Math.floor(diff/60000), h = Math.floor(m/60), d = Math.floor(h/24);
+  if (d > 0) return d + 'd ago';
+  if (h > 0) return h + 'h ago';
+  if (m > 0) return m + 'm ago';
+  return 'just now';
+}
+
+function catLabel(id) { return CATS.find(c=>c.id===id)?.label || id; }
+function catColor(id) { return CATS.find(c=>c.id===id)?.color || '#7C6FFF'; }
+</script>
+</body>
+</html>
