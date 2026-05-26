@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -110,7 +110,9 @@ tr:last-child td{border-bottom:none}
 .nokey{margin-top:10px;padding:9px 11px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;font-size:11.5px;color:var(--err)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+.skel{background:linear-gradient(90deg,var(--card) 25%,rgba(255,255,255,.05) 50%,var(--card) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite;border-radius:6px;min-height:20px}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 </style>
 </head>
@@ -342,12 +344,16 @@ async function doLogout(){
 async function loadProfile(){
   const {data}=await db.from('profiles').select('*').eq('id',CU.id).single();
   CP=data;
-  await db.from('profiles').update({last_seen:new Date().toISOString()}).eq('id',CU.id);
+  // fire-and-forget — don't block on this
+  db.from('profiles').update({last_seen:new Date().toISOString()}).eq('id',CU.id);
 }
 
 async function loadKey(){
+  const cached=sessionStorage.getItem('mh_key');
+  if(cached){AK=cached;return;}
   const {data}=await db.from('app_settings').select('value').eq('key','anthropic_api_key').single();
   AK=data?.value||null;
+  if(AK)sessionStorage.setItem('mh_key',AK);
 }
 
 function showApp(){
@@ -463,10 +469,26 @@ async function runGen(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({prompt:p,apiKey:AK})
     });
-    const data=await res.json();
-    AIR=data.content?.filter(b=>b.type==='text').map(b=>b.text).join('\n')||(data.error?.message||JSON.stringify(data.error)||'No response received.');
-    await db.from('template_usage').insert({user_id:CU.id,user_email:CU.email,template_id:AT.id,template_title:AT.title,template_category:AT.cat});
-  }catch(e){AIR='⚠ Error: '+e.message;}
+    if(!res.ok){
+      const err=await res.json().catch(()=>({error:{message:'Server error '+res.status}}));
+      AIR='⚠ Error '+res.status+': '+(err.error?.message||'Check your API key in Admin Panel.');
+    } else {
+      const data=await res.json();
+      if(data.error){
+        AIR='⚠ Anthropic error: '+data.error.message+' — Check your API key is valid.';
+      } else {
+        AIR=data.content?.filter(b=>b.type==='text').map(b=>b.text).join('\n')||'No response received.';
+        // Track usage fire-and-forget
+        db.from('template_usage').insert({user_id:CU.id,user_email:CU.email,template_id:AT.id,template_title:AT.title,template_category:AT.cat});
+      }
+    }
+  }catch(e){
+    if(e.message.includes('fetch')){
+      AIR='⚠ Network error — make sure you are on the deployed Vercel URL, not opening the file locally. Local files cannot call /api/generate.';
+    } else {
+      AIR='⚠ Error: '+e.message;
+    }
+  }
   btn.disabled=false;btn.innerHTML='⚡ Generate with Claude';
   out.innerHTML=`
     <div class="oacts">
@@ -486,11 +508,22 @@ async function renderAdmin(m){
   if(CP?.role!=='admin'){
     m.innerHTML=`<div class="empty" style="height:100%"><div class="eicon">🛡</div><div>Admin access required</div></div>`;return;
   }
-  m.innerHTML=`<div style="padding:13px 22px;border-bottom:1px solid var(--b)"><div class="tbtitle">🛡 Admin Panel</div><div class="tbsub">User management & analytics</div></div>
-  <div class="content" id="admcon"><div style="color:var(--t3);text-align:center;padding:40px">Loading…</div></div>`;
+  // Show skeleton immediately
+  const sk='<div class="skel"></div>';
+  m.innerHTML=`<div style="padding:13px 22px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between">
+    <div><div class="tbtitle">🛡 Admin Panel</div><div class="tbsub">User management & analytics</div></div>
+    <button onclick="testKey()" style="padding:7px 14px;background:rgba(124,111,255,.15);border:1px solid rgba(124,111,255,.3);border-radius:7px;color:var(--acc);font-size:12px;cursor:pointer">🔑 Test API Key</button>
+  </div>
+  <div class="content" id="admcon">
+    <div class="sgrid">${[0,1,2,3].map(()=>`<div class="scard"><div class="skel" style="height:12px;width:60%;margin-bottom:10px;border-radius:4px"></div><div class="skel" style="height:32px;width:40%;border-radius:4px"></div></div>`).join('')}</div>
+    <div class="ssec"><div class="stitle">⚙ Anthropic API Key</div><div class="skel" style="height:40px;border-radius:8px"></div></div>
+    <div class="skel" style="height:200px;border-radius:10px;margin-bottom:16px"></div>
+    <div class="skel" style="height:180px;border-radius:10px"></div>
+  </div>`;
+  // Fetch all data in parallel
   const [{data:users},{data:usage},{data:settings}]=await Promise.all([
     db.from('profiles').select('*').order('created_at',{ascending:false}),
-    db.from('template_usage').select('*').order('created_at',{ascending:false}).limit(200),
+    db.from('template_usage').select('*').order('created_at',{ascending:false}).limit(100),
     db.from('app_settings').select('*'),
   ]);
   const today=new Date();today.setHours(0,0,0,0);
@@ -543,13 +576,31 @@ async function saveKey(){
   if(!v){msg.style.color='var(--err)';msg.textContent='Enter a valid key.';return;}
   const {error}=await db.from('app_settings').upsert({key:'anthropic_api_key',value:v,updated_at:new Date().toISOString()});
   if(error){msg.style.color='var(--err)';msg.textContent='Error: '+error.message;}
-  else{msg.style.color='var(--ok)';msg.textContent='✓ Saved! All users can now generate.';AK=v;}
+  else{msg.style.color='var(--ok)';msg.textContent='✓ Saved! All users can now generate.';AK=v;sessionStorage.setItem('mh_key',v);}
 }
 
 async function toggleRole(uid,role){
   const nr=role==='admin'?'user':'admin';
   await db.from('profiles').update({role:nr}).eq('id',uid);
   renderAdmin(document.getElementById('main'));
+}
+
+async function testKey(){
+  if(!AK){alert('No API key saved yet. Add one below first.');return;}
+  const btn=document.querySelector('[onclick="testKey()"]');
+  if(btn){btn.textContent='Testing…';btn.disabled=true;}
+  try{
+    const r=await fetch('/api/generate',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:'Say only: API key works!',apiKey:AK})
+    });
+    const d=await r.json();
+    const txt=d.content?.[0]?.text||d.error?.message||JSON.stringify(d);
+    alert(d.content?'✅ API key is working!
+
+Test response: '+txt:'❌ Error: '+txt);
+  }catch(e){alert('❌ Connection error: '+e.message);}
+  if(btn){btn.textContent='🔑 Test API Key';btn.disabled=false;}
 }
 
 function tAgo(ts){
@@ -566,11 +617,21 @@ function initSupabase(){
     if(ses?.user){
       CU=ses.user;
       document.getElementById('auth').style.display='none';
-      await loadProfile();await loadKey();showApp();
+      // Show app shell immediately — load data in parallel
+      document.getElementById('app').style.display='block';
+      const cached=sessionStorage.getItem('mh_key');
+      if(cached)AK=cached;
+      await Promise.all([loadProfile(),loadKey()]);
+      showApp();
     }
     // auth screen already visible by default — nothing to do on signed-out
   });
 }
+document.addEventListener('DOMContentLoaded',initSupabase);
+</script>
+</body>
+</html>
+
 document.addEventListener('DOMContentLoaded',initSupabase);
 </script>
 </body>
