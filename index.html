@@ -15,8 +15,8 @@
   --ok:#34D399;--err:#F87171;--inp:#0F0F17;
 }
 body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden}
-button,input,textarea{font-family:inherit}
-/* ── AUTH ── */
+button,input{font-family:inherit}
+/* AUTH */
 #auth{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:50}
 .abox{background:var(--sb);border:1px solid var(--brd);border-radius:16px;padding:36px 40px;width:380px}
 .alogo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
@@ -31,11 +31,11 @@ button,input,textarea{font-family:inherit}
 .abtn{width:100%;padding:11px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:14px;cursor:pointer;margin-top:4px;transition:.15s}
 .abtn:disabled{opacity:.5;cursor:default}
 .amsg{font-size:12px;margin-top:9px;line-height:1.5}
-.amsg.err{color:var(--err)} .amsg.ok{color:var(--ok)}
-/* ── APP LAYOUT ── */
+.amsg.err{color:var(--err)}.amsg.ok{color:var(--ok)}
+/* APP */
 #app{display:none;height:100vh}
 .layout{display:flex;height:100vh}
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sb{width:218px;flex-shrink:0;background:var(--sb);border-right:1px solid var(--brd);display:flex;flex-direction:column}
 .sb-top{padding:16px 13px 13px;border-bottom:1px solid var(--brd)}
 .sb-brand{display:flex;align-items:center;gap:9px}
@@ -46,20 +46,20 @@ button,input,textarea{font-family:inherit}
 .sb-item:hover{background:rgba(255,255,255,.04);color:var(--t1)}
 .sb-item.on{background:rgba(124,111,255,.12);color:var(--acc)}
 .sb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.sb-item-lbl{flex:1;font-size:12.5px}
+.sb-il{flex:1;font-size:12.5px}
 .sb-cnt{font-size:10.5px;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--t3)}
 .sb-item.on .sb-cnt{background:rgba(124,111,255,.18);color:var(--acc)}
 .sb-div{height:1px;background:var(--brd);margin:8px 0}
 .sb-bot{padding:9px 7px;border-top:1px solid var(--brd)}
 .uc{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.03)}
 .uc-av{width:26px;height:26px;border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
-/* ── MAIN ── */
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .topbar{padding:13px 24px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .tb-title{font-size:16px;font-weight:700}
 .tb-sub{font-size:12px;color:var(--t2);margin-top:2px}
 .content{flex:1;overflow-y:auto;padding:20px 24px}
-/* ── BROWSE ── */
+/* BROWSE */
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
 .tcard{background:var(--card);border:1px solid var(--brd);border-radius:11px;padding:16px 18px;cursor:pointer;text-align:left;transition:.15s;display:flex;flex-direction:column;gap:9px;width:100%}
 .tcard:hover{background:#1c1c27;border-color:rgba(124,111,255,.35)}
@@ -67,7 +67,7 @@ button,input,textarea{font-family:inherit}
 .swrap{position:relative}
 .swrap input{padding:8px 12px 8px 32px;background:var(--card);border:1px solid var(--brd);border-radius:8px;color:var(--t1);outline:none;width:230px;font-size:13px}
 .swrap:before{content:'🔎';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;opacity:.4;pointer-events:none}
-/* ── RUN ── */
+/* RUN */
 .run-wrap{display:flex;flex:1;overflow:hidden}
 .run-left{width:300px;flex-shrink:0;border-right:1px solid var(--brd);padding:20px;overflow-y:auto}
 .run-right{flex:1;padding:20px 24px;overflow-y:auto}
@@ -78,7 +78,7 @@ button,input,textarea{font-family:inherit}
 .vf input{width:100%;padding:9px 11px;background:var(--card);border:1px solid var(--brd);border-radius:8px;color:var(--t1);outline:none;font-size:13px;transition:.15s}
 .vf input:focus{border-color:var(--acc)}
 .gen-btn{width:100%;padding:12px;background:var(--acc);border:none;border-radius:9px;color:#fff;font-weight:600;font-size:14px;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:.15s}
-.gen-btn:hover:not(:disabled){filter:brightness(1.1)}
+.gen-btn:hover:not(:disabled){filter:brightness(1.12)}
 .gen-btn:disabled{opacity:.55;cursor:default}
 .out-box{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:18px 20px;white-space:pre-wrap;font-size:13px;line-height:1.75;color:var(--t1)}
 .out-acts{display:flex;gap:8px;margin-bottom:13px}
@@ -89,19 +89,19 @@ button,input,textarea{font-family:inherit}
 .back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--t2);font-size:13px;padding:0;cursor:pointer;margin-right:12px}
 .back-btn:hover{color:var(--t1)}
 .tb-left{display:flex;align-items:center}
-/* ── ADMIN ── */
+/* ADMIN */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}
 .stat{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:14px 16px}
 .stat-lbl{font-size:10.5px;color:var(--t3);margin-bottom:5px}
 .stat-val{font-size:26px;font-weight:700}
 .stat-sub{font-size:11px;color:var(--t2);margin-top:3px}
 .panel{background:var(--card);border:1px solid var(--brd);border-radius:10px;overflow:hidden;margin-bottom:16px}
-.panel-hd{padding:13px 16px;border-bottom:1px solid var(--brd);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.panel-hd{padding:13px 16px;border-bottom:1px solid var(--brd);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.panel-hd span{font-size:11px;color:var(--t3);font-weight:400}
 .key-row{display:flex;gap:8px;padding:14px 16px;align-items:center}
 .key-row input{flex:1;padding:9px 12px;background:var(--inp);border:1px solid var(--brd);border-radius:8px;color:var(--t1);outline:none;font-size:13px}
 .key-row input:focus{border-color:var(--acc)}
-.key-row .save-btn{padding:9px 16px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:13px;cursor:pointer}
-.key-msg{padding:0 16px 12px;font-size:12px}
+.save-btn{padding:9px 16px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
 table{width:100%;border-collapse:collapse}
 th{font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:10px 15px;border-bottom:1px solid var(--brd)}
 td{font-size:12.5px;padding:10px 15px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--t2);vertical-align:middle}
@@ -112,10 +112,9 @@ tr:last-child td{border-bottom:none}
 .role-user{background:rgba(255,255,255,.06);color:var(--t3)}
 .tiny-btn{padding:3px 9px;border-radius:5px;font-size:10.5px;border:1px solid var(--brd);background:transparent;color:var(--t2);cursor:pointer}
 .tiny-btn.promote{color:var(--acc);border-color:rgba(124,111,255,.3)}
-/* ── SKELETON ── */
-.skel{background:linear-gradient(90deg,var(--card) 25%,rgba(255,255,255,.06) 50%,var(--card) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite;border-radius:6px}
+/* SKELETON */
+.skel{background:linear-gradient(90deg,var(--card) 25%,rgba(255,255,255,.06) 50%,var(--card) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite;border-radius:6px;min-height:16px}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
-/* ── UTILS ── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
@@ -125,7 +124,7 @@ tr:last-child td{border-bottom:none}
 </head>
 <body>
 
-<!-- AUTH -->
+<!-- AUTH SCREEN -->
 <div id="auth">
   <div class="abox">
     <div class="alogo">
@@ -139,14 +138,12 @@ tr:last-child td{border-bottom:none}
       <button class="atab on" id="tab-login" onclick="switchTab('login')">Login</button>
       <button class="atab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
     </div>
-    <!-- Login -->
     <div id="form-login">
       <div class="fld"><label>Email</label><input type="email" id="l-em" placeholder="you@newageai.com"/></div>
       <div class="fld"><label>Password</label><input type="password" id="l-pw" placeholder="Your password" onkeydown="if(event.key==='Enter')login()"/></div>
       <button class="abtn" id="l-btn" onclick="login()">Login</button>
       <div id="l-msg" class="amsg"></div>
     </div>
-    <!-- Signup -->
     <div id="form-signup" style="display:none">
       <div class="fld"><label>Full Name</label><input type="text" id="s-nm" placeholder="Your name"/></div>
       <div class="fld"><label>Email</label><input type="email" id="s-em" placeholder="you@newageai.com"/></div>
@@ -157,7 +154,7 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- APP -->
+<!-- APP SCREEN -->
 <div id="app">
   <div class="layout">
     <aside class="sb">
@@ -177,7 +174,7 @@ tr:last-child td{border-bottom:none}
         <div id="sb-admin-wrap" style="display:none">
           <button class="sb-item" id="sb-admin-btn" onclick="showView('admin')">
             <span style="font-size:13px">🛡</span>
-            <span class="sb-item-lbl">Admin Panel</span>
+            <span class="sb-il">Admin Panel</span>
           </button>
         </div>
       </nav>
@@ -197,164 +194,189 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <script>
-// ── Config ──────────────────────────────────────────────
 const SB_URL = 'https://xvucakstcmtfoanmgcql.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2dWNha3N0Y210Zm9hbm1nY3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMjI0NjUsImV4cCI6MjA4Mjg5ODQ2NX0.7Uh38WHaPfrgp9lxX-BG7PXehR_-2ETG4cyQ55YfD-o';
+const ADMIN_EMAIL = 'rawlanitanishka@gmail.com';
 
 let db, CU = null, CP = null;
 let activeCat = 'all', activeTemplate = null, vars = {}, result = '', searchQ = '';
 
-// ── Categories ──────────────────────────────────────────
+/* ═══════════════════════════════════════
+   CATEGORIES
+═══════════════════════════════════════ */
 const CATS = [
-  { id: 'all',                  label: 'All Templates',     color: '#7C6FFF' },
-  { id: 'google-ads',           label: 'Google Ads',        color: '#4285F4' },
-  { id: 'seo',                  label: 'SEO',               color: '#34A853' },
-  { id: 'meta-ads',             label: 'Meta Ads',          color: '#0866FF' },
-  { id: 'marketing-automation', label: 'Automation',        color: '#F59E0B' },
-  { id: 'blog',                 label: 'Blog & Content',    color: '#EC4899' },
-  { id: 'app-marketing',        label: 'App Marketing',     color: '#06B6D4' },
-  { id: 'lead-gen',             label: 'Lead Generation',   color: '#F97316' },
+  { id:'all',                   label:'All Templates',    color:'#7C6FFF' },
+  { id:'google-ads',            label:'Google Ads',       color:'#4285F4' },
+  { id:'seo',                   label:'SEO',              color:'#34A853' },
+  { id:'meta-ads',              label:'Meta Ads',         color:'#0866FF' },
+  { id:'marketing-automation',  label:'Automation',       color:'#F59E0B' },
+  { id:'blog',                  label:'Blog & Content',   color:'#EC4899' },
+  { id:'app-marketing',         label:'App Marketing',    color:'#06B6D4' },
+  { id:'lead-gen',              label:'Lead Generation',  color:'#F97316' },
 ];
 
-// ── Templates ───────────────────────────────────────────
+/* ═══════════════════════════════════════
+   TEMPLATES
+═══════════════════════════════════════ */
 const TEMPLATES = [
-  // GOOGLE ADS
-  { id:'ga-1', cat:'google-ads', title:'Search Ad Copy (RSA)', desc:'10 headlines & 4 descriptions with character counts',
-    prompt:`You are an expert Google Ads copywriter. Create Responsive Search Ad copy for:\n\nBusiness: [BUSINESS]\nTarget Keyword: [KEYWORD]\nUSP: [USP]\nCTA: [CTA]\n\nDeliver:\n- 10 unique headlines (max 30 chars each — show count in brackets)\n- 4 descriptions (max 90 chars each — show count)\n- Mark the best 3 headlines with ★`,
-    vars:[{k:'BUSINESS',l:'Business / Product',p:'e.g. New Age AI – app development'},{k:'KEYWORD',l:'Target Keyword',p:'e.g. iOS app development company India'},{k:'USP',l:'Unique Selling Point',p:'e.g. Delivered in 30 days, fixed price'},{k:'CTA',l:'Call to Action',p:'e.g. Get Free Quote'}]},
-  { id:'ga-2', cat:'google-ads', title:'Keyword Research Brief', desc:'Match types, CPCs, negatives & ad group structure',
-    prompt:`You are a Google Ads specialist. Create a keyword research brief for:\n\nIndustry: [INDUSTRY]\nService: [SERVICE]\nLocation: [LOCATION]\nMonthly Budget: [BUDGET]\n\nProvide:\n1. 15 exact match keywords\n2. 10 phrase match keywords\n3. 5 broad match keywords to test\n4. 10 negative keywords\n5. Estimated CPC ranges\n6. Recommended ad group structure`,
-    vars:[{k:'INDUSTRY',l:'Industry',p:'Mobile app development'},{k:'SERVICE',l:'Service',p:'iOS & Android app development'},{k:'LOCATION',l:'Target Location',p:'India, US, UK'},{k:'BUDGET',l:'Monthly Budget',p:'₹50,000'}]},
-  { id:'ga-3', cat:'google-ads', title:'Campaign Performance Audit', desc:'Diagnose metrics & get a prioritized action plan',
-    prompt:`You are a Google Ads expert. Audit this campaign and give recommendations:\n\nCampaign: [CAMPAIGN]\nType: [TYPE] | Goal: [GOAL]\nImpressions: [IMP] | Clicks: [CLICKS] | CTR: [CTR]\nCPC: [CPC] | Conversions: [CONV] | Total Cost: [COST]\n\nProvide:\n1. Performance diagnosis (what's working vs not)\n2. Top 5 prioritized optimization actions\n3. Budget reallocation suggestion\n4. 30-day improvement plan`,
-    vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'App Dev Leads Q2'},{k:'TYPE',l:'Campaign Type',p:'Search / PMax / Display'},{k:'GOAL',l:'Goal',p:'Lead generation'},{k:'IMP',l:'Impressions',p:'45,000'},{k:'CLICKS',l:'Clicks',p:'1,200'},{k:'CTR',l:'CTR',p:'2.67%'},{k:'CPC',l:'Avg CPC',p:'₹18.50'},{k:'CONV',l:'Conversions',p:'45'},{k:'COST',l:'Total Cost',p:'₹22,200'}]},
-  { id:'ga-4', cat:'google-ads', title:'App Install Campaign Copy', desc:'UAC headlines, descriptions & 15-sec video script',
-    prompt:`You are a Google UAC specialist. Create app install campaign assets for:\n\nApp Name: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nKey Feature: [FEATURE]\n\nGenerate:\n1. 5 headlines (max 30 chars each)\n2. 5 descriptions (max 90 chars each)\n3. 3 image concept ideas\n4. 15-second video script outline\n5. Bid strategy recommendation`,
-    vars:[{k:'APP',l:'App Name',p:'FitTrack – AI fitness planner'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Fitness enthusiasts 18–35'},{k:'FEATURE',l:'Key Feature',p:'AI workout plans in 60 seconds'}]},
+  // ── GOOGLE ADS ──────────────────────
+  {id:'ga-1',cat:'google-ads',title:'Search Ad Copy (RSA)',desc:'10 headlines & 4 descriptions with character counts',
+   prompt:`You are an expert Google Ads copywriter. Create RSA copy for:\n\nBusiness: [BUSINESS]\nTarget Keyword: [KEYWORD]\nUSP: [USP]\nCTA: [CTA]\n\nDeliver:\n• 10 unique headlines (max 30 chars — show count in brackets)\n• 4 descriptions (max 90 chars — show count)\n• Mark top 3 headlines with ★\n• Explain why each starred headline is strong`,
+   vars:[{k:'BUSINESS',l:'Business / Product',p:'e.g. New Age AI – app development'},{k:'KEYWORD',l:'Target Keyword',p:'e.g. iOS app development company India'},{k:'USP',l:'Unique Selling Point',p:'e.g. Delivered in 30 days, fixed price'},{k:'CTA',l:'Call to Action',p:'e.g. Get Free Quote'}]},
 
-  // SEO
-  { id:'seo-1', cat:'seo', title:'Meta Title & Description', desc:'3 options each with character counts & recommendation',
-    prompt:`You are an SEO expert. Write optimized meta tags for:\n\nPage Type: [PAGE]\nPrimary Keyword: [KW]\nSecondary Keywords: [SKW]\nBrand: [BRAND]\n\nGenerate:\n- 3 meta title options (50–60 chars, show count)\n- 3 meta description options (150–160 chars, show count)\n- Your top recommendation with reasoning`,
-    vars:[{k:'PAGE',l:'Page Type',p:'Service page / Blog / Homepage'},{k:'KW',l:'Primary Keyword',p:'iOS app development company India'},{k:'SKW',l:'Secondary Keywords',p:'mobile app developers, app cost'},{k:'BRAND',l:'Brand Name',p:'New Age AI'}]},
-  { id:'seo-2', cat:'seo', title:'Blog Post SEO Brief', desc:'Full outline, LSI keywords & word counts per section',
-    prompt:`You are an SEO content strategist. Create a blog brief for:\n\nTarget Keyword: [KW]\nSearch Intent: [INTENT]\nTarget Audience: [AUD]\nWord Count: [WC]\n\nProvide:\n1. 3 H1 title options\n2. Full H2/H3 outline with word count per section\n3. 15 LSI/semantic keywords to include naturally\n4. Featured snippet optimization tip\n5. Internal linking suggestions\n6. Meta title & description`,
-    vars:[{k:'KW',l:'Target Keyword',p:'how much does it cost to build an app'},{k:'INTENT',l:'Search Intent',p:'Informational'},{k:'AUD',l:'Target Audience',p:'Startup founders and entrepreneurs'},{k:'WC',l:'Word Count Target',p:'2500 words'}]},
-  { id:'seo-3', cat:'seo', title:'On-Page SEO Audit', desc:'Score out of 100 with specific fix recommendations',
-    prompt:`You are an on-page SEO expert. Audit this page:\n\nURL: [URL]\nTarget Keyword: [KW]\nCurrent Title: [TITLE]\nH1: [H1]\nContent Summary: [CONTENT]\n\nScore each area out of 100:\n- Title tag | Meta description | Header hierarchy\n- Keyword placement & density | URL structure\n- Internal links | Image optimization | Schema markup\n\nGive an overall score and specific fixes for each area.`,
-    vars:[{k:'URL',l:'Page URL',p:'https://newageai.com/ios-development'},{k:'KW',l:'Target Keyword',p:'iOS app development company'},{k:'TITLE',l:'Current Page Title',p:'iOS App Development – New Age AI'},{k:'H1',l:'H1 Tag',p:'iOS App Development Company'},{k:'CONTENT',l:'Content Summary',p:'Page about iOS app development services...'}]},
-  { id:'seo-4', cat:'seo', title:'Competitor Content Gap', desc:'Find keyword & topic gaps vs your competitors',
-    prompt:`You are an SEO strategist. Identify content gaps between my brand and competitors:\n\nMy Brand: [BRAND]\nMy Current Topics: [TOPICS]\nCompetitor 1: [C1]\nCompetitor 2: [C2]\n\nIdentify:\n1. Topics competitors rank for that I'm missing\n2. Top 10 keyword opportunities with estimated search volume\n3. Content types working for competitors\n4. Quick-win pieces to create first (ranked)\n5. 90-day content roadmap to close the gap`,
-    vars:[{k:'BRAND',l:'My Brand',p:'New Age AI, newageai.com'},{k:'TOPICS',l:'My Current Topics',p:'iOS development, Android apps, AI'},{k:'C1',l:'Competitor 1',p:'Appinventiv, appinventiv.com'},{k:'C2',l:'Competitor 2',p:'Techugo, techugo.com'}]},
-  { id:'seo-5', cat:'seo', title:'Local SEO Strategy', desc:'Google Business optimization & citation plan for India',
-    prompt:`You are a local SEO expert. Build a local SEO strategy for:\n\nBusiness: [BIZ]\nTarget City: [CITY]\nServices: [SERVICES]\nCurrent Status: [STATUS]\n\nProvide:\n1. Google Business Profile optimization checklist\n2. 15 local keywords with search intent\n3. Citation building plan (top 10 directories for India)\n4. Review generation strategy\n5. Local content ideas (blogs, landing pages)`,
-    vars:[{k:'BIZ',l:'Business Name',p:'New Age AI'},{k:'CITY',l:'Target City',p:'Mumbai / Bangalore / Delhi'},{k:'SERVICES',l:'Services',p:'iOS & Android app development'},{k:'STATUS',l:'Current Status',p:'Not ranking / Page 2 for main keyword'}]},
+  {id:'ga-2',cat:'google-ads',title:'Keyword Research Brief',desc:'Match types, CPCs, negatives & ad group structure',
+   prompt:`You are a Google Ads specialist. Create a keyword research brief for:\n\nIndustry: [INDUSTRY]\nService: [SERVICE]\nLocation: [LOCATION]\nMonthly Budget: [BUDGET]\n\nProvide:\n1. 15 exact match keywords\n2. 10 phrase match keywords\n3. 5 broad match keywords to test\n4. 10 negative keywords to exclude\n5. Estimated CPC ranges (INR/USD)\n6. Recommended ad group structure with theme names`,
+   vars:[{k:'INDUSTRY',l:'Industry',p:'Mobile app development'},{k:'SERVICE',l:'Service',p:'iOS & Android app development'},{k:'LOCATION',l:'Target Location',p:'India, US, UK'},{k:'BUDGET',l:'Monthly Budget',p:'₹50,000'}]},
 
-  // META ADS
-  { id:'meta-1', cat:'meta-ads', title:'Facebook/Instagram Ad Copy', desc:'Feed, Story & Carousel copy with hooks and CTAs',
-    prompt:`You are a Meta Ads specialist. Write conversion-focused ad copy for:\n\nProduct/Service: [PRODUCT]\nTarget Audience: [AUD]\nObjective: [OBJ]\nOffer/Hook: [OFFER]\nTone: [TONE]\n\nGenerate:\n1. FEED AD — Primary text (125 chars), Headline (40 chars), Description (30 chars)\n2. STORY AD — 3-line punchy copy with a scroll-stopping hook\n3. CAROUSEL (3 cards) — Problem → Solution → CTA (40-char title + 2-line body each)\n4. Top 3 CTA button recommendations`,
-    vars:[{k:'PRODUCT',l:'Product / Service',p:'iOS & Android app development'},{k:'AUD',l:'Target Audience',p:'Startup founders, SMB owners 28–45'},{k:'OBJ',l:'Objective',p:'Lead generation'},{k:'OFFER',l:'Offer / Hook',p:'Free consultation + cost estimate in 24hrs'},{k:'TONE',l:'Tone',p:'Professional and bold'}]},
-  { id:'meta-2', cat:'meta-ads', title:'Audience Targeting Strategy', desc:'Core, lookalike & custom audiences for full funnel',
-    prompt:`You are a Meta Ads audience expert. Build a targeting strategy for:\n\nBusiness: [BIZ]\nGoal: [GOAL]\nMonthly Budget: [BUDGET]\nTarget Countries: [COUNTRIES]\n\nCreate:\n1. 3 core audience segments (interests/demographics/behaviors + estimated size)\n2. Lookalike audience strategy (source audiences to build from)\n3. Custom audience recommendations (website, email list, video views)\n4. TOFU / MOFU / BOFU funnel targeting plan\n5. Key exclusions to improve efficiency\n6. 2-week A/B test plan`,
-    vars:[{k:'BIZ',l:'Business',p:'New Age AI – app development'},{k:'GOAL',l:'Goal',p:'Lead generation'},{k:'BUDGET',l:'Monthly Budget',p:'₹50,000'},{k:'COUNTRIES',l:'Target Countries',p:'India, UAE, Singapore'}]},
-  { id:'meta-3', cat:'meta-ads', title:'Meta Campaign Analysis', desc:'Diagnose performance, creative fatigue & scaling',
-    prompt:`You are a Meta Ads performance expert. Analyze:\n\nCampaign: [CAMP] | Period: [PERIOD]\nSpend: [SPEND] | Reach: [REACH] | Impressions: [IMP] | CPM: [CPM]\nClicks: [CLICKS] | CTR: [CTR] | CPC: [CPC]\nResults: [RES] | Cost/Result: [CPR] | ROAS: [ROAS]\n\nProvide:\n1. Performance diagnosis\n2. Creative fatigue check\n3. 5 immediate optimization actions\n4. Scale or kill recommendation\n5. Next test ideas`,
-    vars:[{k:'CAMP',l:'Campaign Name',p:'Lead Gen – May 2025'},{k:'PERIOD',l:'Period',p:'May 1–31'},{k:'SPEND',l:'Spend',p:'₹28,000'},{k:'REACH',l:'Reach',p:'1,20,000'},{k:'IMP',l:'Impressions',p:'2,10,000'},{k:'CPM',l:'CPM',p:'₹133'},{k:'CLICKS',l:'Clicks',p:'3,400'},{k:'CTR',l:'CTR',p:'1.6%'},{k:'CPC',l:'CPC',p:'₹8.2'},{k:'RES',l:'Results',p:'72 leads'},{k:'CPR',l:'Cost/Result',p:'₹389'},{k:'ROAS',l:'ROAS',p:'N/A'}]},
-  { id:'meta-4', cat:'meta-ads', title:'App Install Meta Campaign', desc:'Full B2C strategy to drive iOS/Android installs',
-    prompt:`You are a Meta Ads expert specializing in app marketing. Create an app install campaign for:\n\nApp: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nKey Hook: [HOOK]\nBudget: [BUDGET]\n\nGenerate:\n1. 3 creative angles (pain point / benefit / social proof)\n2. Feed ad copy for each angle\n3. Story ad copy\n4. 30-second video script\n5. Targeting recommendations\n6. Bid strategy (CPI target)`,
-    vars:[{k:'APP',l:'App Name & Category',p:'HealthPal – fitness tracking app'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Health-conscious users 20–35'},{k:'HOOK',l:'Key Hook',p:'Lose weight without the gym'},{k:'BUDGET',l:'Monthly Budget',p:'₹40,000'}]},
+  {id:'ga-3',cat:'google-ads',title:'Campaign Performance Audit',desc:'Diagnose metrics & get a prioritized action plan',
+   prompt:`You are a Google Ads expert. Audit this campaign:\n\nCampaign: [CAMPAIGN] | Type: [TYPE] | Goal: [GOAL]\nImpressions: [IMP] | Clicks: [CLICKS] | CTR: [CTR]\nAvg CPC: [CPC] | Conversions: [CONV] | Total Cost: [COST]\n\nProvide:\n1. Performance diagnosis (what's working vs not)\n2. Top 5 prioritized optimization actions\n3. Budget reallocation suggestion\n4. 30-day improvement roadmap`,
+   vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'App Dev Leads Q2'},{k:'TYPE',l:'Campaign Type',p:'Search / PMax / Display'},{k:'GOAL',l:'Goal',p:'Lead generation'},{k:'IMP',l:'Impressions',p:'45,000'},{k:'CLICKS',l:'Clicks',p:'1,200'},{k:'CTR',l:'CTR',p:'2.67%'},{k:'CPC',l:'Avg CPC',p:'₹18.50'},{k:'CONV',l:'Conversions',p:'45'},{k:'COST',l:'Total Cost',p:'₹22,200'}]},
 
-  // AUTOMATION
-  { id:'ma-1', cat:'marketing-automation', title:'Email Drip Sequence', desc:'Full multi-email sequence with subject lines & body copy',
-    prompt:`You are an email marketing expert. Create a [NUM]-email drip sequence for:\n\nProduct/Service: [PRODUCT]\nLead Source: [SOURCE]\nGoal: [GOAL]\nPain Point: [PAIN]\nKey Benefit: [BENEFIT]\nTone: [TONE]\n\nFor EACH email provide:\n- Email # and send timing (Day 0, Day 3, etc.)\n- 3 subject line options (include one with emoji)\n- Preview text (90 chars)\n- Full email body (200–250 words)\n- CTA button text\n- Goal of this email`,
-    vars:[{k:'NUM',l:'Number of Emails',p:'5'},{k:'PRODUCT',l:'Product/Service',p:'iOS & Android app development'},{k:'SOURCE',l:'Lead Source',p:'Website contact form'},{k:'GOAL',l:'Sequence Goal',p:'Book a discovery call'},{k:'PAIN',l:'Pain Point',p:'Scared of unreliable developers wasting money'},{k:'BENEFIT',l:'Key Benefit',p:'Fixed price, on-time delivery, dedicated PM'},{k:'TONE',l:'Tone',p:'Professional and trustworthy'}]},
-  { id:'ma-2', cat:'marketing-automation', title:'Lead Nurture Workflow', desc:'Trigger-based automation with branching logic & timing',
-    prompt:`You are a marketing automation architect. Design a lead nurture workflow for:\n\nPlatform: [PLATFORM]\nTrigger Event: [TRIGGER]\nProduct/Service: [PRODUCT]\nSales Cycle: [CYCLE]\n\nCreate:\n1. Entry trigger and conditions\n2. 8-step nurture flow with timing delays between each step\n3. If/then branching logic (engaged vs unengaged paths)\n4. Content at each touchpoint (email subject + 1-line body summary)\n5. Lead scoring rules\n6. Sales handoff trigger\n7. KPIs to track`,
-    vars:[{k:'PLATFORM',l:'Automation Platform',p:'HubSpot / Mailchimp / ActiveCampaign'},{k:'TRIGGER',l:'Trigger Event',p:'User fills contact form on website'},{k:'PRODUCT',l:'Product/Service',p:'iOS & Android app development'},{k:'CYCLE',l:'Sales Cycle',p:'2–4 weeks decision time'}]},
-  { id:'ma-3', cat:'marketing-automation', title:'Subject Line Generator', desc:'20 high open-rate subject lines across 5 styles',
-    prompt:`You are an email subject line specialist. Generate for:\n\nEmail Topic: [TOPIC]\nTarget Audience: [AUD]\nEmail Goal: [GOAL]\nKey Hook: [HOOK]\n\nGenerate 20 subject lines (4 each):\n- Curiosity-gap\n- Benefit-driven\n- Urgency/scarcity\n- Question-based\n- Personalization\n\nFor each: subject line + open rate prediction (Low/Med/High) + matching preview text`,
-    vars:[{k:'TOPIC',l:'Email Topic',p:'App development proposal follow-up'},{k:'AUD',l:'Audience',p:'Startup founders who requested a quote'},{k:'GOAL',l:'Goal',p:'Get them on a discovery call'},{k:'HOOK',l:'Key Hook',p:'Their app could launch in 60 days'}]},
-  { id:'ma-4', cat:'marketing-automation', title:'Re-engagement Campaign', desc:'Win back cold leads with a 3-email sequence',
-    prompt:`You are a retention marketing expert. Create a re-engagement campaign for:\n\nBrand: [BRAND]\nWhy They Went Cold: [REASON]\nLast Active: [LAST]\nIncentive/Offer: [OFFER]\n\nCreate:\n1. 3-email re-engagement sequence (timing + full copy for each)\n2. Ranked win-back offer ideas\n3. Subject line A/B test for each email\n4. Sunset policy (when to stop emailing)\n5. Success metrics to aim for`,
-    vars:[{k:'BRAND',l:'Brand',p:'New Age AI'},{k:'REASON',l:'Why Cold',p:"Requested quote, went silent after proposal"},{k:'LAST',l:'Last Active',p:'45–90 days ago'},{k:'OFFER',l:'Incentive',p:'Free UX audit or 10% off first milestone'}]},
+  {id:'ga-4',cat:'google-ads',title:'App Install Campaign Copy',desc:'UAC headlines, descriptions & 15-sec video script',
+   prompt:`You are a Google UAC specialist. Create app install campaign assets for:\n\nApp Name: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nKey Feature: [FEATURE]\n\nGenerate:\n1. 5 headlines (max 30 chars each, show count)\n2. 5 descriptions (max 90 chars each, show count)\n3. 3 image concept ideas for creative team\n4. 15-second video script outline\n5. Recommended bid strategy`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack – AI fitness planner'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Fitness enthusiasts 18–35'},{k:'FEATURE',l:'Key Feature',p:'AI workout plans in 60 seconds'}]},
 
-  // BLOG & CONTENT
-  { id:'bl-1', cat:'blog', title:'Full Blog Post Writer', desc:'Complete 1500–2000 word SEO blog post, ready to publish',
-    prompt:`You are an expert B2C content writer. Write a complete, publish-ready blog post:\n\nTitle/Topic: [TITLE]\nTarget Keyword: [KW]\nTarget Audience: [AUD]\nTone: [TONE]\nWord Count: [WC]\n\nWrite the full blog post with:\n- Engaging intro (hook + problem + what they'll learn)\n- Well-structured H2/H3 sections\n- Real examples and practical tips\n- Bullet points where helpful\n- Strong conclusion with CTA\n- Target keyword used naturally throughout\n\nMake it genuinely useful, not generic AI fluff.`,
-    vars:[{k:'TITLE',l:'Blog Title / Topic',p:'How Much Does It Cost to Build an App in 2025?'},{k:'KW',l:'Target Keyword',p:'app development cost India'},{k:'AUD',l:'Target Audience',p:'Startup founders and entrepreneurs'},{k:'TONE',l:'Tone',p:'Conversational, expert, trustworthy'},{k:'WC',l:'Word Count',p:'1800 words'}]},
-  { id:'bl-2', cat:'blog', title:'Blog Idea Generator', desc:'20 blog ideas with titles, keywords & funnel stage',
-    prompt:`You are a content strategist for a B2C mobile app development company. Generate 20 blog post ideas for:\n\nCompany: [COMPANY]\nServices: [SERVICES]\nTarget Audience: [AUD]\nContent Goal: [GOAL]\n\nFor each idea:\n- 2 title options\n- Target keyword\n- Search intent (info/commercial/transactional)\n- Unique content angle\n- Estimated difficulty (Easy/Medium/Hard)\n- Funnel stage (TOFU/MOFU/BOFU)\n\nGroup results by funnel stage.`,
-    vars:[{k:'COMPANY',l:'Company',p:'New Age AI'},{k:'SERVICES',l:'Services',p:'iOS development, Android, AI apps'},{k:'AUD',l:'Audience',p:'Startup founders, SMB owners, entrepreneurs'},{k:'GOAL',l:'Content Goal',p:'Drive organic traffic and generate leads'}]},
-  { id:'bl-3', cat:'blog', title:'Client Case Study', desc:'Compelling success story for your website',
-    prompt:`You are a B2B/B2C case study writer. Write a compelling client success story:\n\nClient: [CLIENT]\nIndustry: [INDUSTRY]\nChallenge: [CHALLENGE]\nSolution: [SOLUTION]\nResults: [RESULTS]\nTimeframe: [TIME]\n\nStructure:\n1. Executive summary (2–3 sentences, results-first)\n2. The Challenge\n3. Our Approach\n4. The Solution (technical in plain English)\n5. Results & Impact (numbers as the hero)\n6. Client Quote (craft a believable testimonial)\n7. CTA section\n\nTone: professional but human.`,
-    vars:[{k:'CLIENT',l:'Client Name/Type',p:'HealthTech startup (can stay anonymous)'},{k:'INDUSTRY',l:'Industry',p:'Healthcare / Fitness / Fintech'},{k:'CHALLENGE',l:'Their Challenge',p:'No app, losing users to competitors'},{k:'SOLUTION',l:'Our Solution',p:'Built iOS + Android app with AI features'},{k:'RESULTS',l:'Key Results',p:'10K downloads in 30 days, 4.8★ App Store'},{k:'TIME',l:'Timeframe',p:'Built and launched in 45 days'}]},
-  { id:'bl-4', cat:'blog', title:'LinkedIn Post Writer', desc:'5 high-engagement posts for thought leadership',
-    prompt:`You are a LinkedIn content strategist. Write 5 high-engagement posts for:\n\nCompany/Person: [WHO]\nIndustry: [IND]\nTheme: [THEME]\nGoal: [GOAL]\nTone: [TONE]\n\nFor each post:\n- Hook (first 2 lines must stop the scroll)\n- Body (story, insight, or list format)\n- Engagement question at end\n- 5 relevant hashtags\n- Best day/time to post\n\nMix formats: personal story, insight, list, contrarian take, how-to.`,
-    vars:[{k:'WHO',l:'Company/Person',p:'New Age AI / Tanishka'},{k:'IND',l:'Industry',p:'App development, AI, Tech'},{k:'THEME',l:'Theme',p:'App trends, startup tips, AI in mobile'},{k:'GOAL',l:'Goal',p:'Brand awareness + inbound leads'},{k:'TONE',l:'Tone',p:'Expert but approachable, conversational'}]},
+  // ── SEO ─────────────────────────────
+  {id:'seo-1',cat:'seo',title:'Meta Title & Description',desc:'3 options each with character counts & recommendation',
+   prompt:`You are an SEO expert. Write optimized meta tags for:\n\nPage Type: [PAGE]\nPrimary Keyword: [KW]\nSecondary Keywords: [SKW]\nBrand: [BRAND]\n\nGenerate:\n• 3 meta title options (50–60 chars, show count in brackets)\n• 3 meta description options (150–160 chars, show count)\n• Your #1 recommendation with reasoning\n• Schema markup type suggestion`,
+   vars:[{k:'PAGE',l:'Page Type',p:'Service page / Blog / Homepage'},{k:'KW',l:'Primary Keyword',p:'iOS app development company India'},{k:'SKW',l:'Secondary Keywords',p:'mobile app developers, app cost India'},{k:'BRAND',l:'Brand Name',p:'New Age AI'}]},
 
-  // APP MARKETING
-  { id:'am-1', cat:'app-marketing', title:'App Store Listing (ASO)', desc:'Full App Store & Play Store listing optimized for downloads',
-    prompt:`You are an ASO expert. Write a fully optimized app store listing for:\n\nApp Name: [APP]\nCategory: [CAT]\nTarget User: [USER]\nTop 3 Features: [FEATURES]\nMain Competitors: [COMP]\n\nGenerate:\n1. App title (30 chars max, keyword-rich)\n2. Subtitle / Short description (80 chars max)\n3. Full description (keyword-optimized, benefit-led, ~500 words)\n4. 5 keyword suggestions for the keyword field\n5. 6 screenshot concepts with caption ideas\n6. Promotional text (170 chars)`,
-    vars:[{k:'APP',l:'App Name',p:'FitTrack – AI Workout Planner'},{k:'CAT',l:'Category',p:'Health & Fitness'},{k:'USER',l:'Target User',p:'Fitness beginners wanting guided workouts'},{k:'FEATURES',l:'Top 3 Features',p:'AI workout plans, Progress tracking, Meal log'},{k:'COMP',l:'Competitors',p:'MyFitnessPal, Fitbod, Nike Training'}]},
-  { id:'am-2', cat:'app-marketing', title:'App Launch Campaign Plan', desc:'Full go-to-market plan for a new app launch',
-    prompt:`You are an app marketing strategist. Create a launch plan for:\n\nApp: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nLaunch Date: [DATE]\nBudget: [BUDGET]\nGoal: [GOAL]\n\nProvide:\n1. Pre-launch (4 weeks before): PR, teaser, beta signups\n2. Launch week: channel-by-channel plan (Meta, Google, ASO, PR, email)\n3. Post-launch (4 weeks): retention, reviews, paid scaling\n4. Content calendar for launch month\n5. KPIs and success benchmarks\n6. Budget allocation across channels`,
-    vars:[{k:'APP',l:'App Name & Category',p:'BudgetPal – personal finance app'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Young professionals 22–35 in India'},{k:'DATE',l:'Launch Date',p:'July 1, 2025'},{k:'BUDGET',l:'Budget',p:'₹2,00,000'},{k:'GOAL',l:'Goal',p:'5,000 downloads in first 30 days'}]},
-  { id:'am-3', cat:'app-marketing', title:'Push Notification Copy', desc:'30 high-CTR push notifications across 6 use cases',
-    prompt:`You are a mobile marketing expert. Write push notification copy for:\n\nApp: [APP]\nCategory: [CAT]\nUser Stage: [STAGE]\n\nWrite 30 push notifications (5 each) for:\n1. Onboarding (days 1, 3, 7)\n2. Re-engagement (inactive 3, 7, 14 days)\n3. Feature announcement\n4. Social proof / milestone\n5. Limited time offer\n6. Behaviour-based personalization\n\nFor each: title (≤50 chars) + body (≤100 chars) + emoji + best send time`,
-    vars:[{k:'APP',l:'App Name',p:'FitTrack'},{k:'CAT',l:'App Category',p:'Health & Fitness'},{k:'STAGE',l:'User Stage',p:'New users / At-risk / Power users'}]},
-  { id:'am-4', cat:'app-marketing', title:'App Review Response Templates', desc:'Professional responses to 1★, 3★ and 5★ reviews',
-    prompt:`You are an app community manager. Write review response templates for:\n\nApp: [APP]\nBrand Tone: [TONE]\n\nCreate 15 templates:\n- 5 responses for 1★ reviews (bug, crash, feature request, bad UX, account issue)\n- 5 responses for 3★ reviews (mixed feedback, missing feature, comparison)\n- 5 responses for 5★ reviews (general praise, feature love, loyal user)\n\nEach response: under 150 words, empathetic, action-oriented, ends with a reason to keep using the app.`,
-    vars:[{k:'APP',l:'App Name',p:'FitTrack'},{k:'TONE',l:'Brand Tone',p:'Friendly, caring, action-oriented'}]},
+  {id:'seo-2',cat:'seo',title:'Blog Post SEO Brief',desc:'Full outline, LSI keywords & word counts per section',
+   prompt:`You are an SEO content strategist. Create a detailed blog brief for:\n\nTarget Keyword: [KW]\nSearch Intent: [INTENT]\nTarget Audience: [AUD]\nWord Count Target: [WC]\n\nProvide:\n1. 3 H1 title options (SEO-optimized)\n2. Full H2/H3 outline with word count per section\n3. 15 LSI/semantic keywords to use naturally\n4. Featured snippet optimization tip\n5. Internal linking suggestions\n6. Meta title & description`,
+   vars:[{k:'KW',l:'Target Keyword',p:'how much does it cost to build an app'},{k:'INTENT',l:'Search Intent',p:'Informational'},{k:'AUD',l:'Target Audience',p:'Startup founders and entrepreneurs'},{k:'WC',l:'Word Count',p:'2500 words'}]},
 
-  // LEAD GENERATION
-  { id:'lg-1', cat:'lead-gen', title:'Landing Page Copy', desc:'Full conversion-optimized landing page from top to bottom',
-    prompt:`You are a conversion copywriter. Write a complete landing page for:\n\nProduct/Service: [PRODUCT]\nTarget Audience: [AUD]\nMain Pain Point: [PAIN]\nKey Offer: [OFFER]\nSocial Proof: [PROOF]\n\nWrite all sections:\n1. Hero: headline (3 options) + subheadline + CTA text\n2. Pain points (3 with empathy)\n3. Benefits section (3–4 benefits, not features)\n4. How it works (3 simple steps)\n5. Social proof (testimonial framework + stats to highlight)\n6. FAQ (5 most common objections answered)\n7. Final CTA section\n8. Trust badge suggestions`,
-    vars:[{k:'PRODUCT',l:'Product/Service',p:'iOS & Android app development for startups'},{k:'AUD',l:'Target Audience',p:'First-time app founders with an idea'},{k:'PAIN',l:'Main Pain Point',p:'Scared of getting ripped off or ghosted'},{k:'OFFER',l:'Key Offer',p:'Free consultation + fixed quote in 24hrs'},{k:'PROOF',l:'Social Proof',p:'50+ apps launched, 4.9★ rating, ₹10Cr+ saved'}]},
-  { id:'lg-2', cat:'lead-gen', title:'Lead Magnet Ideas & Copy', desc:'10 ideas + full copy for the #1 pick',
-    prompt:`You are a lead generation expert. Create lead magnets for:\n\nBusiness: [BIZ]\nTarget Audience: [AUD]\nMain Pain Point: [PAIN]\nGoal: [GOAL]\n\nGenerate:\n1. 10 lead magnet ideas (name + format + why it converts) ranked by potential\n2. Full copy for the #1 idea:\n   - Landing page headline + subheadline\n   - Bullet points (what they'll get)\n   - Opt-in button text\n   - Thank you page message\n   - Immediate follow-up email`,
-    vars:[{k:'BIZ',l:'Business',p:'New Age AI – app development'},{k:'AUD',l:'Audience',p:'Startup founders wanting to build an app'},{k:'PAIN',l:'Pain Point',p:"Don't know where to start or how much it costs"},{k:'GOAL',l:'Goal',p:'Get discovery calls booked'}]},
-  { id:'lg-3', cat:'lead-gen', title:'WhatsApp Campaign Copy', desc:'8 WhatsApp messages for Indian B2C lead nurturing',
-    prompt:`You are a WhatsApp marketing expert for Indian B2C audiences. Write campaign messages for:\n\nBusiness: [BIZ]\nProduct: [PRODUCT]\nAudience: [AUD]\nGoal: [GOAL]\n\nCreate 8 WhatsApp messages:\n- 2 cold outreach (fresh leads)\n- 2 follow-ups (no reply: Day 3 + Day 7)\n- 2 offer/promotion messages\n- 2 re-engagement (cold leads 30–60 days)\n\nEach: message body (under 250 chars) + emoji + CTA + best send time. Personal, not spammy. Mix Hindi phrases naturally where it adds warmth.`,
-    vars:[{k:'BIZ',l:'Business',p:'New Age AI'},{k:'PRODUCT',l:'Product/Service',p:'App development services'},{k:'AUD',l:'Audience',p:'Startup founders and entrepreneurs in India'},{k:'GOAL',l:'Goal',p:'Book a discovery call / consultation'}]},
-  { id:'lg-4', cat:'lead-gen', title:'Webinar / Event Copy', desc:'Full promotional copy for a lead-gen webinar or event',
-    prompt:`You are an event marketing expert. Write full promotional copy for:\n\nEvent Type: [EVENT]\nTopic: [TOPIC]\nSpeaker: [SPEAKER]\nDate & Time: [DATE]\nTarget Audience: [AUD]\nKey Takeaway: [TAKEAWAY]\n\nGenerate:\n1. Event title (3 options)\n2. Event description (200 words, benefit-led)\n3. Registration page: headline + 5 bullet reasons to attend\n4. 3 promotional emails (announce, reminder, last chance)\n5. Social posts (LinkedIn + Instagram)\n6. WhatsApp invite message\n7. Post-event follow-up email`,
-    vars:[{k:'EVENT',l:'Event Type',p:'Free Webinar / Workshop / Live Q&A'},{k:'TOPIC',l:'Topic',p:'How to Build Your First App Without a Tech Background'},{k:'SPEAKER',l:'Speaker',p:'Tanishka, Marketing at New Age AI'},{k:'DATE',l:'Date & Time',p:'Saturday, June 14 at 11 AM IST'},{k:'AUD',l:'Audience',p:'Entrepreneurs and startup founders in India'},{k:'TAKEAWAY',l:'Key Takeaway',p:'A clear roadmap + cost estimate for their app idea'}]},
+  {id:'seo-3',cat:'seo',title:'On-Page SEO Audit',desc:'Score out of 100 with specific fix recommendations',
+   prompt:`You are an on-page SEO expert. Audit this page:\n\nURL: [URL]\nTarget Keyword: [KW]\nCurrent Title: [TITLE]\nH1: [H1]\nContent Summary: [CONTENT]\n\nScore each area out of 100:\n• Title tag • Meta description • Header hierarchy\n• Keyword use & density • URL structure\n• Internal links • Image optimization • Schema markup\n\nGive overall score and specific fixes for each area.`,
+   vars:[{k:'URL',l:'Page URL',p:'https://newageai.com/ios-development'},{k:'KW',l:'Target Keyword',p:'iOS app development company'},{k:'TITLE',l:'Current Page Title',p:'iOS App Development – New Age AI'},{k:'H1',l:'H1 Tag',p:'iOS App Development Company'},{k:'CONTENT',l:'Content Summary',p:'Page about iOS app development services...'}]},
+
+  {id:'seo-4',cat:'seo',title:'Competitor Content Gap',desc:'Find keyword & topic gaps vs your competitors',
+   prompt:`You are an SEO strategist. Identify content gaps:\n\nMy Brand: [BRAND]\nMy Topics: [TOPICS]\nCompetitor 1: [C1]\nCompetitor 2: [C2]\n\nIdentify:\n1. Topics competitors rank for that I'm missing\n2. Top 10 keyword opportunities with estimated search volume\n3. Content types working for competitors\n4. Quick-win pieces to create first (ranked by impact)\n5. 90-day content roadmap`,
+   vars:[{k:'BRAND',l:'My Brand',p:'New Age AI, newageai.com'},{k:'TOPICS',l:'My Current Topics',p:'iOS development, Android apps, AI'},{k:'C1',l:'Competitor 1',p:'Appinventiv, appinventiv.com'},{k:'C2',l:'Competitor 2',p:'Techugo, techugo.com'}]},
+
+  {id:'seo-5',cat:'seo',title:'Local SEO Strategy',desc:'Google Business optimization & citation plan',
+   prompt:`You are a local SEO expert. Build a local SEO strategy for:\n\nBusiness: [BIZ]\nTarget City: [CITY]\nServices: [SERVICES]\nCurrent Status: [STATUS]\n\nProvide:\n1. Google Business Profile optimization checklist (20 points)\n2. 15 local keywords with search intent\n3. Citation building plan (top 10 Indian directories + global)\n4. Review generation strategy\n5. Local content ideas (blogs + landing pages)`,
+   vars:[{k:'BIZ',l:'Business Name',p:'New Age AI'},{k:'CITY',l:'Target City',p:'Mumbai / Bangalore / Delhi'},{k:'SERVICES',l:'Services',p:'iOS & Android app development'},{k:'STATUS',l:'Current Status',p:'Not ranking / Page 2 for main keyword'}]},
+
+  // ── META ADS ────────────────────────
+  {id:'meta-1',cat:'meta-ads',title:'Facebook/Instagram Ad Copy',desc:'Feed, Story & Carousel copy with hooks and CTAs',
+   prompt:`You are a Meta Ads specialist. Write conversion-focused ad copy for:\n\nProduct/Service: [PRODUCT]\nTarget Audience: [AUD]\nObjective: [OBJ]\nOffer/Hook: [OFFER]\nTone: [TONE]\n\nGenerate:\n1. FEED AD — Primary text (125 chars), Headline (40 chars), Description (30 chars)\n2. STORY AD — 3-line punchy copy with scroll-stopping hook\n3. CAROUSEL (3 cards) — Problem → Solution → CTA (40-char title + 2-line body each)\n4. Top 3 CTA button recommendations with reasoning`,
+   vars:[{k:'PRODUCT',l:'Product / Service',p:'iOS & Android app development'},{k:'AUD',l:'Target Audience',p:'Startup founders, SMB owners 28–45'},{k:'OBJ',l:'Objective',p:'Lead generation'},{k:'OFFER',l:'Offer / Hook',p:'Free consultation + cost estimate in 24hrs'},{k:'TONE',l:'Tone',p:'Professional and bold'}]},
+
+  {id:'meta-2',cat:'meta-ads',title:'Audience Targeting Strategy',desc:'Core, lookalike & custom audiences for full funnel',
+   prompt:`You are a Meta Ads audience expert. Build a targeting strategy for:\n\nBusiness: [BIZ]\nGoal: [GOAL]\nMonthly Budget: [BUDGET]\nTarget Countries: [COUNTRIES]\n\nCreate:\n1. 3 core audience segments (interests/demographics/behaviors + estimated size)\n2. Lookalike audience strategy (source audiences to build)\n3. Custom audience recommendations (website, email, video views)\n4. TOFU / MOFU / BOFU funnel targeting plan\n5. Key exclusions to improve efficiency\n6. 2-week A/B test plan with hypothesis`,
+   vars:[{k:'BIZ',l:'Business',p:'New Age AI – app development'},{k:'GOAL',l:'Goal',p:'Lead generation'},{k:'BUDGET',l:'Monthly Budget',p:'₹50,000'},{k:'COUNTRIES',l:'Target Countries',p:'India, UAE, Singapore'}]},
+
+  {id:'meta-3',cat:'meta-ads',title:'Meta Campaign Analysis',desc:'Diagnose performance, creative fatigue & scaling plan',
+   prompt:`You are a Meta Ads performance expert. Analyze:\n\nCampaign: [CAMP] | Period: [PERIOD]\nSpend: [SPEND] | Reach: [REACH] | Impressions: [IMP] | CPM: [CPM]\nClicks: [CLICKS] | CTR: [CTR] | CPC: [CPC]\nResults: [RES] | Cost/Result: [CPR] | ROAS: [ROAS]\n\nProvide:\n1. Performance diagnosis\n2. Creative fatigue check\n3. 5 immediate optimization actions (prioritized)\n4. Scale or kill recommendation with reasoning\n5. Next 3 test ideas`,
+   vars:[{k:'CAMP',l:'Campaign Name',p:'Lead Gen – May 2025'},{k:'PERIOD',l:'Period',p:'May 1–31'},{k:'SPEND',l:'Spend',p:'₹28,000'},{k:'REACH',l:'Reach',p:'1,20,000'},{k:'IMP',l:'Impressions',p:'2,10,000'},{k:'CPM',l:'CPM',p:'₹133'},{k:'CLICKS',l:'Clicks',p:'3,400'},{k:'CTR',l:'CTR',p:'1.6%'},{k:'CPC',l:'CPC',p:'₹8.2'},{k:'RES',l:'Results',p:'72 leads'},{k:'CPR',l:'Cost/Result',p:'₹389'},{k:'ROAS',l:'ROAS',p:'N/A'}]},
+
+  {id:'meta-4',cat:'meta-ads',title:'App Install Meta Campaign',desc:'Full B2C strategy to drive iOS/Android installs',
+   prompt:`You are a Meta Ads expert specializing in app marketing. Create an app install campaign for:\n\nApp: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nKey Hook: [HOOK]\nBudget: [BUDGET]\n\nGenerate:\n1. 3 creative angles (pain point / benefit / social proof)\n2. Feed ad copy for each angle\n3. Story ad copy\n4. 30-second video script\n5. Targeting recommendations with audience size estimates\n6. Bid strategy (target CPI)`,
+   vars:[{k:'APP',l:'App Name & Category',p:'HealthPal – fitness tracking app'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Health-conscious users 20–35'},{k:'HOOK',l:'Key Hook',p:'Lose weight without the gym'},{k:'BUDGET',l:'Monthly Budget',p:'₹40,000'}]},
+
+  // ── AUTOMATION ──────────────────────
+  {id:'ma-1',cat:'marketing-automation',title:'Email Drip Sequence',desc:'Full multi-email sequence with subject lines & body copy',
+   prompt:`You are an email marketing expert. Create a [NUM]-email drip sequence for:\n\nProduct/Service: [PRODUCT]\nLead Source: [SOURCE]\nGoal: [GOAL]\nPain Point: [PAIN]\nKey Benefit: [BENEFIT]\nTone: [TONE]\n\nFor EACH email:\n• Email # and send timing (Day 0, Day 3, etc.)\n• 3 subject line options (one with emoji)\n• Preview text (90 chars)\n• Full email body (200–250 words)\n• CTA button text\n• Goal of this specific email`,
+   vars:[{k:'NUM',l:'Number of Emails',p:'5'},{k:'PRODUCT',l:'Product/Service',p:'iOS & Android app development'},{k:'SOURCE',l:'Lead Source',p:'Website contact form'},{k:'GOAL',l:'Sequence Goal',p:'Book a discovery call'},{k:'PAIN',l:'Pain Point',p:'Scared of unreliable developers wasting money'},{k:'BENEFIT',l:'Key Benefit',p:'Fixed price, on-time delivery, dedicated PM'},{k:'TONE',l:'Tone',p:'Professional and trustworthy'}]},
+
+  {id:'ma-2',cat:'marketing-automation',title:'Lead Nurture Workflow',desc:'Trigger-based automation with branching logic & timing',
+   prompt:`You are a marketing automation architect. Design a lead nurture workflow for:\n\nPlatform: [PLATFORM]\nTrigger Event: [TRIGGER]\nProduct/Service: [PRODUCT]\nSales Cycle: [CYCLE]\n\nCreate:\n1. Entry trigger and conditions/filters\n2. 8-step nurture flow with timing delays\n3. If/then branching logic (engaged vs unengaged paths)\n4. Content at each touchpoint (email subject + body summary)\n5. Lead scoring rules\n6. Sales handoff trigger criteria\n7. KPIs to track weekly`,
+   vars:[{k:'PLATFORM',l:'Automation Platform',p:'HubSpot / Mailchimp / ActiveCampaign'},{k:'TRIGGER',l:'Trigger Event',p:'User fills contact form on website'},{k:'PRODUCT',l:'Product/Service',p:'iOS & Android app development'},{k:'CYCLE',l:'Sales Cycle',p:'2–4 weeks decision time'}]},
+
+  {id:'ma-3',cat:'marketing-automation',title:'Subject Line Generator',desc:'20 high open-rate subject lines across 5 psychology styles',
+   prompt:`You are an email subject line specialist. Generate for:\n\nEmail Topic: [TOPIC]\nTarget Audience: [AUD]\nEmail Goal: [GOAL]\nKey Hook: [HOOK]\n\nGenerate 20 subject lines (4 each type):\n• Curiosity-gap\n• Benefit-driven\n• Urgency/scarcity\n• Question-based\n• Personalization\n\nFor each: subject line + open rate prediction (Low/Med/High) + matching preview text (80 chars)`,
+   vars:[{k:'TOPIC',l:'Email Topic',p:'App development proposal follow-up'},{k:'AUD',l:'Audience',p:'Startup founders who requested a quote'},{k:'GOAL',l:'Goal',p:'Get them on a discovery call'},{k:'HOOK',l:'Key Hook',p:'Their app could launch in 60 days'}]},
+
+  {id:'ma-4',cat:'marketing-automation',title:'Re-engagement Campaign',desc:'Win back cold leads with a proven 3-email sequence',
+   prompt:`You are a retention marketing expert. Create a re-engagement campaign for:\n\nBrand: [BRAND]\nWhy They Went Cold: [REASON]\nLast Active: [LAST]\nIncentive/Offer: [OFFER]\n\nCreate:\n1. 3-email sequence (timing + full copy for each)\n2. Ranked win-back offer ideas (by conversion potential)\n3. Subject line A/B test for each email\n4. Sunset policy (when to stop mailing unresponsives)\n5. Success metrics & benchmarks`,
+   vars:[{k:'BRAND',l:'Brand',p:'New Age AI'},{k:'REASON',l:'Why Cold',p:"Requested quote, went silent after proposal"},{k:'LAST',l:'Last Active',p:'45–90 days ago'},{k:'OFFER',l:'Incentive',p:'Free UX audit or 10% off first milestone'}]},
+
+  // ── BLOG & CONTENT ───────────────────
+  {id:'bl-1',cat:'blog',title:'Full Blog Post Writer',desc:'Complete 1500–2000 word SEO blog post ready to publish',
+   prompt:`You are an expert B2C content writer. Write a complete, publish-ready blog post:\n\nTitle/Topic: [TITLE]\nTarget Keyword: [KW]\nTarget Audience: [AUD]\nTone: [TONE]\nWord Count: [WC]\n\nWrite the full post with:\n• Engaging intro (hook + problem + what they'll learn)\n• Well-structured H2/H3 sections\n• Real examples and practical tips\n• Bullet points where helpful for readability\n• Strong conclusion with clear CTA\n• Target keyword used naturally throughout\n\nMake it genuinely useful — not generic filler.`,
+   vars:[{k:'TITLE',l:'Blog Title / Topic',p:'How Much Does It Cost to Build an App in 2025?'},{k:'KW',l:'Target Keyword',p:'app development cost India'},{k:'AUD',l:'Target Audience',p:'Startup founders and entrepreneurs'},{k:'TONE',l:'Tone',p:'Conversational, expert, trustworthy'},{k:'WC',l:'Word Count',p:'1800 words'}]},
+
+  {id:'bl-2',cat:'blog',title:'Blog Idea Generator',desc:'20 ideas with titles, keywords, difficulty & funnel stage',
+   prompt:`You are a content strategist for a B2C mobile app development company. Generate 20 blog post ideas for:\n\nCompany: [COMPANY]\nServices: [SERVICES]\nTarget Audience: [AUD]\nContent Goal: [GOAL]\n\nFor each idea:\n• 2 headline options\n• Target keyword\n• Search intent (informational/commercial/transactional)\n• Unique content angle (what makes it different)\n• Difficulty (Easy/Medium/Hard)\n• Funnel stage (TOFU/MOFU/BOFU)\n\nGroup results by funnel stage.`,
+   vars:[{k:'COMPANY',l:'Company',p:'New Age AI'},{k:'SERVICES',l:'Services',p:'iOS development, Android, AI apps'},{k:'AUD',l:'Audience',p:'Startup founders, SMB owners, entrepreneurs'},{k:'GOAL',l:'Content Goal',p:'Drive organic traffic and generate leads'}]},
+
+  {id:'bl-3',cat:'blog',title:'Client Case Study',desc:'Compelling success story for your website or pitch deck',
+   prompt:`You are a B2C case study writer. Write a compelling client success story:\n\nClient: [CLIENT]\nIndustry: [INDUSTRY]\nChallenge: [CHALLENGE]\nSolution: [SOLUTION]\nResults: [RESULTS]\nTimeframe: [TIME]\n\nStructure:\n1. Executive summary (results-first, 2–3 sentences)\n2. The Challenge (their pain before us)\n3. Our Approach (why we chose this solution)\n4. The Solution (technical made simple)\n5. Results & Impact (make numbers the hero)\n6. Client Quote (craft a believable testimonial)\n7. CTA section`,
+   vars:[{k:'CLIENT',l:'Client Name/Type',p:'HealthTech startup (can be anonymous)'},{k:'INDUSTRY',l:'Industry',p:'Healthcare / Fitness / Fintech'},{k:'CHALLENGE',l:'Their Challenge',p:'No app, losing users to competitors'},{k:'SOLUTION',l:'Our Solution',p:'Built iOS + Android app with AI features'},{k:'RESULTS',l:'Key Results',p:'10K downloads in 30 days, 4.8★ App Store'},{k:'TIME',l:'Timeframe',p:'Built and launched in 45 days'}]},
+
+  {id:'bl-4',cat:'blog',title:'LinkedIn Post Writer',desc:'5 scroll-stopping posts for brand & thought leadership',
+   prompt:`You are a LinkedIn content strategist. Write 5 high-engagement posts for:\n\nCompany/Person: [WHO]\nIndustry: [IND]\nTheme: [THEME]\nGoal: [GOAL]\nTone: [TONE]\n\nFor each post:\n• Hook (first 2 lines must stop the scroll — no generic openers)\n• Body (story, insight, or list — max 5 lines)\n• Engagement question at the end\n• 5 relevant hashtags\n• Best day + time to post\n\nMix formats: personal story, data insight, list, contrarian take, how-to.`,
+   vars:[{k:'WHO',l:'Company/Person',p:'New Age AI / Tanishka Rawlani'},{k:'IND',l:'Industry',p:'App development, AI, Tech'},{k:'THEME',l:'Theme',p:'App trends, startup tips, AI in mobile'},{k:'GOAL',l:'Goal',p:'Brand awareness + inbound leads'},{k:'TONE',l:'Tone',p:'Expert but approachable and conversational'}]},
+
+  // ── APP MARKETING ────────────────────
+  {id:'am-1',cat:'app-marketing',title:'App Store Listing (ASO)',desc:'Full App Store & Play Store listing optimized for downloads',
+   prompt:`You are an ASO expert. Write a fully optimized app store listing for:\n\nApp Name: [APP]\nCategory: [CAT]\nTarget User: [USER]\nTop 3 Features: [FEATURES]\nMain Competitors: [COMP]\n\nGenerate:\n1. App title (30 chars max, keyword-rich)\n2. Subtitle / Short description (80 chars max)\n3. Full description (keyword-optimized, benefit-led, ~500 words)\n4. 5 keyword field suggestions\n5. 6 screenshot concepts with caption ideas\n6. Promotional text (170 chars, App Store)\n7. What to A/B test first`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack – AI Workout Planner'},{k:'CAT',l:'Category',p:'Health & Fitness'},{k:'USER',l:'Target User',p:'Fitness beginners wanting guided workouts'},{k:'FEATURES',l:'Top 3 Features',p:'AI workout plans, Progress tracking, Meal log'},{k:'COMP',l:'Competitors',p:'MyFitnessPal, Fitbod, Nike Training'}]},
+
+  {id:'am-2',cat:'app-marketing',title:'App Launch Campaign Plan',desc:'Full go-to-market plan for a new app launch',
+   prompt:`You are an app marketing strategist. Create a full launch plan for:\n\nApp: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nLaunch Date: [DATE]\nBudget: [BUDGET]\nGoal: [GOAL]\n\nProvide:\n1. Pre-launch (4 weeks before): PR, teaser content, beta signups\n2. Launch week: channel-by-channel plan (Meta, Google, ASO, PR, email)\n3. Post-launch (4 weeks): retention, reviews, paid scaling\n4. Day-by-day content calendar for launch week\n5. KPIs and success benchmarks\n6. Budget allocation across channels with %`,
+   vars:[{k:'APP',l:'App Name & Category',p:'BudgetPal – personal finance app'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Young professionals 22–35 in India'},{k:'DATE',l:'Launch Date',p:'July 1, 2025'},{k:'BUDGET',l:'Budget',p:'₹2,00,000'},{k:'GOAL',l:'Goal',p:'5,000 downloads in first 30 days'}]},
+
+  {id:'am-3',cat:'app-marketing',title:'Push Notification Copy',desc:'30 high-CTR push notifications across 6 use cases',
+   prompt:`You are a mobile marketing expert. Write push notification copy for:\n\nApp: [APP]\nCategory: [CAT]\nUser Stage: [STAGE]\n\nWrite 30 push notifications (5 per use case):\n1. Onboarding (Day 1, 3, 7 after install)\n2. Re-engagement (inactive 3, 7, 14 days)\n3. Feature announcement\n4. Social proof / milestone\n5. Limited-time offer\n6. Behavior-based personalization\n\nFor each: Title (≤50 chars) + Body (≤100 chars) + Emoji + Best send time + Expected CTR (Low/Med/High)`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack'},{k:'CAT',l:'App Category',p:'Health & Fitness'},{k:'STAGE',l:'User Stage',p:'New users / At-risk users / Power users'}]},
+
+  {id:'am-4',cat:'app-marketing',title:'App Review Response Templates',desc:'Professional responses to 1★, 3★ and 5★ reviews',
+   prompt:`You are an app community manager. Write review response templates for:\n\nApp: [APP]\nBrand Tone: [TONE]\n\nCreate 15 templates:\n• 5 for 1★ reviews (bug, crash, feature request, bad UX, account issue)\n• 5 for 3★ reviews (mixed feedback, missing feature, competitor comparison)\n• 5 for 5★ reviews (general praise, specific feature love, loyal user)\n\nEach response: under 150 words, empathetic, action-oriented, ends with a hook to retain the user.`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack'},{k:'TONE',l:'Brand Tone',p:'Friendly, caring, action-oriented'}]},
+
+  // ── LEAD GENERATION ─────────────────
+  {id:'lg-1',cat:'lead-gen',title:'Landing Page Copy',desc:'Full conversion-optimized landing page from top to bottom',
+   prompt:`You are a conversion copywriter. Write a complete landing page for:\n\nProduct/Service: [PRODUCT]\nTarget Audience: [AUD]\nMain Pain Point: [PAIN]\nKey Offer: [OFFER]\nSocial Proof: [PROOF]\n\nWrite all sections:\n1. Hero: headline (3 options) + subheadline + CTA button text\n2. Pain points section (3 pains with empathy)\n3. Benefits section (3–4 benefits, outcome-focused — not features)\n4. How it works (3 simple steps)\n5. Social proof (testimonial framework + stats to highlight)\n6. FAQ (5 objections answered)\n7. Final CTA section\n8. Trust badge suggestions`,
+   vars:[{k:'PRODUCT',l:'Product/Service',p:'iOS & Android app development for startups'},{k:'AUD',l:'Target Audience',p:'First-time app founders with an idea'},{k:'PAIN',l:'Main Pain Point',p:'Scared of getting ripped off or ghosted by devs'},{k:'OFFER',l:'Key Offer',p:'Free consultation + fixed quote in 24hrs'},{k:'PROOF',l:'Social Proof',p:'50+ apps launched, 4.9★ rating, ₹10Cr+ delivered'}]},
+
+  {id:'lg-2',cat:'lead-gen',title:'Lead Magnet Ideas & Copy',desc:'10 ideas ranked + full copy for the #1 pick',
+   prompt:`You are a lead generation expert. Create lead magnets for:\n\nBusiness: [BIZ]\nTarget Audience: [AUD]\nMain Pain Point: [PAIN]\nGoal: [GOAL]\n\nGenerate:\n1. 10 lead magnet ideas (name + format + why it converts) — ranked by potential\n2. Full copy for the #1 idea:\n   • Landing page headline + subheadline\n   • Bullet points (what they'll get — 5 points)\n   • Opt-in button text (3 options)\n   • Thank you page message\n   • Immediate follow-up email (full copy)`,
+   vars:[{k:'BIZ',l:'Business',p:'New Age AI – app development'},{k:'AUD',l:'Audience',p:'Startup founders wanting to build an app'},{k:'PAIN',l:'Pain Point',p:"Don't know where to start or how much it costs"},{k:'GOAL',l:'Goal',p:'Get discovery calls booked'}]},
+
+  {id:'lg-3',cat:'lead-gen',title:'WhatsApp Campaign Copy',desc:'8 messages for Indian B2C lead nurturing',
+   prompt:`You are a WhatsApp marketing expert for Indian B2C audiences. Write campaign messages for:\n\nBusiness: [BIZ]\nProduct: [PRODUCT]\nAudience: [AUD]\nGoal: [GOAL]\n\nCreate 8 WhatsApp messages:\n• 2 cold outreach (fresh leads)\n• 2 follow-ups (Day 3 + Day 7 no reply)\n• 2 offer/promotion messages\n• 2 re-engagement (cold 30–60 days)\n\nFor each: Message body (under 250 chars) + Emoji usage + CTA + Best send time.\nTone: personal not spammy. Mix Hindi phrases naturally where they add warmth.`,
+   vars:[{k:'BIZ',l:'Business',p:'New Age AI'},{k:'PRODUCT',l:'Product/Service',p:'App development services'},{k:'AUD',l:'Audience',p:'Startup founders and entrepreneurs in India'},{k:'GOAL',l:'Goal',p:'Book a discovery call / consultation'}]},
+
+  {id:'lg-4',cat:'lead-gen',title:'Webinar / Event Copy',desc:'Full promotional copy for a lead-gen webinar or event',
+   prompt:`You are an event marketing expert. Write full promotional copy for:\n\nEvent Type: [EVENT]\nTopic: [TOPIC]\nSpeaker: [SPEAKER]\nDate & Time: [DATE]\nTarget Audience: [AUD]\nKey Takeaway: [TAKEAWAY]\n\nGenerate:\n1. Event title (3 options)\n2. Event description (200 words, benefit-led)\n3. Registration page: headline + 5 bullet reasons to attend\n4. 3 promotional emails (Announce / Reminder / Last chance)\n5. Social posts (LinkedIn + Instagram caption)\n6. WhatsApp invite message\n7. Post-event follow-up email`,
+   vars:[{k:'EVENT',l:'Event Type',p:'Free Webinar / Workshop / Live Q&A'},{k:'TOPIC',l:'Topic',p:'How to Build Your First App Without a Tech Background'},{k:'SPEAKER',l:'Speaker',p:'Tanishka Rawlani, Marketing at New Age AI'},{k:'DATE',l:'Date & Time',p:'Saturday, June 14 at 11 AM IST'},{k:'AUD',l:'Audience',p:'Entrepreneurs and startup founders in India'},{k:'TAKEAWAY',l:'Key Takeaway',p:'A clear roadmap + cost estimate for their app idea'}]},
 ];
 
-// ── Helpers ─────────────────────────────────────────────
-const catColor = id => CATS.find(c => c.id === id)?.color || '#7C6FFF';
-const catLabel = id => CATS.find(c => c.id === id)?.label || id;
+/* ═══════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════ */
+const catColor = id => CATS.find(c=>c.id===id)?.color || '#7C6FFF';
+const catLabel = id => CATS.find(c=>c.id===id)?.label || id;
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const el  = id => document.getElementById(id);
 
-// ── Auth UI ─────────────────────────────────────────────
+/* ═══════════════════════════════════════
+   AUTH
+═══════════════════════════════════════ */
 function switchTab(tab) {
-  el('tab-login').classList.toggle('on', tab === 'login');
-  el('tab-signup').classList.toggle('on', tab === 'signup');
-  el('form-login').style.display  = tab === 'login'  ? '' : 'none';
-  el('form-signup').style.display = tab === 'signup' ? '' : 'none';
+  el('tab-login').classList.toggle('on', tab==='login');
+  el('tab-signup').classList.toggle('on', tab==='signup');
+  el('form-login').style.display  = tab==='login'  ? '' : 'none';
+  el('form-signup').style.display = tab==='signup' ? '' : 'none';
 }
 
 async function login() {
   const email = el('l-em').value.trim();
   const pw    = el('l-pw').value;
   const msg   = el('l-msg');
-  msg.className = 'amsg';
-  msg.textContent = '';
-  if (!email || !pw) { msg.className = 'amsg err'; msg.textContent = 'Please fill in all fields.'; return; }
-  el('l-btn').disabled = true;
-  el('l-btn').textContent = 'Logging in…';
-  const { error } = await db.auth.signInWithPassword({ email, password: pw });
-  el('l-btn').disabled = false;
-  el('l-btn').textContent = 'Login';
+  msg.className = 'amsg'; msg.textContent = '';
+  if (!email||!pw) { msg.className='amsg err'; msg.textContent='Please fill in all fields.'; return; }
+  el('l-btn').disabled=true; el('l-btn').textContent='Logging in…';
+  const {error} = await db.auth.signInWithPassword({email, password:pw});
+  el('l-btn').disabled=false; el('l-btn').textContent='Login';
   if (error) {
-    msg.className = 'amsg err';
-    if (error.message.toLowerCase().includes('confirm')) {
-      msg.textContent = 'Email not confirmed. Check your inbox for a confirmation link, or ask the admin to disable email confirmation in Supabase Auth settings.';
-    } else if (error.message.toLowerCase().includes('invalid')) {
-      msg.textContent = 'Incorrect email or password.';
-    } else {
-      msg.textContent = error.message;
-    }
+    msg.className='amsg err';
+    msg.textContent = error.message.toLowerCase().includes('confirm')
+      ? 'Email not confirmed. Check your inbox or ask admin to disable email confirmation in Supabase → Auth → Settings.'
+      : error.message.toLowerCase().includes('invalid')
+      ? 'Incorrect email or password. Please try again.'
+      : error.message;
   }
 }
 
@@ -363,59 +385,78 @@ async function signup() {
   const email = el('s-em').value.trim();
   const pw    = el('s-pw').value;
   const msg   = el('s-msg');
-  msg.className = 'amsg';
-  msg.textContent = '';
-  if (!name || !email || !pw) { msg.className = 'amsg err'; msg.textContent = 'Please fill in all fields.'; return; }
-  if (pw.length < 6) { msg.className = 'amsg err'; msg.textContent = 'Password must be at least 6 characters.'; return; }
-  el('s-btn').disabled = true;
-  el('s-btn').textContent = 'Creating account…';
-  const { error } = await db.auth.signUp({ email, password: pw, options: { data: { full_name: name } } });
-  el('s-btn').disabled = false;
-  el('s-btn').textContent = 'Create Account';
-  if (error) {
-    msg.className = 'amsg err';
-    msg.textContent = error.message;
-  } else {
-    msg.className = 'amsg ok';
-    msg.textContent = '✓ Account created! If login fails, check your email for a confirmation link — or ask the admin to disable email confirmation in Supabase → Authentication → Settings.';
-  }
+  msg.className='amsg'; msg.textContent='';
+  if (!name||!email||!pw) { msg.className='amsg err'; msg.textContent='Please fill in all fields.'; return; }
+  if (pw.length<6) { msg.className='amsg err'; msg.textContent='Password must be at least 6 characters.'; return; }
+  el('s-btn').disabled=true; el('s-btn').textContent='Creating account…';
+  const {error} = await db.auth.signUp({email, password:pw, options:{data:{full_name:name}}});
+  el('s-btn').disabled=false; el('s-btn').textContent='Create Account';
+  if (error) { msg.className='amsg err'; msg.textContent=error.message; }
+  else { msg.className='amsg ok'; msg.textContent='✓ Account created! Check your email for a confirmation link, then login. (If login fails, ask admin to disable email confirmation in Supabase Auth settings.)'; }
 }
 
 async function logout() {
   await db.auth.signOut();
-  CU = null; CP = null;
-  el('app').style.display = 'none';
-  el('auth').style.display = 'flex';
+  CU=null; CP=null;
+  el('app').style.display='none';
+  el('auth').style.display='flex';
 }
 
-// ── App Init ────────────────────────────────────────────
+/* ═══════════════════════════════════════
+   BOOT — load profile & show app
+═══════════════════════════════════════ */
 async function loadAndShowApp(user) {
   CU = user;
-  // Show app shell immediately
+  // Show app shell immediately — don't wait
   el('auth').style.display = 'none';
-  el('app').style.display = 'block';
-  // Load profile in background
-  const { data } = await db.from('profiles').select('*').eq('id', CU.id).single();
-  CP = data;
-  // Update last_seen fire-and-forget
+  el('app').style.display  = 'block';
+
+  // Try to load profile
+  let { data: profile } = await db.from('profiles').select('*').eq('id', CU.id).single();
+
+  // Profile missing (trigger didn't fire) — create it now
+  if (!profile) {
+    const fullName = CU.user_metadata?.full_name || CU.email.split('@')[0];
+    const role = CU.email === ADMIN_EMAIL ? 'admin' : 'user';
+    await db.from('profiles').upsert({
+      id: CU.id, email: CU.email, full_name: fullName, role,
+      created_at: new Date().toISOString(), last_seen: new Date().toISOString()
+    });
+    const { data: fresh } = await db.from('profiles').select('*').eq('id', CU.id).single();
+    profile = fresh;
+  }
+
+  CP = profile || { id: CU.id, email: CU.email, role: 'user' };
+
+  // Always ensure admin email has admin role
+  if (CU.email === ADMIN_EMAIL && CP.role !== 'admin') {
+    await db.from('profiles').update({ role: 'admin' }).eq('id', CU.id);
+    CP.role = 'admin';
+  }
+
+  // Fire-and-forget last_seen update
   db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', CU.id);
-  // Update sidebar user info
-  const name = CP?.full_name || CU.email;
-  el('uc-av').textContent  = name[0].toUpperCase();
-  el('uc-em').textContent  = CU.email;
-  el('uc-role').textContent = CP?.role || 'user';
-  if (CP?.role === 'admin') el('sb-admin-wrap').style.display = '';
+
+  // Update sidebar UI
+  const name = CP.full_name || CU.email;
+  el('uc-av').textContent   = name[0].toUpperCase();
+  el('uc-em').textContent   = CU.email;
+  el('uc-role').textContent = CP.role || 'user';
+  if (CP.role === 'admin') el('sb-admin-wrap').style.display = '';
+
   buildSidebar();
   showView('browse');
 }
 
-// ── Sidebar ─────────────────────────────────────────────
+/* ═══════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════ */
 function buildSidebar() {
   el('sb-cats').innerHTML = CATS.map(c => {
-    const cnt = c.id === 'all' ? TEMPLATES.length : TEMPLATES.filter(t => t.cat === c.id).length;
-    return `<button class="sb-item${c.id === activeCat ? ' on' : ''}" id="sbi-${c.id}" onclick="selectCat('${c.id}')">
+    const cnt = c.id==='all' ? TEMPLATES.length : TEMPLATES.filter(t=>t.cat===c.id).length;
+    return `<button class="sb-item${c.id===activeCat?' on':''}" id="sbi-${c.id}" onclick="selectCat('${c.id}')">
       <span class="sb-dot" style="background:${c.color}"></span>
-      <span class="sb-item-lbl">${c.label}</span>
+      <span class="sb-il">${c.label}</span>
       <span class="sb-cnt">${cnt}</span>
     </button>`;
   }).join('');
@@ -423,63 +464,60 @@ function buildSidebar() {
 
 function selectCat(id) {
   activeCat = id;
-  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('on'));
-  const sbi = el('sbi-' + id);
-  if (sbi) sbi.classList.add('on');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('on'));
+  const btn = el('sbi-'+id); if(btn) btn.classList.add('on');
   showView('browse');
 }
 
-// ── Views ────────────────────────────────────────────────
+/* ═══════════════════════════════════════
+   VIEWS
+═══════════════════════════════════════ */
 function showView(view) {
   const main = el('main-area');
-  if (view === 'browse') renderBrowse(main);
-  else if (view === 'run')    renderRun(main);
-  else if (view === 'admin')  renderAdmin(main);
+  if      (view==='browse') renderBrowse(main);
+  else if (view==='run')    renderRun(main);
+  else if (view==='admin')  renderAdmin(main);
   const ab = el('sb-admin-btn');
-  if (ab) ab.classList.toggle('on', view === 'admin');
+  if (ab) ab.classList.toggle('on', view==='admin');
 }
 
-// ── Browse ───────────────────────────────────────────────
+/* ── BROWSE ─────────────────────────────────────── */
 function renderBrowse(main) {
-  const cat = CATS.find(c => c.id === activeCat);
+  const cat   = CATS.find(c=>c.id===activeCat);
   const items = TEMPLATES.filter(t => {
-    const catOk = activeCat === 'all' || t.cat === activeCat;
+    const catOk = activeCat==='all' || t.cat===activeCat;
     const q = searchQ.toLowerCase();
-    const qOk = !q || t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q) || catLabel(t.cat).toLowerCase().includes(q);
-    return catOk && qOk;
+    return catOk && (!q || t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q) || catLabel(t.cat).toLowerCase().includes(q));
   });
   main.innerHTML = `
     <div class="topbar">
       <div>
-        <div class="tb-title">${cat?.label || 'All Templates'}</div>
-        <div class="tb-sub">${items.length} template${items.length !== 1 ? 's' : ''}</div>
+        <div class="tb-title">${cat?.label||'All Templates'}</div>
+        <div class="tb-sub">${items.length} template${items.length!==1?'s':''}</div>
       </div>
       <div class="swrap">
-        <input type="text" placeholder="Search templates…" value="${searchQ}"
-          oninput="searchQ=this.value;showView('browse')" />
+        <input type="text" placeholder="Search templates…" value="${searchQ}" oninput="searchQ=this.value;showView('browse')"/>
       </div>
     </div>
     <div class="content">
-      ${items.length === 0
-        ? `<div class="empty" style="height:70%"><div class="e-icon">🔎</div><div style="font-size:14px;font-weight:500;color:var(--t2)">No templates found</div></div>`
-        : `<div class="tgrid">${items.map(t => `
+      ${items.length===0
+        ?`<div class="empty" style="height:70%"><div class="e-icon">🔎</div><div style="font-size:14px;font-weight:500;color:var(--t2)">No templates found</div></div>`
+        :`<div class="tgrid">${items.map(t=>`
             <button class="tcard" onclick="openTemplate('${t.id}')">
               <span class="badge" style="background:${catColor(t.cat)}1a;color:${catColor(t.cat)}">${catLabel(t.cat)}</span>
               <div>
                 <div style="font-size:13.5px;font-weight:600;color:var(--t1);line-height:1.3">${t.title}</div>
                 <div style="font-size:12px;color:var(--t2);line-height:1.45;margin-top:4px">${t.desc}</div>
               </div>
-              <div style="font-size:11px;color:var(--t3)">${t.vars.length} input${t.vars.length !== 1 ? 's' : ''} required →</div>
-            </button>`).join('')}
-          </div>`
-      }
+              <div style="font-size:11px;color:var(--t3)">${t.vars.length} input${t.vars.length!==1?'s':''} required →</div>
+            </button>`).join('')}</div>`}
     </div>`;
 }
 
-// ── Run ──────────────────────────────────────────────────
+/* ── RUN ─────────────────────────────────────────── */
 function openTemplate(id) {
-  activeTemplate = TEMPLATES.find(t => t.id === id);
-  vars = {}; result = '';
+  activeTemplate = TEMPLATES.find(t=>t.id===id);
+  vars={}; result='';
   showView('run');
 }
 
@@ -501,14 +539,12 @@ function renderRun(main) {
     <div class="run-wrap">
       <div class="run-left">
         <span class="sec-lbl">Fill in your details</span>
-        ${t.vars.map(v => `
+        ${t.vars.map(v=>`
           <div class="vf">
             <label>${v.l}<span class="vk">[${v.k}]</span></label>
-            <input type="text" placeholder="${v.p}" oninput="vars['${v.k}']=this.value" />
+            <input type="text" placeholder="${v.p}" oninput="vars['${v.k}']=this.value"/>
           </div>`).join('')}
-        <button class="gen-btn" id="gen-btn" onclick="generate()">
-          ⚡ Generate with Claude
-        </button>
+        <button class="gen-btn" id="gen-btn" onclick="generate()">⚡ Generate with Claude</button>
       </div>
       <div class="run-right" id="run-out">
         <div class="empty" style="height:100%">
@@ -524,30 +560,29 @@ async function generate() {
   if (!activeTemplate) return;
   const btn = el('gen-btn');
   const out = el('run-out');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Generating…';
-  out.innerHTML = `<div style="display:flex;align-items:center;gap:10px;color:var(--t2);font-size:13px;padding:4px 0">
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Generating…';
+  out.innerHTML=`<div style="display:flex;align-items:center;gap:10px;color:var(--t2);font-size:13px;padding:4px 0">
     <div style="width:7px;height:7px;border-radius:50%;background:var(--acc);animation:pulse 1s infinite;flex-shrink:0"></div>
     Claude is writing your content…
   </div>`;
 
-  // Build prompt with variable substitution
   let prompt = activeTemplate.prompt;
   for (const v of activeTemplate.vars) {
     prompt = prompt.replaceAll(`[${v.k}]`, vars[v.k] || `[${v.k}]`);
   }
 
   try {
-    const res = await fetch('/api/generate', {
+    const res  = await fetch('/api/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({prompt})
     });
     const data = await res.json();
     if (!res.ok || data.error) {
-      result = '⚠ Error: ' + (data.error?.message || data.error || 'Something went wrong.');
+      result = '⚠ Error: ' + (data.error?.message || data.error || 'Something went wrong. Please try again.');
     } else {
-      result = data.content?.filter(b => b.type === 'text').map(b => b.text).join('\n') || 'No response.';
+      result = data.content?.filter(b=>b.type==='text').map(b=>b.text).join('\n') || 'No response received.';
       // Track usage — fire and forget
       db.from('template_usage').insert({
         user_id: CU.id, user_email: CU.email,
@@ -555,13 +590,13 @@ async function generate() {
         template_category: activeTemplate.cat
       });
     }
-  } catch (e) {
-    result = '⚠ Network error: ' + e.message + '\n\nMake sure you are accessing the deployed Vercel URL, not opening the file locally.';
+  } catch(e) {
+    result = '⚠ Network error: ' + e.message + '\n\nNote: Generation only works on the deployed Vercel URL — not when opening the HTML file locally.';
   }
 
-  btn.disabled = false;
-  btn.innerHTML = '⚡ Generate with Claude';
-  out.innerHTML = `
+  btn.disabled=false;
+  btn.innerHTML='⚡ Generate with Claude';
+  out.innerHTML=`
     <div class="out-acts">
       <button class="sm-btn" onclick="copyResult(this)">📋 Copy</button>
       <button class="sm-btn" onclick="generate()">↺ Regenerate</button>
@@ -570,163 +605,188 @@ async function generate() {
 }
 
 function copyResult(btn) {
-  navigator.clipboard.writeText(result).catch(() => {});
-  btn.textContent = '✓ Copied!';
-  setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  navigator.clipboard.writeText(result).catch(()=>{});
+  btn.textContent='✓ Copied!';
+  setTimeout(()=>btn.textContent='📋 Copy', 2000);
 }
 
-// ── Admin ────────────────────────────────────────────────
+/* ── ADMIN ───────────────────────────────────────── */
 async function renderAdmin(main) {
   if (CP?.role !== 'admin') {
-    main.innerHTML = `<div class="empty" style="height:100%"><div class="e-icon">🛡</div><div style="color:var(--t2)">Admin access required</div></div>`;
+    main.innerHTML=`<div class="empty" style="height:100%"><div class="e-icon">🛡</div><div style="color:var(--t2)">Admin access required</div></div>`;
     return;
   }
 
   // Show skeleton instantly
-  main.innerHTML = `
+  main.innerHTML=`
     <div class="topbar">
-      <div><div class="tb-title">🛡 Admin Panel</div><div class="tb-sub">User management & analytics</div></div>
-      <button onclick="testAPIKey()" style="padding:7px 14px;background:rgba(124,111,255,.15);border:1px solid rgba(124,111,255,.3);border-radius:7px;color:var(--acc);font-size:12px;cursor:pointer;font-weight:500" id="test-btn">🔑 Test API Key</button>
+      <div><div class="tb-title">🛡 Admin Panel</div><div class="tb-sub">User management, analytics & settings</div></div>
+      <button id="test-btn" onclick="testAPIKey()" style="padding:7px 14px;background:rgba(124,111,255,.15);border:1px solid rgba(124,111,255,.3);border-radius:7px;color:var(--acc);font-size:12px;cursor:pointer;font-weight:500">🔑 Test API Key</button>
     </div>
     <div class="content" id="admin-content">
-      <div class="stat-grid">${[0,1,2,3].map(() =>
-        `<div class="stat"><div class="skel" style="height:11px;width:55%;margin-bottom:10px"></div><div class="skel" style="height:30px;width:40%"></div></div>`
-      ).join('')}</div>
+      <div class="stat-grid">
+        ${[0,1,2,3].map(()=>`<div class="stat"><div class="skel" style="height:11px;width:55%;margin-bottom:10px"></div><div class="skel" style="height:28px;width:40%"></div></div>`).join('')}
+      </div>
       <div class="panel"><div class="panel-hd">⚙ API Key Settings</div><div class="skel" style="height:44px;margin:14px 16px;border-radius:8px"></div></div>
-      <div class="panel"><div class="panel-hd">Users</div><div class="skel" style="height:160px;margin:14px 16px;border-radius:8px"></div></div>
-      <div class="panel"><div class="panel-hd">Recent Activity</div><div class="skel" style="height:160px;margin:14px 16px;border-radius:8px"></div></div>
+      <div class="panel"><div class="panel-hd">👥 Users</div><div class="skel" style="height:180px;margin:14px 16px;border-radius:8px"></div></div>
+      <div class="panel"><div class="panel-hd">📊 Recent Activity</div><div class="skel" style="height:160px;margin:14px 16px;border-radius:8px"></div></div>
     </div>`;
 
-  // Fetch in parallel
-  const [{ data: users }, { data: usage }, { data: settings }] = await Promise.all([
-    db.from('profiles').select('*').order('created_at', { ascending: false }),
-    db.from('template_usage').select('*').order('created_at', { ascending: false }).limit(100),
+  // Fetch all data in parallel
+  const [{data:users},{data:usage},{data:settings}] = await Promise.all([
+    db.from('profiles').select('*').order('created_at',{ascending:false}),
+    db.from('template_usage').select('*').order('created_at',{ascending:false}).limit(100),
     db.from('app_settings').select('*'),
   ]);
 
   const today = new Date(); today.setHours(0,0,0,0);
-  const activeToday = (users||[]).filter(u => u.last_seen && new Date(u.last_seen) >= today).length;
-  const savedKey = (settings||[]).find(s => s.key === 'anthropic_api_key')?.value || '';
+  const activeToday = (users||[]).filter(u=>u.last_seen && new Date(u.last_seen)>=today).length;
+  const savedKey = (settings||[]).find(s=>s.key==='anthropic_api_key')?.value || '';
   const catCounts = {};
-  (usage||[]).forEach(u => { catCounts[u.template_category] = (catCounts[u.template_category]||0) + 1; });
-  const topCat = Object.entries(catCounts).sort((a,b) => b[1]-a[1])[0];
+  (usage||[]).forEach(u=>{catCounts[u.template_category]=(catCounts[u.template_category]||0)+1;});
+  const topCat = Object.entries(catCounts).sort((a,b)=>b[1]-a[1])[0];
 
-  el('admin-content').innerHTML = `
+  el('admin-content').innerHTML=`
     <div class="stat-grid">
-      <div class="stat"><div class="stat-lbl">Total Users</div><div class="stat-val">${(users||[]).length}</div><div class="stat-sub">registered accounts</div></div>
-      <div class="stat"><div class="stat-lbl">Active Today</div><div class="stat-val">${activeToday}</div><div class="stat-sub">visited today</div></div>
-      <div class="stat"><div class="stat-lbl">Total Runs</div><div class="stat-val">${(usage||[]).length}</div><div class="stat-sub">prompts generated</div></div>
-      <div class="stat"><div class="stat-lbl">Top Category</div><div class="stat-val" style="font-size:15px">${topCat ? catLabel(topCat[0]) : '—'}</div><div class="stat-sub">${topCat ? topCat[1] + ' runs' : 'no data yet'}</div></div>
+      <div class="stat">
+        <div class="stat-lbl">Total Users</div>
+        <div class="stat-val">${(users||[]).length}</div>
+        <div class="stat-sub">registered accounts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Active Today</div>
+        <div class="stat-val">${activeToday}</div>
+        <div class="stat-sub">visited today</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Total Runs</div>
+        <div class="stat-val">${(usage||[]).length}</div>
+        <div class="stat-sub">prompts generated</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Top Category</div>
+        <div class="stat-val" style="font-size:15px">${topCat?catLabel(topCat[0]):'—'}</div>
+        <div class="stat-sub">${topCat?topCat[1]+' runs':'no data yet'}</div>
+      </div>
     </div>
 
     <div class="panel">
       <div class="panel-hd">
         ⚙ API Key Settings
-        <span style="font-size:11px;color:var(--t3);font-weight:400">Key is hardcoded in api/generate.js — save here to override</span>
+        <span>Hardcoded in api/generate.js · Save here to override</span>
       </div>
       <div class="key-row">
-        <input type="password" id="key-input" value="${savedKey}" placeholder="sk-ant-api03-… (optional override)" />
-        <button class="save-btn" onclick="saveKey()">Save</button>
+        <input type="password" id="key-input" value="${savedKey}" placeholder="sk-ant-api03-… (optional override)"/>
+        <button class="save-btn" onclick="saveKey()">Save Key</button>
       </div>
       <div id="key-msg" style="padding:0 16px 12px;font-size:12px"></div>
     </div>
 
     <div class="panel">
-      <div class="panel-hd">Users (${(users||[]).length})</div>
+      <div class="panel-hd">👥 Users (${(users||[]).length})</div>
       <table>
         <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Last Active</th><th>Runs</th><th>Action</th></tr></thead>
-        <tbody>${(users||[]).map(u => {
-          const runs = (usage||[]).filter(r => r.user_id === u.id).length;
-          const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
-          const isMe = u.id === CU.id;
-          return `<tr>
-            <td>${u.full_name||'—'}${isMe?` <span style="font-size:9.5px;color:var(--acc)">(you)</span>`:''}</td>
-            <td style="font-size:11.5px">${u.email}</td>
-            <td><span class="role role-${u.role||'user'}">${u.role||'user'}</span></td>
-            <td>${joined}</td>
-            <td>${u.last_seen ? timeAgo(u.last_seen) : '—'}</td>
-            <td>${runs}</td>
-            <td>${isMe ? '—' : `<button class="tiny-btn${u.role==='admin'?'':' promote'}" onclick="toggleRole('${u.id}','${u.role||'user'}')">${u.role==='admin'?'Revoke Admin':'Make Admin'}</button>`}</td>
-          </tr>`;
-        }).join('')}</tbody>
+        <tbody>
+          ${(users||[]).length===0
+            ?`<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:24px">No users yet</td></tr>`
+            :(users||[]).map(u=>{
+              const runs=(usage||[]).filter(r=>r.user_id===u.id).length;
+              const joined=u.created_at?new Date(u.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'2-digit'}):'—';
+              const isMe=u.id===CU.id;
+              return `<tr>
+                <td>${u.full_name||'—'}${isMe?` <span style="font-size:9.5px;color:var(--acc)">(you)</span>`:''}</td>
+                <td style="font-size:11.5px">${u.email}</td>
+                <td><span class="role role-${u.role||'user'}">${u.role||'user'}</span></td>
+                <td>${joined}</td>
+                <td>${u.last_seen?timeAgo(u.last_seen):'—'}</td>
+                <td><strong style="color:var(--t1)">${runs}</strong></td>
+                <td>${isMe?'—':`<button class="tiny-btn${u.role==='admin'?'':' promote'}" onclick="toggleRole('${u.id}','${u.role||'user'}')">${u.role==='admin'?'Revoke Admin':'Make Admin'}</button>`}</td>
+              </tr>`;
+            }).join('')
+          }
+        </tbody>
       </table>
     </div>
 
     <div class="panel">
-      <div class="panel-hd">Recent Activity (last 50)</div>
+      <div class="panel-hd">📊 Recent Activity (last 50 runs)</div>
       <table>
-        <thead><tr><th>User</th><th>Template</th><th>Category</th><th>When</th></tr></thead>
-        <tbody>${(usage||[]).length === 0
-          ? `<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px">No activity yet</td></tr>`
-          : (usage||[]).slice(0,50).map(u => `<tr>
-              <td style="font-size:11.5px">${u.user_email||'—'}</td>
-              <td>${u.template_title||'—'}</td>
-              <td><span class="badge" style="background:${catColor(u.template_category)}1a;color:${catColor(u.template_category)};font-size:10px;padding:2px 7px">${catLabel(u.template_category)}</span></td>
-              <td style="font-size:11.5px;color:var(--t3)">${timeAgo(u.created_at)}</td>
-            </tr>`).join('')
-        }</tbody>
+        <thead><tr><th>User</th><th>Template Used</th><th>Category</th><th>When</th></tr></thead>
+        <tbody>
+          ${(usage||[]).length===0
+            ?`<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px">No activity recorded yet. Users need to generate prompts first.</td></tr>`
+            :(usage||[]).slice(0,50).map(u=>`<tr>
+                <td style="font-size:11.5px">${u.user_email||'—'}</td>
+                <td>${u.template_title||'—'}</td>
+                <td><span class="badge" style="background:${catColor(u.template_category)}1a;color:${catColor(u.template_category)};font-size:10px;padding:2px 7px">${catLabel(u.template_category)}</span></td>
+                <td style="font-size:11.5px;color:var(--t3)">${timeAgo(u.created_at)}</td>
+              </tr>`).join('')
+          }
+        </tbody>
       </table>
     </div>`;
 }
 
 async function saveKey() {
-  const val = el('key-input').value.trim();
-  const msg = el('key-msg');
-  if (!val) { msg.style.color='var(--err)'; msg.textContent='Enter a valid API key.'; return; }
-  const { error } = await db.from('app_settings').upsert({ key: 'anthropic_api_key', value: val, updated_at: new Date().toISOString() });
-  if (error) { msg.style.color='var(--err)'; msg.textContent='Error: '+error.message; }
-  else { msg.style.color='var(--ok)'; msg.textContent='✓ Key saved successfully.'; }
+  const val=el('key-input').value.trim();
+  const msg=el('key-msg');
+  if(!val){msg.style.color='var(--err)';msg.textContent='Please enter a valid API key.';return;}
+  const {error}=await db.from('app_settings').upsert({key:'anthropic_api_key',value:val,updated_at:new Date().toISOString()});
+  if(error){msg.style.color='var(--err)';msg.textContent='Error saving: '+error.message;}
+  else{msg.style.color='var(--ok)';msg.textContent='✓ Key saved successfully.';}
 }
 
 async function testAPIKey() {
-  const btn = el('test-btn');
-  btn.textContent = 'Testing…'; btn.disabled = true;
+  const btn=el('test-btn');
+  btn.textContent='Testing…'; btn.disabled=true;
   try {
-    const r = await fetch('/api/generate', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: 'Reply with exactly: API key is working!' })
-    });
-    const d = await r.json();
-    const txt = d.content?.[0]?.text || d.error?.message || d.error || JSON.stringify(d);
-    alert(d.content ? '✅ API key working!\n\n' + txt : '❌ Error: ' + txt);
-  } catch(e) { alert('❌ Network error: ' + e.message); }
-  btn.textContent = '🔑 Test API Key'; btn.disabled = false;
+    const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:'Reply with exactly: API key is working!'})});
+    const d=await r.json();
+    const txt=d.content?.[0]?.text||d.error?.message||d.error||JSON.stringify(d);
+    alert(d.content?'✅ API key is working!\n\nResponse: '+txt:'❌ Error: '+txt);
+  } catch(e) {alert('❌ Network error: '+e.message);}
+  btn.textContent='🔑 Test API Key'; btn.disabled=false;
 }
 
 async function toggleRole(uid, currentRole) {
-  const newRole = currentRole === 'admin' ? 'user' : 'admin';
-  const { error } = await db.from('profiles').update({ role: newRole }).eq('id', uid);
-  if (!error) renderAdmin(el('main-area'));
+  const newRole=currentRole==='admin'?'user':'admin';
+  const {error}=await db.from('profiles').update({role:newRole}).eq('id',uid);
+  if(!error) renderAdmin(el('main-area'));
 }
 
 function timeAgo(ts) {
-  if (!ts) return '—';
-  const diff = Date.now() - new Date(ts).getTime();
-  const m = Math.floor(diff/60000), h = Math.floor(m/60), d = Math.floor(h/24);
-  return d > 0 ? d+'d ago' : h > 0 ? h+'h ago' : m > 0 ? m+'m ago' : 'just now';
+  if(!ts) return '—';
+  const d=Date.now()-new Date(ts).getTime();
+  const m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);
+  return dy>0?dy+'d ago':h>0?h+'h ago':m>0?m+'m ago':'just now';
 }
 
-// ── Boot ─────────────────────────────────────────────────
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
 window.addEventListener('load', () => {
   if (typeof supabase === 'undefined') {
-    el('auth').innerHTML = '<div style="color:var(--err);text-align:center;padding:40px">Failed to load. Please refresh.</div>';
+    el('auth').innerHTML='<div style="color:var(--err);text-align:center;padding:40px;font-size:14px">⚠ Failed to load. Please refresh the page.</div>';
     return;
   }
   db = supabase.createClient(SB_URL, SB_KEY);
-  // Check existing session first (instant if cookie exists)
-  db.auth.getSession().then(({ data: { session } }) => {
+
+  // Check existing session immediately (fast — uses local cookie)
+  db.auth.getSession().then(({data:{session}}) => {
     if (session?.user) loadAndShowApp(session.user);
   });
-  // Listen for auth changes (login / logout)
+
+  // Listen for sign in / sign out events
   db.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session?.user)  loadAndShowApp(session.user);
-    if (event === 'SIGNED_OUT') {
-      CU = null; CP = null;
-      el('app').style.display  = 'none';
-      el('auth').style.display = 'flex';
+    if (event==='SIGNED_IN'  && session?.user) loadAndShowApp(session.user);
+    if (event==='SIGNED_OUT') {
+      CU=null; CP=null;
+      el('app').style.display ='none';
+      el('auth').style.display='flex';
     }
   });
 });
 </script>
 </body>
 </html>
+
