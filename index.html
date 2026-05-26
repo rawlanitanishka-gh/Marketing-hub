@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Marketing Hub — New Age AI</title>
 <meta name="description" content="AI-powered marketing prompt hub for New Age AI team">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://xvucakstcmtfoanmgcql.supabase.co">
+<link rel="dns-prefetch" href="https://api.anthropic.com">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0A0A0E;--sb:#111118;--card:#16161F;--b:rgba(255,255,255,.07);--acc:#7C6FFF;--acc2:#9789FF;--t1:#F4F4F8;--t2:#8B8BA0;--t3:#55556B;--ok:#34D399;--err:#F87171;--inp:#0F0F17}
 body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden}
 input,select,textarea,button{font-family:inherit;font-size:14px}
 button{cursor:pointer}
-#loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
-.ring{width:32px;height:32px;border:2px solid rgba(124,111,255,.2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite}
 #auth{display:none;align-items:center;justify-content:center;height:100vh;padding:24px}
 .abox{background:var(--sb);border:1px solid var(--b);border-radius:16px;padding:32px 36px;width:100%;max-width:400px}
 .alogo{display:flex;align-items:center;gap:10px;margin-bottom:24px;justify-content:center}
@@ -114,12 +116,9 @@ tr:last-child td{border-bottom:none}
 </head>
 <body>
 
-<div id="loading">
-  <div class="ring"></div>
-  <div style="font-size:13px;color:var(--t2)">Loading Marketing Hub…</div>
-</div>
 
-<div id="auth">
+
+<div id="auth" style="display:flex">
   <div class="abox">
     <div class="alogo">
       <div class="aicon">⚡</div>
@@ -559,26 +558,20 @@ function tAgo(ts){
   return dy>0?dy+'d ago':h>0?h+'h ago':m>0?m+'m ago':'just now';
 }
 
-// Init — load Supabase lazily
-const s=document.createElement('script');
-s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
-s.onload=()=>{
+// Init — Supabase loaded via defer in <head>
+function initSupabase(){
+  if(typeof supabase==='undefined'){setTimeout(initSupabase,50);return;}
   db=supabase.createClient(SBU,SBK);
   db.auth.onAuthStateChange(async(ev,ses)=>{
-    document.getElementById('loading').style.display='none';
     if(ses?.user){
       CU=ses.user;
+      document.getElementById('auth').style.display='none';
       await loadProfile();await loadKey();showApp();
-    } else {
-      document.getElementById('auth').style.display='flex';
-      document.getElementById('app').style.display='none';
     }
+    // auth screen already visible by default — nothing to do on signed-out
   });
-};
-s.onerror=()=>{
-  document.getElementById('loading').innerHTML='<div style="color:var(--err);text-align:center">Failed to load. Check your connection.</div>';
-};
-document.head.appendChild(s);
+}
+document.addEventListener('DOMContentLoaded',initSupabase);
 </script>
 </body>
 </html>
