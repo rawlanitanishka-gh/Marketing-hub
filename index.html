@@ -2,680 +2,583 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Marketing Hub — New Age AI</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<meta name="description" content="AI-powered marketing prompt hub for New Age AI team">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0A0A0E;--sb:#111118;--card:#16161F;--b:rgba(255,255,255,.07);
-  --acc:#7C6FFF;--acc2:#9789FF;--t1:#F4F4F8;--t2:#8B8BA0;--t3:#55556B;
-  --ok:#34D399;--err:#F87171;--inp:#0F0F17;
-}
+:root{--bg:#0A0A0E;--sb:#111118;--card:#16161F;--b:rgba(255,255,255,.07);--acc:#7C6FFF;--acc2:#9789FF;--t1:#F4F4F8;--t2:#8B8BA0;--t3:#55556B;--ok:#34D399;--err:#F87171;--inp:#0F0F17}
 body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden}
 input,select,textarea,button{font-family:inherit;font-size:14px}
 button{cursor:pointer}
-/* ── Auth ── */
-#auth{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
-.auth-box{background:var(--sb);border:1px solid var(--b);border-radius:16px;padding:36px 40px;width:100%;max-width:420px}
-.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
-.auth-logo-icon{width:36px;height:36px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px}
-.auth-logo span{font-size:18px;font-weight:700}
-.auth-tabs{display:flex;background:var(--inp);border-radius:9px;padding:3px;gap:3px;margin-bottom:24px}
-.auth-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--t2);border-radius:7px;font-weight:500;transition:.15s}
-.auth-tab.active{background:var(--card);color:var(--t1)}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:6px}
-.field input{width:100%;padding:10px 13px;background:var(--inp);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;transition:.15s}
+#loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
+.ring{width:32px;height:32px;border:2px solid rgba(124,111,255,.2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite}
+#auth{display:none;align-items:center;justify-content:center;height:100vh;padding:24px}
+.abox{background:var(--sb);border:1px solid var(--b);border-radius:16px;padding:32px 36px;width:100%;max-width:400px}
+.alogo{display:flex;align-items:center;gap:10px;margin-bottom:24px;justify-content:center}
+.aicon{width:34px;height:34px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:17px}
+.atabs{display:flex;background:var(--inp);border-radius:9px;padding:3px;gap:3px;margin-bottom:20px}
+.atab{flex:1;padding:7px;border:none;background:transparent;color:var(--t2);border-radius:7px;font-weight:500;transition:.15s;font-size:13.5px}
+.atab.active{background:var(--card);color:var(--t1)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:5px}
+.field input{width:100%;padding:9px 12px;background:var(--inp);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;transition:.15s}
 .field input:focus{border-color:var(--acc)}
-.btn-primary{width:100%;padding:11px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:14px;transition:.15s}
-.btn-primary:hover{background:var(--acc2)}
-.btn-primary:disabled{opacity:.5;cursor:default}
-.err-msg{color:var(--err);font-size:12px;margin-top:8px}
-.ok-msg{color:var(--ok);font-size:12px;margin-top:8px}
-/* ── App Layout ── */
+.btnp{width:100%;padding:10px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:14px;transition:.15s;margin-top:4px}
+.btnp:hover{background:var(--acc2)}
+.btnp:disabled{opacity:.5;cursor:default}
+.emsg{color:var(--err);font-size:12px;margin-top:7px}
+.omsg{color:var(--ok);font-size:12px;margin-top:7px}
 #app{display:none;height:100vh}
 .layout{display:flex;height:100vh;overflow:hidden}
-/* ── Sidebar ── */
-.sidebar{width:225px;flex-shrink:0;background:var(--sb);border-right:1px solid var(--b);display:flex;flex-direction:column;height:100vh}
-.sb-top{padding:18px 14px 14px;border-bottom:1px solid var(--b)}
-.sb-brand{display:flex;align-items:center;gap:9px}
-.sb-icon{width:30px;height:30px;border-radius:8px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.sb-name{font-size:13.5px;font-weight:700}
-.sb-sub{font-size:10.5px;color:var(--t3)}
-.sb-nav{padding:12px 8px;flex:1;overflow-y:auto}
-.sb-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;padding:0 10px;margin-bottom:6px;display:block}
-.sb-item{display:flex;align-items:center;gap:9px;width:100%;padding:9px 10px;border-radius:8px;border:none;background:transparent;color:var(--t2);text-align:left;transition:.15s;cursor:pointer}
-.sb-item:hover{background:rgba(255,255,255,.04);color:var(--t1)}
-.sb-item.active{background:rgba(124,111,255,.12);color:var(--acc)}
-.sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sb-item-label{flex:1;font-size:13px}
-.sb-count{font-size:11px;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--t3)}
-.sb-item.active .sb-count{background:rgba(124,111,255,.18);color:var(--acc)}
-.sb-divider{height:1px;background:var(--b);margin:10px 0}
-.sb-bottom{padding:10px 8px;border-top:1px solid var(--b)}
-.user-chip{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03)}
-.user-avatar{width:28px;height:28px;border-radius:7px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
-.user-info{flex:1;min-width:0}
-.user-email{font-size:11.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-role{font-size:10px;color:var(--t3)}
-/* ── Main ── */
+.sidebar{width:215px;flex-shrink:0;background:var(--sb);border-right:1px solid var(--b);display:flex;flex-direction:column;height:100vh}
+.sbtop{padding:16px 12px 12px;border-bottom:1px solid var(--b)}
+.sbbrand{display:flex;align-items:center;gap:9px}
+.sbicon{width:28px;height:28px;border-radius:8px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sbnav{padding:10px 6px;flex:1;overflow-y:auto}
+.sblabel{font-size:9.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;padding:0 9px;margin-bottom:5px;display:block}
+.sbi{display:flex;align-items:center;gap:8px;width:100%;padding:8px 9px;border-radius:8px;border:none;background:transparent;color:var(--t2);text-align:left;transition:.15s;cursor:pointer}
+.sbi:hover{background:rgba(255,255,255,.04);color:var(--t1)}
+.sbi.active{background:rgba(124,111,255,.12);color:var(--acc)}
+.sbdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sbil{flex:1;font-size:12.5px}
+.sbcnt{font-size:10.5px;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--t3)}
+.sbi.active .sbcnt{background:rgba(124,111,255,.18);color:var(--acc)}
+.sbdiv{height:1px;background:var(--b);margin:8px 0}
+.sbbottom{padding:8px 6px;border-top:1px solid var(--b)}
+.uchip{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.03)}
+.uav{width:26px;height:26px;border-radius:6px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.uem{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uro{font-size:9.5px;color:var(--t3)}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{padding:16px 28px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.topbar-title{font-size:18px;font-weight:700}
-.topbar-sub{font-size:12.5px;color:var(--t2);margin-top:2px}
-.content{flex:1;overflow-y:auto;padding:22px 28px}
-/* ── Cards ── */
-.template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:13px}
-.template-card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:18px 20px;cursor:pointer;text-align:left;transition:.15s;display:flex;flex-direction:column;gap:10px}
-.template-card:hover{border-color:rgba(124,111,255,.3);background:#1a1a26}
-.card-cat{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:99px}
-.card-title{font-size:14px;font-weight:600;color:var(--t1);line-height:1.35}
-.card-desc{font-size:12.5px;color:var(--t2);line-height:1.5}
-.card-meta{font-size:11.5px;color:var(--t3)}
-/* ── Search ── */
-.search-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.search-wrap{position:relative;flex:1;max-width:300px}
-.search-wrap input{width:100%;padding:9px 12px 9px 34px;background:var(--card);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none}
-.search-wrap::before{content:'🔎';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.4}
-/* ── Run View ── */
-.run-layout{display:flex;flex:1;overflow:hidden}
-.run-inputs{width:360px;flex-shrink:0;border-right:1px solid var(--b);padding:22px 22px;overflow-y:auto}
-.run-output{flex:1;padding:22px 26px;overflow-y:auto}
-.section-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;display:block}
-.var-input{width:100%;padding:10px 12px;background:var(--card);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;transition:.15s}
-.var-input:focus{border-color:var(--acc)}
-.var-key{font-size:10px;color:var(--t3);font-family:monospace;margin-left:5px;font-weight:400}
-.btn-gen{width:100%;padding:12px;background:var(--acc);border:none;border-radius:9px;color:#fff;font-weight:600;font-size:14px;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
-.btn-gen:hover:not(:disabled){background:var(--acc2)}
-.btn-gen:disabled{opacity:.5;cursor:default}
-.output-box{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:20px 22px;white-space:pre-wrap;font-size:13.5px;line-height:1.75;color:var(--t1)}
-.output-actions{display:flex;gap:8px;margin-bottom:14px}
-.btn-sm{display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--card);border:1px solid var(--b);border-radius:7px;color:var(--t2);font-size:12px}
-.btn-sm:hover{border-color:rgba(255,255,255,.15);color:var(--t1)}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t3);gap:10px;text-align:center}
-.empty-icon{width:52px;height:52px;border-radius:14px;background:rgba(124,111,255,.1);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:4px}
-/* ── Back button ── */
-.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--t2);font-size:13px;padding:0;margin-right:12px}
-.back-btn:hover{color:var(--t1)}
-.topbar-left{display:flex;align-items:center}
-/* ── Admin ── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.stat-card{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:16px 18px}
-.stat-label{font-size:11px;color:var(--t3);margin-bottom:6px}
-.stat-value{font-size:28px;font-weight:700;color:var(--t1)}
-.stat-sub{font-size:11px;color:var(--t2);margin-top:4px}
-.table-wrap{background:var(--card);border:1px solid var(--b);border-radius:10px;overflow:hidden;margin-bottom:22px}
-.table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--b)}
-.table-title{font-size:13.5px;font-weight:600}
+.topbar{padding:13px 22px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tbtitle{font-size:16px;font-weight:700}
+.tbsub{font-size:12px;color:var(--t2);margin-top:2px}
+.content{flex:1;overflow-y:auto;padding:18px 22px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:11px}
+.tcard{background:var(--card);border:1px solid var(--b);border-radius:11px;padding:15px 17px;cursor:pointer;text-align:left;transition:.15s;display:flex;flex-direction:column;gap:8px;width:100%}
+.tcard:hover{background:#1a1a26;outline:1px solid rgba(124,111,255,.3)}
+.catbadge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block}
+.swrap{position:relative}
+.swrap input{padding:8px 12px 8px 32px;background:var(--card);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;width:220px;font-size:13px}
+.sico{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.4}
+.rlayout{display:flex;flex:1;overflow:hidden}
+.rinputs{width:310px;flex-shrink:0;border-right:1px solid var(--b);padding:18px;overflow-y:auto}
+.routput{flex:1;padding:18px 22px;overflow-y:auto}
+.slabel{font-size:9.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:block}
+.vfield{margin-bottom:13px}
+.vlabel{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:5px}
+.vkey{font-size:9.5px;color:var(--t3);font-family:monospace;margin-left:4px}
+.vinput{width:100%;padding:9px 11px;background:var(--card);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;transition:.15s;font-size:13px}
+.vinput:focus{border-color:var(--acc)}
+.bgen{width:100%;padding:11px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:13.5px;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:7px;transition:.15s}
+.bgen:hover:not(:disabled){background:var(--acc2)}
+.bgen:disabled{opacity:.5;cursor:default}
+.obox{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:16px 18px;white-space:pre-wrap;font-size:13px;line-height:1.7;color:var(--t1)}
+.oacts{display:flex;gap:7px;margin-bottom:12px}
+.bsm{display:flex;align-items:center;gap:4px;padding:5px 11px;background:var(--card);border:1px solid var(--b);border-radius:6px;color:var(--t2);font-size:12px;cursor:pointer}
+.bsm:hover{color:var(--t1);border-color:rgba(255,255,255,.18)}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--t3);gap:8px;text-align:center}
+.eicon{width:48px;height:48px;border-radius:12px;background:rgba(124,111,255,.1);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:4px}
+.backbtn{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--t2);font-size:12.5px;padding:0;margin-right:10px;cursor:pointer}
+.backbtn:hover{color:var(--t1)}
+.tbleft{display:flex;align-items:center}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.scard{background:var(--card);border:1px solid var(--b);border-radius:9px;padding:13px 15px}
+.slbl{font-size:10.5px;color:var(--t3);margin-bottom:4px}
+.sval{font-size:24px;font-weight:700;color:var(--t1)}
+.ssub{font-size:10.5px;color:var(--t2);margin-top:3px}
+.twrap{background:var(--card);border:1px solid var(--b);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.thead{padding:12px 15px;border-bottom:1px solid var(--b);font-size:13px;font-weight:600}
 table{width:100%;border-collapse:collapse}
-th{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:10px 16px;border-bottom:1px solid var(--b)}
-td{font-size:13px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--t2)}
+th{font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:9px 14px;border-bottom:1px solid var(--b)}
+td{font-size:12.5px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--t2)}
 td:first-child{color:var(--t1);font-weight:500}
 tr:last-child td{border-bottom:none}
-.role-badge{display:inline-flex;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600}
-.role-admin{background:rgba(124,111,255,.18);color:var(--acc)}
-.role-user{background:rgba(255,255,255,.06);color:var(--t3)}
-.btn-tiny{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;border:1px solid var(--b);background:transparent;color:var(--t2)}
-.btn-tiny:hover{color:var(--t1);border-color:rgba(255,255,255,.2)}
-.btn-tiny.promote{color:var(--acc);border-color:rgba(124,111,255,.3)}
-.settings-section{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:20px 22px;margin-bottom:16px}
-.settings-title{font-size:13.5px;font-weight:600;margin-bottom:14px}
-.settings-row{display:flex;gap:10px;align-items:center}
-.settings-row input{flex:1;padding:10px 12px;background:var(--inp);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none}
-.settings-row button{padding:10px 18px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:13px}
-/* ── Spinner ── */
+.rbadge{display:inline-flex;padding:2px 8px;border-radius:99px;font-size:10.5px;font-weight:600}
+.radmin{background:rgba(124,111,255,.18);color:var(--acc)}
+.ruser{background:rgba(255,255,255,.06);color:var(--t3)}
+.btiny{padding:3px 9px;border-radius:5px;font-size:10.5px;font-weight:500;border:1px solid var(--b);background:transparent;color:var(--t2);cursor:pointer}
+.btiny.promote{color:var(--acc);border-color:rgba(124,111,255,.3)}
+.ssec{background:var(--card);border:1px solid var(--b);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.stitle{font-size:13px;font-weight:600;margin-bottom:10px}
+.srow{display:flex;gap:8px;align-items:center}
+.srow input{flex:1;padding:9px 11px;background:var(--inp);border:1px solid var(--b);border-radius:8px;color:var(--t1);outline:none;font-size:13px}
+.srow button{padding:9px 15px;background:var(--acc);border:none;border-radius:8px;color:#fff;font-weight:600;font-size:12.5px;cursor:pointer}
+.nokey{margin-top:10px;padding:9px 11px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:7px;font-size:11.5px;color:var(--err)}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-/* ── Loading overlay ── */
-#loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;font-size:14px;color:var(--t2)}
-/* Scrollbar */
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 </style>
 </head>
 <body>
 
-<div id="loading">Loading…</div>
+<div id="loading">
+  <div class="ring"></div>
+  <div style="font-size:13px;color:var(--t2)">Loading Marketing Hub…</div>
+</div>
 
-<!-- ── AUTH ── -->
 <div id="auth">
-  <div class="auth-box">
-    <div class="auth-logo">
-      <div class="auth-logo-icon">⚡</div>
-      <div>
-        <div style="font-size:15px;font-weight:700">Marketing Hub</div>
-        <div style="font-size:11px;color:var(--t3)">New Age AI</div>
-      </div>
+  <div class="abox">
+    <div class="alogo">
+      <div class="aicon">⚡</div>
+      <div><div style="font-size:14px;font-weight:700">Marketing Hub</div><div style="font-size:10.5px;color:var(--t3)">New Age AI</div></div>
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-      <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+    <div class="atabs">
+      <button class="atab active" onclick="switchTab('login')">Login</button>
+      <button class="atab" onclick="switchTab('signup')">Sign Up</button>
     </div>
-    <div id="login-form">
-      <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@newageai.com" /></div>
-      <div class="field"><label>Password</label><input type="password" id="login-pw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()" /></div>
-      <button class="btn-primary" id="login-btn" onclick="doLogin()">Login</button>
-      <div id="login-err" class="err-msg"></div>
+    <div id="lf">
+      <div class="field"><label>Email</label><input type="email" id="lem" placeholder="you@newageai.com"/></div>
+      <div class="field"><label>Password</label><input type="password" id="lpw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btnp" id="lbtn" onclick="doLogin()">Login</button>
+      <div id="lerr" class="emsg"></div>
     </div>
-    <div id="signup-form" style="display:none">
-      <div class="field"><label>Full Name</label><input type="text" id="su-name" placeholder="Your name" /></div>
-      <div class="field"><label>Email</label><input type="email" id="su-email" placeholder="you@newageai.com" /></div>
-      <div class="field"><label>Password</label><input type="password" id="su-pw" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doSignup()" /></div>
-      <button class="btn-primary" id="signup-btn" onclick="doSignup()">Create Account</button>
-      <div id="signup-err" class="err-msg"></div>
-      <div id="signup-ok" class="ok-msg"></div>
+    <div id="sf" style="display:none">
+      <div class="field"><label>Full Name</label><input type="text" id="sname" placeholder="Your name"/></div>
+      <div class="field"><label>Email</label><input type="email" id="sem" placeholder="you@newageai.com"/></div>
+      <div class="field"><label>Password</label><input type="password" id="spw" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+      <button class="btnp" id="sbtn" onclick="doSignup()">Create Account</button>
+      <div id="serr" class="emsg"></div>
+      <div id="sok" class="omsg"></div>
     </div>
   </div>
 </div>
 
-<!-- ── APP ── -->
 <div id="app">
   <div class="layout">
-    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="sb-top">
-        <div class="sb-brand">
-          <div class="sb-icon">⚡</div>
-          <div><div class="sb-name">Marketing Hub</div><div class="sb-sub">New Age AI</div></div>
+      <div class="sbtop">
+        <div class="sbbrand">
+          <div class="sbicon">⚡</div>
+          <div><div style="font-size:13px;font-weight:700">Marketing Hub</div><div style="font-size:10px;color:var(--t3)">New Age AI</div></div>
         </div>
       </div>
-      <nav class="sb-nav">
-        <span class="sb-label">Categories</span>
-        <div id="sb-cats"></div>
-        <div class="sb-divider"></div>
-        <div id="sb-admin-link" style="display:none">
-          <button class="sb-item" id="sb-admin-btn" onclick="showView('admin')">
-            <span style="font-size:15px">🛡</span>
-            <span class="sb-item-label">Admin Panel</span>
+      <nav class="sbnav">
+        <span class="sblabel">Categories</span>
+        <div id="sbcats"></div>
+        <div class="sbdiv"></div>
+        <div id="sbadmin" style="display:none">
+          <button class="sbi" id="sbadminbtn" onclick="showView('admin')">
+            <span style="font-size:13px">🛡</span><span class="sbil">Admin Panel</span>
           </button>
         </div>
       </nav>
-      <div class="sb-bottom">
-        <div class="user-chip">
-          <div class="user-avatar" id="user-av">?</div>
-          <div class="user-info">
-            <div class="user-email" id="user-em">—</div>
-            <div class="user-role" id="user-ro">user</div>
+      <div class="sbbottom">
+        <div class="uchip">
+          <div class="uav" id="uav">?</div>
+          <div style="flex:1;min-width:0">
+            <div class="uem" id="uem">—</div>
+            <div class="uro" id="uro">user</div>
           </div>
-          <button onclick="doLogout()" title="Sign out" style="background:none;border:none;color:var(--t3);font-size:16px;padding:2px">↩</button>
+          <button onclick="doLogout()" title="Sign out" style="background:none;border:none;color:var(--t3);font-size:15px;padding:2px;cursor:pointer">↩</button>
         </div>
       </div>
     </aside>
-
-    <!-- Main -->
-    <main class="main" id="main-area"></main>
+    <main class="main" id="main"></main>
   </div>
 </div>
 
 <script>
-const SUPABASE_URL = 'https://xvucakstcmtfoanmgcql.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2dWNha3N0Y210Zm9hbm1nY3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMjI0NjUsImV4cCI6MjA4Mjg5ODQ2NX0.7Uh38WHaPfrgp9lxX-BG7PXehR_-2ETG4cyQ55YfD-o';
+const SBU='https://xvucakstcmtfoanmgcql.supabase.co';
+const SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2dWNha3N0Y210Zm9hbm1nY3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMjI0NjUsImV4cCI6MjA4Mjg5ODQ2NX0.7Uh38WHaPfrgp9lxX-BG7PXehR_-2ETG4cyQ55YfD-o';
 
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+let db,CU=null,CP=null,AK=null,selCat='all',AT=null,VV={},AIR='',Q='';
 
-// ─── State ───────────────────────────────────────
-let currentUser = null, currentProfile = null, anthropicKey = null;
-let activeView = 'browse', selectedCat = 'all', activeTemplate = null;
-let varValues = {}, aiResponse = '', searching = '';
-
-// ─── Templates ───────────────────────────────────
-const CATS = [
+const CATS=[
   {id:'all',label:'All Templates',color:'#7C6FFF'},
   {id:'google-ads',label:'Google Ads',color:'#4285F4'},
   {id:'seo',label:'SEO',color:'#34A853'},
   {id:'meta-ads',label:'Meta Ads',color:'#0866FF'},
   {id:'marketing-automation',label:'Automation',color:'#F59E0B'},
+  {id:'blog',label:'Blog & Content',color:'#EC4899'},
+  {id:'app-marketing',label:'App Marketing',color:'#06B6D4'},
+  {id:'lead-gen',label:'Lead Generation',color:'#F97316'},
 ];
 
-const TEMPLATES = [
+const T=[
+  // ── GOOGLE ADS ──
   {id:'ga-1',cat:'google-ads',title:'Search Ad Copy (RSA)',desc:'10 headlines & 4 descriptions with char counts',
-   prompt:`You are a Google Ads expert. Create RSA copy for:\n\nBusiness: [BUSINESS]\nKeyword: [KEYWORD]\nUSP: [USP]\nCTA: [CTA]\n\nGenerate 10 headlines (≤30 chars each, show count) and 4 descriptions (≤90 chars each, show count). Mark top 3 headlines with ★.`,
-   vars:[{k:'BUSINESS',l:'Business / Product',p:'e.g., New Age AI – AI marketing platform'},{k:'KEYWORD',l:'Target Keyword',p:'e.g., AI marketing automation'},{k:'USP',l:'Unique Selling Point',p:'e.g., 10x faster campaign setup with AI'},{k:'CTA',l:'Call to Action',p:'e.g., Start Free Trial'}]},
-
+   prompt:`You are a Google Ads expert. Create RSA copy for:\nBusiness: [BUSINESS]\nKeyword: [KEYWORD]\nUSP: [USP]\nCTA: [CTA]\n\nGenerate 10 headlines (≤30 chars, show count) and 4 descriptions (≤90 chars, show count). Mark top 3 headlines with ★.`,
+   vars:[{k:'BUSINESS',l:'Business / Product',p:'e.g., New Age AI app development'},{k:'KEYWORD',l:'Target Keyword',p:'e.g., iOS app development company'},{k:'USP',l:'Unique Selling Point',p:'e.g., Delivered in 30 days, fixed price'},{k:'CTA',l:'Call to Action',p:'e.g., Get Free Quote'}]},
   {id:'ga-2',cat:'google-ads',title:'Keyword Research Brief',desc:'Match types, CPCs, negatives & ad group structure',
-   prompt:`Act as a Google Ads specialist. Keyword brief for:\n\nIndustry: [INDUSTRY]\nProduct: [PRODUCT]\nLocation: [LOCATION]\nBudget: [BUDGET]\n\nProvide: 15 exact match, 10 phrase match, 5 broad keywords, 10 negative keywords, estimated CPC range, and ad group structure.`,
-   vars:[{k:'INDUSTRY',l:'Industry / Niche',p:'e.g., B2B SaaS / AI tools'},{k:'PRODUCT',l:'Product / Service',p:'e.g., Marketing automation platform'},{k:'LOCATION',l:'Target Location',p:'e.g., India, US, UK'},{k:'BUDGET',l:'Monthly Budget',p:'e.g., ₹50,000 / $1000'}]},
+   prompt:`Google Ads specialist. Keyword brief for:\nIndustry: [INDUSTRY]\nProduct: [PRODUCT]\nLocation: [LOCATION]\nBudget: [BUDGET]\n\nProvide: 15 exact match, 10 phrase match, 5 broad keywords, 10 negative keywords, CPC range, and ad group structure.`,
+   vars:[{k:'INDUSTRY',l:'Industry',p:'Mobile app development'},{k:'PRODUCT',l:'Service',p:'iOS & Android app development'},{k:'LOCATION',l:'Target Location',p:'India, US, UK'},{k:'BUDGET',l:'Monthly Budget',p:'₹50,000'}]},
+  {id:'ga-3',cat:'google-ads',title:'Campaign Performance Audit',desc:'Diagnose metrics & get a 5-point action plan',
+   prompt:`Google Ads expert. Analyze:\nCampaign: [CAMPAIGN] | Type: [TYPE] | Goal: [GOAL]\nImpressions: [IMP] | Clicks: [CLICKS] | CTR: [CTR] | CPC: [CPC] | Conversions: [CONV] | Cost: [COST]\n\nDiagnose, give top 5 optimizations, budget reallocation, 30-day plan.`,
+   vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'App Dev Leads Q2'},{k:'TYPE',l:'Campaign Type',p:'Search / PMax'},{k:'GOAL',l:'Goal',p:'Lead generation'},{k:'IMP',l:'Impressions',p:'45,000'},{k:'CLICKS',l:'Clicks',p:'1,200'},{k:'CTR',l:'CTR',p:'2.67%'},{k:'CPC',l:'Avg CPC',p:'₹18.50'},{k:'CONV',l:'Conversions',p:'45'},{k:'COST',l:'Total Cost',p:'₹22,200'}]},
+  {id:'ga-4',cat:'google-ads',title:'App Install Campaign Copy',desc:'UAC headlines, descriptions & asset ideas for app installs',
+   prompt:`Google Ads UAC specialist. Create app install campaign assets for:\nApp Name: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nKey Feature: [FEATURE]\nCountry: [COUNTRY]\n\nGenerate: 5 headlines (≤30 chars), 5 descriptions (≤90 chars), 3 image concept ideas, 1 video script outline (15 sec). Focus on install intent.`,
+   vars:[{k:'APP',l:'App Name',p:'e.g., FitTrack'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'e.g., fitness enthusiasts 18–35'},{k:'FEATURE',l:'Key Feature',p:'e.g., AI workout plans in 60 seconds'},{k:'COUNTRY',l:'Target Country',p:'India / US / UAE'}]},
 
-  {id:'ga-3',cat:'google-ads',title:'Campaign Performance Audit',desc:'Diagnose metrics & get 5-point action plan',
-   prompt:`Google Ads expert. Analyze:\n\nCampaign: [CAMPAIGN] | Type: [TYPE] | Period: [PERIOD] | Goal: [GOAL]\nImpressions: [IMP] | Clicks: [CLICKS] | CTR: [CTR] | CPC: [CPC]\nConversions: [CONV] | Cost: [COST] | ROAS/CPA: [ROAS]\n\nDiagnose, give top 5 optimizations, budget reallocation suggestion, 30-day plan.`,
-   vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'e.g., Brand Awareness Q2'},{k:'TYPE',l:'Campaign Type',p:'e.g., Search / PMax'},{k:'PERIOD',l:'Date Range',p:'e.g., May 1–31'},{k:'GOAL',l:'Goal',p:'e.g., Lead generation'},{k:'IMP',l:'Impressions',p:'e.g., 45,000'},{k:'CLICKS',l:'Clicks',p:'e.g., 1,200'},{k:'CTR',l:'CTR',p:'e.g., 2.67%'},{k:'CPC',l:'Avg CPC',p:'e.g., ₹18.50'},{k:'CONV',l:'Conversions',p:'e.g., 45'},{k:'COST',l:'Total Cost',p:'e.g., ₹22,200'},{k:'ROAS',l:'ROAS / CPA',p:'e.g., 3.2x or ₹493 CPA'}]},
-
-  {id:'ga-4',cat:'google-ads',title:'Ad Extensions Copy',desc:'Sitelinks, callouts, structured snippets',
-   prompt:`Google Ads extension specialist. Create extensions for:\n\nBusiness: [BUSINESS]\nService: [SERVICE]\nBenefits: [BENEFITS]\nContact: [CONTACT]\n\nGenerate: 6 sitelinks (title + 2-line desc each), 8 callouts (≤25 chars), structured snippets (Services, 8 values), call extension suggestions.`,
-   vars:[{k:'BUSINESS',l:'Business Name',p:'e.g., New Age AI'},{k:'SERVICE',l:'Main Service',p:'e.g., AI marketing platform'},{k:'BENEFITS',l:'Top 3 Benefits',p:'e.g., Saves 10hrs/week, 3x ROI, No code'},{k:'CONTACT',l:'Phone / Contact',p:'e.g., +91-9876543210'}]},
-
+  // ── SEO ──
   {id:'seo-1',cat:'seo',title:'Meta Title & Description',desc:'3 options each, character-counted & optimized',
-   prompt:`SEO expert. Write meta tags for:\n\nPage: [PAGE_TYPE] | Keyword: [KEYWORD]\nSecondary: [SECONDARY] | Brand: [BRAND]\nTopic: [TOPIC]\n\nGenerate 3 title options (50–60 chars, show count) and 3 description options (150–160 chars, show count). Recommend the best combo with reasoning.`,
-   vars:[{k:'PAGE_TYPE',l:'Page Type',p:'e.g., Blog Post, Homepage, Product Page'},{k:'KEYWORD',l:'Primary Keyword',p:'e.g., AI marketing tools'},{k:'SECONDARY',l:'Secondary Keywords',p:'e.g., marketing automation, AI ads'},{k:'BRAND',l:'Brand Name',p:'e.g., New Age AI'},{k:'TOPIC',l:'Page Topic',p:'e.g., AI-powered marketing platform'}]},
+   prompt:`SEO expert. Write meta tags for:\nPage: [PAGE] | Keyword: [KW] | Secondary: [SKW] | Brand: [BRAND]\n\nGenerate 3 title options (50–60 chars, show count) and 3 description options (150–160 chars). Recommend best combo with reasoning.`,
+   vars:[{k:'PAGE',l:'Page Type',p:'Service page / Blog / Homepage'},{k:'KW',l:'Primary Keyword',p:'iOS app development company India'},{k:'SKW',l:'Secondary Keywords',p:'mobile app developers, app development cost'},{k:'BRAND',l:'Brand',p:'New Age AI'}]},
+  {id:'seo-2',cat:'seo',title:'Blog Post SEO Brief',desc:'Full outline, LSI keywords & word counts per section',
+   prompt:`SEO content strategist. Blog brief for:\nKeyword: [KW] | Intent: [INTENT] | Audience: [AUD] | Words: [WC]\n\nProvide: 3 H1 options, full H2/H3 outline with word counts, 15 LSI keywords, featured snippet tip, internal linking suggestions, meta tags.`,
+   vars:[{k:'KW',l:'Target Keyword',p:'how much does it cost to build an app'},{k:'INTENT',l:'Search Intent',p:'Informational / Transactional'},{k:'AUD',l:'Target Audience',p:'startup founders, entrepreneurs'},{k:'WC',l:'Word Count',p:'2500 words'}]},
+  {id:'seo-3',cat:'seo',title:'On-Page SEO Audit',desc:'Score out of 100 with specific fix recommendations',
+   prompt:`On-page SEO expert. Audit:\nURL: [URL] | Keyword: [KW] | Title: [TITLE] | H1: [H1] | Content: [CONTENT]\n\nScore each area out of 100 (title, meta, headers, keyword use, URL, links, images, schema). Give specific fixes for each.`,
+   vars:[{k:'URL',l:'Page URL',p:'https://newageai.com/services/ios-development'},{k:'KW',l:'Target Keyword',p:'iOS app development company'},{k:'TITLE',l:'Current Title',p:'iOS App Development – New Age AI'},{k:'H1',l:'H1 Tag',p:'iOS App Development Company'},{k:'CONTENT',l:'Content Summary',p:'Page about iOS app development services...'}]},
+  {id:'seo-4',cat:'seo',title:'Competitor Content Gap',desc:'Find keyword & topic gaps vs competitors',
+   prompt:`SEO strategist. Content gap analysis:\nMy Brand: [BRAND] | My Topics: [TOPICS]\nComp 1: [C1] | Comp 2: [C2]\n\nIdentify: missing topics, top 10 keyword opportunities, quick-win content pieces, content types working for competitors, 3-month strategy.`,
+   vars:[{k:'BRAND',l:'My Brand',p:'New Age AI, newageai.com'},{k:'TOPICS',l:'My Topics',p:'iOS development, Android apps, AI apps'},{k:'C1',l:'Competitor 1',p:'Appinventiv, appinventiv.com'},{k:'C2',l:'Competitor 2',p:'Techugo, techugo.com'}]},
+  {id:'seo-5',cat:'seo',title:'Local SEO Strategy',desc:'Google Business, local keywords & citation plan',
+   prompt:`Local SEO expert. Build local SEO strategy for:\nBusiness: [BIZ] | City: [CITY] | Services: [SERVICES] | Current Ranking: [RANK]\n\nProvide: Google Business Profile optimization checklist, 15 local keywords with intent, citation building plan (top 10 directories), review generation strategy, local content ideas.`,
+   vars:[{k:'BIZ',l:'Business Name',p:'New Age AI'},{k:'CITY',l:'Target City',p:'Mumbai / Bangalore / Delhi'},{k:'SERVICES',l:'Services',p:'iOS app development, Android development'},{k:'RANK',l:'Current Ranking',p:'Not ranking / Page 2 for main keyword'}]},
 
-  {id:'seo-2',cat:'seo',title:'Blog Post SEO Brief',desc:'Outline, LSI keywords, word counts per section',
-   prompt:`SEO content strategist. Blog brief for:\n\nKeyword: [KEYWORD] | Intent: [INTENT] | Audience: [AUDIENCE] | Word count: [WORDS]\n\nProvide: 3 H1 options, full H2/H3 outline with word counts, 15 LSI keywords, featured snippet tip, internal linking suggestions, meta tags.`,
-   vars:[{k:'KEYWORD',l:'Target Keyword',p:'e.g., best AI tools for marketing'},{k:'INTENT',l:'Search Intent',p:'e.g., Informational / Transactional'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Marketing managers at SMBs'},{k:'WORDS',l:'Word Count',p:'e.g., 2000 words'}]},
-
-  {id:'seo-3',cat:'seo',title:'On-Page SEO Audit',desc:'Score out of 100 with fix recommendations',
-   prompt:`On-page SEO expert. Audit:\n\nURL: [URL] | Keyword: [KEYWORD]\nTitle: [TITLE] | Meta: [META]\nH1: [H1] | Content: [CONTENT]\n\nScore each area (title, meta, headers, keyword use, URL, internal links, images, schema) out of 100. Give specific fixes for each.`,
-   vars:[{k:'URL',l:'Page URL',p:'e.g., https://newageai.com/blog/ai-marketing'},{k:'KEYWORD',l:'Target Keyword',p:'e.g., AI marketing platform'},{k:'TITLE',l:'Current Page Title',p:'e.g., AI Marketing – New Age AI'},{k:'META',l:'Current Meta Description',p:'Paste current meta description...'},{k:'H1',l:'H1 Tag',p:'e.g., AI-Powered Marketing Platform'},{k:'CONTENT',l:'Content Summary',p:'Brief description of page content...'}]},
-
-  {id:'seo-4',cat:'seo',title:'Competitor Content Gap',desc:'Find keyword & content gaps vs competitors',
-   prompt:`SEO strategist. Content gap analysis:\n\nMy Brand: [BRAND] | My Topics: [TOPICS]\nCompetitor 1: [COMP1] | Competitor 2: [COMP2]\nKeyword Themes: [KEYWORDS]\n\nIdentify: topics I'm missing, top 10 keyword opportunities, content types working for competitors, quick-win pieces to create first, 3-month content strategy.`,
-   vars:[{k:'BRAND',l:'My Brand / Website',p:'e.g., New Age AI, newageai.com'},{k:'TOPICS',l:'My Current Topics',p:'e.g., AI tools, marketing automation'},{k:'COMP1',l:'Competitor 1',p:'e.g., HubSpot, hubspot.com'},{k:'COMP2',l:'Competitor 2',p:'e.g., Hootsuite, hootsuite.com'},{k:'KEYWORDS',l:'Target Keyword Themes',p:'e.g., marketing automation, AI ads'}]},
-
+  // ── META ADS ──
   {id:'meta-1',cat:'meta-ads',title:'Facebook/Instagram Ad Copy',desc:'Feed, Story & Carousel with hooks and CTAs',
-   prompt:`Meta Ads specialist. Write ad copy for:\n\nProduct: [PRODUCT] | Audience: [AUDIENCE]\nObjective: [OBJ] | Offer: [OFFER] | Tone: [TONE]\n\nGenerate:\n1. FEED AD: primary text (125 chars), headline (40 chars), description (30 chars)\n2. STORY AD: 3-line punchy copy with hook\n3. CAROUSEL (3 cards): Problem → Solution → CTA, each 40-char title + 2-line body\n4. Top 3 CTA button recommendations`,
-   vars:[{k:'PRODUCT',l:'Product / Service',p:'e.g., New Age AI marketing platform'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Marketing managers 25–40, B2B'},{k:'OBJ',l:'Campaign Objective',p:'e.g., Lead gen / Conversions'},{k:'OFFER',l:'Offer / Hook',p:'e.g., Free 14-day trial, No credit card'},{k:'TONE',l:'Tone of Voice',p:'e.g., Professional, Bold, Conversational'}]},
+   prompt:`Meta Ads specialist. Write ad copy for:\nProduct: [PRODUCT] | Audience: [AUD] | Objective: [OBJ] | Offer: [OFFER] | Tone: [TONE]\n\nGenerate:\n1. FEED AD: primary text (125 chars), headline (40 chars), description (30 chars)\n2. STORY AD: 3-line punchy copy with hook\n3. CAROUSEL (3 cards): Problem→Solution→CTA\n4. Top 3 CTA button recommendations`,
+   vars:[{k:'PRODUCT',l:'Product / Service',p:'iOS & Android app development'},{k:'AUD',l:'Target Audience',p:'Startup founders, SMB owners 28–45'},{k:'OBJ',l:'Objective',p:'Lead gen / App installs'},{k:'OFFER',l:'Offer',p:'Free consultation + app cost calculator'},{k:'TONE',l:'Tone',p:'Professional, Bold'}]},
+  {id:'meta-2',cat:'meta-ads',title:'Audience Targeting Strategy',desc:'Core, lookalike & custom audiences for full funnel',
+   prompt:`Meta audience strategist. Build targeting for:\nBusiness: [BIZ] | Goal: [GOAL] | Budget: [BUDGET] | Countries: [COUNTRIES]\n\nCreate: 3 core segments with size estimate, lookalike strategy, custom audience plan, TOFU/MOFU/BOFU targeting, exclusions, 2-week A/B test plan.`,
+   vars:[{k:'BIZ',l:'Business',p:'New Age AI – app development company'},{k:'GOAL',l:'Goal',p:'Lead generation'},{k:'BUDGET',l:'Monthly Budget',p:'₹50,000'},{k:'COUNTRIES',l:'Countries',p:'India, UAE, US'}]},
+  {id:'meta-3',cat:'meta-ads',title:'Meta Campaign Analysis',desc:'Diagnose performance & get scaling recommendations',
+   prompt:`Meta Ads expert. Analyze:\nCampaign: [CAMP] | Period: [PERIOD]\nSpend: [SPEND] | Reach: [REACH] | CPM: [CPM] | Clicks: [CLICKS] | CTR: [CTR] | Results: [RES] | CPR: [CPR]\n\nDiagnose, check creative fatigue, give 5 optimizations, scaling or kill recommendation.`,
+   vars:[{k:'CAMP',l:'Campaign Name',p:'Lead Gen – May 2025'},{k:'PERIOD',l:'Period',p:'May 1–31'},{k:'SPEND',l:'Spend',p:'₹28,000'},{k:'REACH',l:'Reach',p:'1,20,000'},{k:'CPM',l:'CPM',p:'₹233'},{k:'CLICKS',l:'Clicks',p:'3,400'},{k:'CTR',l:'CTR',p:'2.8%'},{k:'RES',l:'Results',p:'72 leads'},{k:'CPR',l:'Cost/Result',p:'₹389'}]},
+  {id:'meta-4',cat:'meta-ads',title:'App Install Meta Campaign',desc:'B2C ad copy strategy for app download campaigns',
+   prompt:`Meta Ads expert for app marketing. Create app install campaign for:\nApp: [APP] | Platform: [PLATFORM] | Target User: [USER] | Key Hook: [HOOK] | Budget: [BUDGET]\n\nGenerate: 3 ad angles (pain point, benefit, social proof), feed ad copy for each angle, story ad copy, video ad script (30 sec), targeting recommendation, bid strategy.`,
+   vars:[{k:'APP',l:'App Name & Category',p:'HealthPal – fitness tracking app'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Health-conscious users 20–35'},{k:'HOOK',l:'Key Hook',p:'Lose weight without a gym'},{k:'BUDGET',l:'Monthly Budget',p:'₹40,000'}]},
 
-  {id:'meta-2',cat:'meta-ads',title:'Audience Targeting Strategy',desc:'Core, lookalike & custom for full funnel',
-   prompt:`Meta audience strategist. Build targeting for:\n\nBusiness: [BUSINESS] | Product: [PRODUCT]\nGoal: [GOAL] | Budget: [BUDGET] | Countries: [COUNTRIES]\n\nCreate: 3 core audience segments (with estimated size), lookalike strategy, custom audience recommendations, TOFU/MOFU/BOFU funnel targeting, exclusions, first 2-week A/B test plan.`,
-   vars:[{k:'BUSINESS',l:'Business Name',p:'e.g., New Age AI'},{k:'PRODUCT',l:'Product / Service',p:'e.g., AI marketing SaaS'},{k:'GOAL',l:'Campaign Goal',p:'e.g., Lead generation'},{k:'BUDGET',l:'Monthly Budget',p:'e.g., ₹30,000 / $500'},{k:'COUNTRIES',l:'Target Countries',p:'e.g., India, UAE, Singapore'}]},
-
-  {id:'meta-3',cat:'meta-ads',title:'Meta Campaign Analysis',desc:'Performance diagnosis, fatigue check & scaling',
-   prompt:`Meta Ads expert. Analyze:\n\nCampaign: [CAMPAIGN] | Objective: [OBJ] | Period: [PERIOD]\nSpend: [SPEND] | Reach: [REACH] | Impressions: [IMP] | CPM: [CPM]\nClicks: [CLICKS] | CTR: [CTR] | CPC: [CPC]\nResults: [RESULTS] | CPR: [CPR] | ROAS: [ROAS]\n\nDiagnose performance, check creative fatigue, give 5 optimization actions, scaling or kill recommendation, next test ideas.`,
-   vars:[{k:'CAMPAIGN',l:'Campaign Name',p:'e.g., Lead Gen – May 2025'},{k:'OBJ',l:'Objective',p:'e.g., Lead Generation'},{k:'PERIOD',l:'Date Range',p:'e.g., May 1–31'},{k:'SPEND',l:'Spend',p:'e.g., ₹18,500'},{k:'REACH',l:'Reach',p:'e.g., 85,000'},{k:'IMP',l:'Impressions',p:'e.g., 1,20,000'},{k:'CPM',l:'CPM',p:'e.g., ₹154'},{k:'CLICKS',l:'Clicks',p:'e.g., 2,400'},{k:'CTR',l:'CTR',p:'e.g., 2.0%'},{k:'CPC',l:'CPC',p:'e.g., ₹7.70'},{k:'RESULTS',l:'Results',p:'e.g., 62 leads'},{k:'CPR',l:'Cost per Result',p:'e.g., ₹298'},{k:'ROAS',l:'ROAS',p:'e.g., 4.2x or N/A'}]},
-
-  {id:'meta-4',cat:'meta-ads',title:'Creative Brief for Designer',desc:'Full creative direction for Meta ad visuals',
-   prompt:`Creative director. Write a Meta Ads creative brief:\n\nBrand: [BRAND] | Theme: [THEME] | Audience: [AUDIENCE]\nFormat: [FORMAT] | Message: [MSG] | Style: [STYLE]\n\nInclude: campaign concept, visual direction, copy hierarchy, specs (dimensions, safe zones, text overlay %), do's/don'ts, 3 creative concept variations.`,
-   vars:[{k:'BRAND',l:'Brand Name',p:'e.g., New Age AI'},{k:'THEME',l:'Campaign Theme',p:'e.g., AI makes marketing effortless'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Young marketing professionals'},{k:'FORMAT',l:'Ad Format',p:'e.g., 1:1 Feed + 9:16 Story'},{k:'MSG',l:'Key Message',p:'e.g., Save 10 hours/week with AI ads'},{k:'STYLE',l:'Visual Style',p:'e.g., Clean, minimal, dark mode, tech-forward'}]},
-
+  // ── AUTOMATION ──
   {id:'ma-1',cat:'marketing-automation',title:'Email Drip Sequence',desc:'Full multi-email sequence with subject lines & body',
-   prompt:`Email marketing expert. Create a [NUM]-email drip sequence for:\n\nProduct: [PRODUCT] | Lead Source: [SOURCE]\nGoal: [GOAL] | Pain Point: [PAIN] | Benefit: [BENEFIT] | Tone: [TONE]\n\nFor EACH email: email # & send timing, 3 subject line options (incl. emoji variant), preview text (90 chars), full body (200–250 words), CTA button text, email goal.`,
-   vars:[{k:'NUM',l:'Number of Emails',p:'e.g., 5'},{k:'PRODUCT',l:'Product / Service',p:'e.g., New Age AI platform'},{k:'SOURCE',l:'Lead Source',p:'e.g., Free trial signup'},{k:'GOAL',l:'Sequence Goal',p:'e.g., Convert trial to paid'},{k:'PAIN',l:'Pain Point',p:'e.g., Wasting time on manual ad management'},{k:'BENEFIT',l:'Key Benefit',p:'e.g., Save 10 hours/week with AI'},{k:'TONE',l:'Tone',p:'e.g., Friendly & professional'}]},
+   prompt:`Email expert. Create [NUM]-email drip for:\nProduct: [PRODUCT] | Goal: [GOAL] | Pain: [PAIN] | Benefit: [BEN] | Tone: [TONE]\n\nFor EACH email: send timing, 3 subject options, preview text, full body (200 words), CTA, email goal.`,
+   vars:[{k:'NUM',l:'Number of Emails',p:'5'},{k:'PRODUCT',l:'Product',p:'Custom iOS/Android app development'},{k:'GOAL',l:'Goal',p:'Convert inquiry to paid project'},{k:'PAIN',l:'Pain Point',p:'Wasted money on unreliable developers'},{k:'BEN',l:'Key Benefit',p:'Fixed price, on-time delivery, dedicated PM'},{k:'TONE',l:'Tone',p:'Professional & trustworthy'}]},
+  {id:'ma-2',cat:'marketing-automation',title:'Lead Nurture Automation',desc:'Full trigger-based nurture workflow for B2C leads',
+   prompt:`Marketing automation expert. Design lead nurture workflow for:\nPlatform: [PLATFORM] | Lead Source: [SOURCE] | Product: [PRODUCT] | Sales Cycle: [CYCLE]\n\nCreate: entry triggers, 8-step nurture flow with timing, if/then branching (engaged vs unengaged paths), content at each touchpoint (email subject + body summary), lead scoring rules, handoff to sales trigger, KPIs to track.`,
+   vars:[{k:'PLATFORM',l:'Platform',p:'HubSpot / Mailchimp / ActiveCampaign'},{k:'SOURCE',l:'Lead Source',p:'Website contact form / Facebook lead ad'},{k:'PRODUCT',l:'Product',p:'iOS & Android app development'},{k:'CYCLE',l:'Sales Cycle',p:'2–4 weeks decision time'}]},
+  {id:'ma-3',cat:'marketing-automation',title:'Subject Line Generator',desc:'20 high open-rate lines across 5 psychology styles',
+   prompt:`Subject line expert. Generate for:\nTopic: [TOPIC] | Audience: [AUD] | Goal: [GOAL] | Hook: [HOOK]\n\n20 subject lines (4 each): curiosity-gap, benefit-driven, urgency/scarcity, question-based, personalization. For each: line + open rate prediction (L/M/H) + preview text.`,
+   vars:[{k:'TOPIC',l:'Email Topic',p:'App development proposal follow-up'},{k:'AUD',l:'Audience',p:'Startup founders who requested a quote'},{k:'GOAL',l:'Goal',p:'Get them on a discovery call'},{k:'HOOK',l:'Hook',p:'Their app could launch in 60 days'}]},
+  {id:'ma-4',cat:'marketing-automation',title:'Re-engagement Campaign',desc:'Win back cold leads with a proven 3-email sequence',
+   prompt:`Retention expert. Re-engagement campaign:\nBrand: [BRAND] | Why cold: [REASON] | Last active: [LAST] | Incentive: [OFFER]\n\nCreate: 3-email sequence with full copy, ranked win-back offers, subject A/B tests, sunset policy, success benchmarks.`,
+   vars:[{k:'BRAND',l:'Brand',p:'New Age AI'},{k:'REASON',l:'Why Cold',p:"Requested quote, went silent after proposal"},{k:'LAST',l:'Last Active',p:'45–90 days ago'},{k:'OFFER',l:'Incentive',p:'Free UX audit or 10% off first milestone'}]},
 
-  {id:'ma-2',cat:'marketing-automation',title:'Subject Line Generator',desc:'20 high open-rate lines across 5 styles',
-   prompt:`Subject line specialist. Generate for:\n\nTopic: [TOPIC] | Audience: [AUDIENCE]\nGoal: [GOAL] | Hook: [HOOK] | Voice: [VOICE]\n\nGenerate 20 subject lines (4 each): curiosity-gap, benefit-driven, urgency/scarcity, question-based, personalization. For each: line + open rate prediction (Low/Med/High) + preview text.`,
-   vars:[{k:'TOPIC',l:'Email Topic',p:'e.g., New AI feature launch'},{k:'AUDIENCE',l:'Target Audience',p:'e.g., Marketing managers'},{k:'GOAL',l:'Email Goal',p:'e.g., Drive feature adoption'},{k:'HOOK',l:'Key Hook',p:'e.g., AI reporting saves 3 hrs/week'},{k:'VOICE',l:'Brand Voice',p:'e.g., Bold, modern, tech-forward'}]},
+  // ── BLOG & CONTENT ──
+  {id:'bl-1',cat:'blog',title:'Full Blog Post Writer',desc:'Complete 1500–2000 word SEO blog post, ready to publish',
+   prompt:`You are an expert B2C content writer for a mobile app development company. Write a complete, publish-ready blog post:\n\nTitle/Topic: [TITLE]\nTarget Keyword: [KW]\nAudience: [AUD]\nTone: [TONE]\nWord Count: [WC]\n\nWrite the full blog post with:\n- Engaging intro (hook + problem + what reader will learn)\n- Well-structured H2/H3 sections\n- Real examples and stats where relevant\n- Actionable takeaways\n- Strong conclusion with CTA\n- Target keyword used naturally throughout\n\nMake it genuinely useful, not generic.`,
+   vars:[{k:'TITLE',l:'Blog Title / Topic',p:'How Much Does It Cost to Build an App in 2025'},{k:'KW',l:'Target Keyword',p:'app development cost'},{k:'AUD',l:'Target Audience',p:'Startup founders and entrepreneurs'},{k:'TONE',l:'Tone',p:'Conversational, expert, trustworthy'},{k:'WC',l:'Word Count',p:'1800 words'}]},
+  {id:'bl-2',cat:'blog',title:'Blog Idea Generator',desc:'20 blog ideas with titles, keywords & content angle',
+   prompt:`Content strategist for a B2C mobile app development company. Generate 20 blog post ideas for:\n\nCompany: [COMPANY]\nServices: [SERVICES]\nTarget Audience: [AUD]\nContent Goal: [GOAL]\n\nFor each idea:\n- Catchy title (2 options)\n- Target keyword\n- Search intent (info/trans/nav)\n- Content angle (what makes it unique)\n- Estimated monthly searches\n- Difficulty (Easy/Med/Hard)\n\nGroup by funnel stage: TOFU / MOFU / BOFU.`,
+   vars:[{k:'COMPANY',l:'Company',p:'New Age AI'},{k:'SERVICES',l:'Services',p:'iOS app development, Android, AI apps'},{k:'AUD',l:'Audience',p:'Startup founders, SMB owners, entrepreneurs'},{k:'GOAL',l:'Content Goal',p:'Drive organic traffic + generate leads'}]},
+  {id:'bl-3',cat:'blog',title:'Case Study Writer',desc:'Compelling client success story for your website',
+   prompt:`You are a B2B/B2C case study writer. Write a compelling client success story:\n\nClient: [CLIENT]\nIndustry: [INDUSTRY]\nChallenge: [CHALLENGE]\nSolution: [SOLUTION]\nResults: [RESULTS]\nTimeframe: [TIME]\n\nStructure:\n1. Executive summary (2–3 sentences)\n2. The Challenge (what problem they had)\n3. Our Approach (what we built and why)\n4. The Solution (technical details in plain English)\n5. Results & Impact (use the numbers)\n6. Client Quote (craft a believable testimonial)\n7. CTA section\n\nTone: professional but human. Make the results the hero.`,
+   vars:[{k:'CLIENT',l:'Client Name / Type',p:'HealthTech startup (can be anonymous)'},{k:'INDUSTRY',l:'Industry',p:'Healthcare / Fitness / Fintech'},{k:'CHALLENGE',l:'Their Challenge',p:'Manual fitness tracking, no app, losing users'},{k:'SOLUTION',l:'Our Solution',p:'Built iOS + Android app with AI workout plans'},{k:'RESULTS',l:'Key Results',p:'10K downloads in 30 days, 4.8★ rating'},{k:'TIME',l:'Timeframe',p:'Built in 45 days'}]},
+  {id:'bl-4',cat:'blog',title:'LinkedIn Post Writer',desc:'5 high-engagement LinkedIn posts for thought leadership',
+   prompt:`LinkedIn content expert. Write 5 high-engagement LinkedIn posts for:\n\nCompany/Person: [WHO]\nIndustry: [IND]\nTopic/Theme: [TOPIC]\nGoal: [GOAL]\nTone: [TONE]\n\nFor each post:\n- Hook line (first 2 lines must stop the scroll)\n- Body (story, insight, or list format)\n- Engagement question at end\n- 5 relevant hashtags\n- Best day/time to post\n\nMix formats: story, insight, list, contrarian take, how-to.`,
+   vars:[{k:'WHO',l:'Company / Person',p:'New Age AI / Tanishka (Marketing intern)'},{k:'IND',l:'Industry',p:'Mobile app development, AI, Tech'},{k:'TOPIC',l:'Topic / Theme',p:'App development trends, startup tips, AI in apps'},{k:'GOAL',l:'Goal',p:'Brand awareness + inbound leads'},{k:'TONE',l:'Tone',p:'Expert but approachable, conversational'}]},
 
-  {id:'ma-3',cat:'marketing-automation',title:'Automation Workflow Design',desc:'Trigger-based flow with branching logic & timing',
-   prompt:`Marketing automation architect. Design workflow for:\n\nPlatform: [PLATFORM] | Trigger: [TRIGGER]\nAudience: [AUDIENCE] | Goal: [GOAL] | Timeline: [TIMELINE]\n\nCreate: entry trigger & conditions, step-by-step flow with delays, if/then branching logic (YES/NO paths), content at each step, exit conditions, KPIs, A/B test recommendation.`,
-   vars:[{k:'PLATFORM',l:'Automation Platform',p:'e.g., HubSpot, Mailchimp, ActiveCampaign'},{k:'TRIGGER',l:'Trigger Event',p:'e.g., User signs up for free trial'},{k:'AUDIENCE',l:'Audience Segment',p:'e.g., SMB marketers in India'},{k:'GOAL',l:'Workflow Goal',p:'e.g., Onboard & convert trial users'},{k:'TIMELINE',l:'Timeline',p:'e.g., 14-day trial period'}]},
+  // ── APP MARKETING ──
+  {id:'am-1',cat:'app-marketing',title:'App Store Listing (ASO)',desc:'Full App Store & Play Store listing optimized for downloads',
+   prompt:`ASO expert. Write a fully optimized App Store and Google Play listing for:\n\nApp Name: [APP]\nCategory: [CAT]\nTarget User: [USER]\nTop 3 Features: [FEATURES]\nCompetitors: [COMP]\n\nGenerate:\n1. App title (30 chars max, keyword-rich)\n2. Subtitle / Short description (80 chars)\n3. Full description (4000 chars, keyword-optimized, compelling)\n4. 5 keyword suggestions for keyword field\n5. What to screenshot (6 screen concepts with caption ideas)\n6. Promotional text (170 chars, for App Store)\n\nFocus on conversions, not just features.`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack – AI Workout Planner'},{k:'CAT',l:'Category',p:'Health & Fitness / Finance / Productivity'},{k:'USER',l:'Target User',p:'Fitness beginners who want guided workouts'},{k:'FEATURES',l:'Top 3 Features',p:'AI workout plans, Progress tracking, Meal log'},{k:'COMP',l:'Main Competitors',p:'MyFitnessPal, Fitbod, Nike Training'}]},
+  {id:'am-2',cat:'app-marketing',title:'App Launch Campaign Plan',desc:'Full go-to-market plan for an app launch',
+   prompt:`App marketing strategist. Create a launch campaign plan for:\n\nApp: [APP]\nPlatform: [PLATFORM]\nTarget User: [USER]\nLaunch Date: [DATE]\nBudget: [BUDGET]\nGoal: [GOAL]\n\nProvide:\n1. Pre-launch (4 weeks before): PR, teaser content, beta signups\n2. Launch week: channel-by-channel plan (Meta, Google, ASO, PR, email)\n3. Post-launch (4 weeks): retention, reviews, paid scaling\n4. Content calendar for launch month\n5. KPIs and success benchmarks\n6. Budget allocation across channels`,
+   vars:[{k:'APP',l:'App Name & Category',p:'BudgetPal – personal finance app'},{k:'PLATFORM',l:'Platform',p:'iOS / Android / Both'},{k:'USER',l:'Target User',p:'Young professionals 22–35 in India'},{k:'DATE',l:'Launch Date',p:'July 1, 2025'},{k:'BUDGET',l:'Launch Budget',p:'₹2,00,000'},{k:'GOAL',l:'Goal',p:'5,000 downloads in first 30 days'}]},
+  {id:'am-3',cat:'app-marketing',title:'App Review Response Templates',desc:'Professional responses to 1-star, 3-star & 5-star reviews',
+   prompt:`App community manager. Write review response templates for:\n\nApp: [APP]\nBrand Tone: [TONE]\n\nCreate 15 response templates:\n- 5 responses for 1-star reviews (bug complaint, crash, feature request, bad UX, account issue)\n- 5 responses for 3-star reviews (mixed feedback, missing feature, comparison to competitor)\n- 5 responses for 5-star reviews (general praise, specific feature love, loyal user)\n\nEach response: under 150 words, empathetic, action-oriented, ends with a hook to keep them using the app.`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack'},{k:'TONE',l:'Brand Tone',p:'Friendly, caring, action-oriented'}]},
+  {id:'am-4',cat:'app-marketing',title:'Push Notification Copy',desc:'30 high-CTR push notifications across 6 use cases',
+   prompt:`Mobile marketing expert. Write push notification copy for:\n\nApp: [APP]\nCategory: [CAT]\nUser Stage: [STAGE]\n\nWrite 30 push notifications (5 each) for:\n1. Onboarding (days 1, 3, 7 after install)\n2. Re-engagement (inactive 3, 7, 14 days)\n3. Feature announcement\n4. Social proof / milestone\n5. Urgency / limited time offer\n6. Personalization based on behavior\n\nFor each: title (≤50 chars) + body (≤100 chars) + emoji + best send time. Optimize for open rate.`,
+   vars:[{k:'APP',l:'App Name',p:'FitTrack'},{k:'CAT',l:'App Category',p:'Health & Fitness'},{k:'STAGE',l:'User Stage',p:'New users / At-risk users / Power users'}]},
 
-  {id:'ma-4',cat:'marketing-automation',title:'Re-engagement Campaign',desc:'Win back cold leads & inactive subscribers',
-   prompt:`Retention expert. Re-engagement campaign for:\n\nBrand: [BRAND] | Why cold: [REASON]\nLast active: [LAST] | Incentive: [OFFER] | Segment: [SIZE]\n\nCreate: 3-email sequence with full copy, SMS/push variants, ranked win-back offers, subject A/B tests, sunset policy, success benchmarks to aim for.`,
-   vars:[{k:'BRAND',l:'Brand Name',p:'e.g., New Age AI'},{k:'REASON',l:'Why They Went Cold',p:"e.g., Didn't convert after free trial"},{k:'LAST',l:'Last Active',p:'e.g., 60–90 days ago'},{k:'OFFER',l:'Incentive / Offer',p:'e.g., 20% discount, extended trial'},{k:'SIZE',l:'Segment Size',p:'e.g., ~500 cold subscribers'}]},
+  // ── LEAD GENERATION ──
+  {id:'lg-1',cat:'lead-gen',title:'Landing Page Copy',desc:'Full conversion-optimized landing page for B2C lead gen',
+   prompt:`Conversion copywriter. Write a full landing page for:\n\nProduct/Service: [PRODUCT]\nTarget Audience: [AUD]\nMain Pain Point: [PAIN]\nKey Offer: [OFFER]\nSocial Proof: [PROOF]\n\nWrite complete page copy:\n1. Hero section: headline (3 options) + subheadline + CTA button text\n2. Pain points section (3 pain points with empathy)\n3. Solution/features section (3–4 benefits, not features)\n4. How it works (3 simple steps)\n5. Social proof section (testimonial framework + stats)\n6. FAQ (5 most common objections answered)\n7. Final CTA section\n8. Trust badges suggestions\n\nEvery section should move the visitor closer to converting.`,
+   vars:[{k:'PRODUCT',l:'Product / Service',p:'iOS & Android app development for startups'},{k:'AUD',l:'Target Audience',p:'First-time app founders with an idea'},{k:'PAIN',l:'Main Pain Point',p:'Scared of getting ripped off by developers'},{k:'OFFER',l:'Key Offer',p:'Free consultation + fixed-price quote in 24 hrs'},{k:'PROOF',l:'Social Proof Available',p:'50+ apps launched, 4.9★ rating, ₹10Cr+ saved'}]},
+  {id:'lg-2',cat:'lead-gen',title:'Lead Magnet Ideas & Copy',desc:'10 lead magnet ideas + full copy for the best one',
+   prompt:`Lead generation expert. Create lead magnets for:\n\nBusiness: [BIZ]\nTarget Audience: [AUD]\nPain Point: [PAIN]\nGoal: [GOAL]\n\nGenerate:\n1. 10 lead magnet ideas (name + format + why it converts)\n2. Ranked by conversion potential\n3. Full copy for the #1 idea:\n   - Landing page headline + subheadline\n   - Bullet points of what they'll get\n   - Opt-in button text\n   - Thank you page message\n   - Follow-up email (sent immediately after download)`,
+   vars:[{k:'BIZ',l:'Business',p:'New Age AI – app development company'},{k:'AUD',l:'Audience',p:'Startup founders wanting to build an app'},{k:'PAIN',l:'Pain Point',p:"Don't know where to start or how much it costs"},{k:'GOAL',l:'Goal',p:'Get consultation calls booked'}]},
+  {id:'lg-3',cat:'lead-gen',title:'WhatsApp Campaign Copy',desc:'WhatsApp broadcast messages for lead nurturing (India B2C)',
+   prompt:`WhatsApp marketing expert for Indian B2C audience. Write WhatsApp campaign messages for:\n\nBusiness: [BIZ]\nProduct: [PRODUCT]\nAudience: [AUD]\nCampaign Goal: [GOAL]\n\nCreate 8 WhatsApp messages:\n- 2 cold outreach messages (for fresh leads)\n- 2 follow-up messages (after no reply, 3 days + 7 days)\n- 2 offer/promotion messages\n- 2 re-engagement messages (for cold leads)\n\nFor each: message body (under 300 chars) + emoji usage + CTA + best send time. Must feel personal, not spammy. Include Hindi phrases where natural for Indian audience.`,
+   vars:[{k:'BIZ',l:'Business',p:'New Age AI'},{k:'PRODUCT',l:'Product/Service',p:'App development services'},{k:'AUD',l:'Audience',p:'Startup founders and entrepreneurs in India'},{k:'GOAL',l:'Goal',p:'Book a discovery call / consultation'}]},
+  {id:'lg-4',cat:'lead-gen',title:'Webinar / Event Copy',desc:'Full promotional copy for a lead-gen webinar or event',
+   prompt:`Event marketing expert. Write full promotional copy for:\n\nEvent: [EVENT]\nTopic: [TOPIC]\nSpeaker: [SPEAKER]\nDate/Time: [DATE]\nAudience: [AUD]\nKey Takeaway: [TAKEAWAY]\n\nGenerate:\n1. Event title (3 options)\n2. Event description (200 words, benefit-led)\n3. Registration page headline + bullets (5 reasons to attend)\n4. 3 promotional emails (announce, reminder, last chance)\n5. Social media posts (LinkedIn + Instagram)\n6. WhatsApp invite message\n7. Post-event follow-up email`,
+   vars:[{k:'EVENT',l:'Event Type',p:'Free Webinar / Workshop / AMA'},{k:'TOPIC',l:'Topic',p:'How to Build Your First App Without a Tech Background'},{k:'SPEAKER',l:'Speaker',p:'Tanishka Rawlani, Marketing at New Age AI'},{k:'DATE',l:'Date & Time',p:'Saturday, June 14 at 11 AM IST'},{k:'AUD',l:'Audience',p:'Entrepreneurs and startup founders in India'},{k:'TAKEAWAY',l:'Key Takeaway',p:'A clear roadmap + cost estimate for their app idea'}]},
 ];
 
-// ─── Auth ─────────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
-  document.getElementById('login-form').style.display = tab==='login'?'':'none';
-  document.getElementById('signup-form').style.display = tab==='signup'?'':'none';
+function cc(id){return CATS.find(c=>c.id===id)?.color||'#7C6FFF'}
+function cl(id){return CATS.find(c=>c.id===id)?.label||id}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function switchTab(t){
+  document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('active',(i===0&&t==='login')||(i===1&&t==='signup')));
+  document.getElementById('lf').style.display=t==='login'?'':'none';
+  document.getElementById('sf').style.display=t==='signup'?'':'none';
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pw = document.getElementById('login-pw').value;
-  const btn = document.getElementById('login-btn');
-  const err = document.getElementById('login-err');
-  err.textContent = '';
-  if (!email || !pw) { err.textContent = 'Please fill in all fields.'; return; }
-  btn.disabled = true; btn.textContent = 'Logging in…';
-  const { error } = await db.auth.signInWithPassword({ email, password: pw });
-  if (error) { err.textContent = error.message; btn.disabled = false; btn.textContent = 'Login'; }
+async function doLogin(){
+  const em=document.getElementById('lem').value.trim(),pw=document.getElementById('lpw').value;
+  const btn=document.getElementById('lbtn'),err=document.getElementById('lerr');
+  err.textContent='';
+  if(!em||!pw){err.textContent='Please fill in all fields.';return;}
+  btn.disabled=true;btn.textContent='Logging in…';
+  const {error}=await db.auth.signInWithPassword({email:em,password:pw});
+  if(error){err.textContent=error.message;btn.disabled=false;btn.textContent='Login';}
 }
 
-async function doSignup() {
-  const name = document.getElementById('su-name').value.trim();
-  const email = document.getElementById('su-email').value.trim();
-  const pw = document.getElementById('su-pw').value;
-  const btn = document.getElementById('signup-btn');
-  const err = document.getElementById('signup-err');
-  const ok = document.getElementById('signup-ok');
-  err.textContent = ''; ok.textContent = '';
-  if (!name || !email || !pw) { err.textContent = 'Please fill in all fields.'; return; }
-  if (pw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
-  btn.disabled = true; btn.textContent = 'Creating account…';
-  const { error } = await db.auth.signUp({ email, password: pw, options: { data: { full_name: name } } });
-  btn.disabled = false; btn.textContent = 'Create Account';
-  if (error) { err.textContent = error.message; }
-  else { ok.textContent = 'Account created! Check your email to confirm, then login.'; }
+async function doSignup(){
+  const nm=document.getElementById('sname').value.trim(),em=document.getElementById('sem').value.trim(),pw=document.getElementById('spw').value;
+  const btn=document.getElementById('sbtn'),err=document.getElementById('serr'),ok=document.getElementById('sok');
+  err.textContent='';ok.textContent='';
+  if(!nm||!em||!pw){err.textContent='Please fill in all fields.';return;}
+  if(pw.length<6){err.textContent='Password must be at least 6 characters.';return;}
+  btn.disabled=true;btn.textContent='Creating account…';
+  const {error}=await db.auth.signUp({email:em,password:pw,options:{data:{full_name:nm}}});
+  btn.disabled=false;btn.textContent='Create Account';
+  if(error)err.textContent=error.message;
+  else ok.textContent='✓ Account created! Check your email to confirm, then login.';
 }
 
-async function doLogout() {
+async function doLogout(){
   await db.auth.signOut();
-  currentUser = null; currentProfile = null; anthropicKey = null;
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('auth').style.display = 'flex';
+  CU=null;CP=null;AK=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('auth').style.display='flex';
 }
 
-// ─── Boot ─────────────────────────────────────────
-db.auth.onAuthStateChange(async (event, session) => {
-  document.getElementById('loading').style.display = 'none';
-  if (session?.user) {
-    currentUser = session.user;
-    await loadProfile();
-    await loadApiKey();
-    showApp();
-  } else {
-    document.getElementById('auth').style.display = 'flex';
-    document.getElementById('app').style.display = 'none';
-  }
-});
-
-async function loadProfile() {
-  const { data } = await db.from('profiles').select('*').eq('id', currentUser.id).single();
-  currentProfile = data;
-  // Update last_seen
-  await db.from('profiles').update({ last_seen: new Date().toISOString() }).eq('id', currentUser.id);
+async function loadProfile(){
+  const {data}=await db.from('profiles').select('*').eq('id',CU.id).single();
+  CP=data;
+  await db.from('profiles').update({last_seen:new Date().toISOString()}).eq('id',CU.id);
 }
 
-async function loadApiKey() {
-  const { data } = await db.from('app_settings').select('value').eq('key', 'anthropic_api_key').single();
-  anthropicKey = data?.value || null;
+async function loadKey(){
+  const {data}=await db.from('app_settings').select('value').eq('key','anthropic_api_key').single();
+  AK=data?.value||null;
 }
 
-function showApp() {
-  document.getElementById('auth').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  // User chip
-  const name = currentProfile?.full_name || currentUser.email;
-  document.getElementById('user-av').textContent = name[0].toUpperCase();
-  document.getElementById('user-em').textContent = currentUser.email;
-  document.getElementById('user-ro').textContent = currentProfile?.role || 'user';
-  // Admin link
-  if (currentProfile?.role === 'admin') document.getElementById('sb-admin-link').style.display = '';
-  // Build sidebar cats
-  buildSidebar();
-  showView('browse');
+function showApp(){
+  document.getElementById('auth').style.display='none';
+  document.getElementById('app').style.display='block';
+  const nm=CP?.full_name||CU.email;
+  document.getElementById('uav').textContent=nm[0].toUpperCase();
+  document.getElementById('uem').textContent=CU.email;
+  document.getElementById('uro').textContent=CP?.role||'user';
+  if(CP?.role==='admin')document.getElementById('sbadmin').style.display='';
+  buildSB();showView('browse');
 }
 
-// ─── Sidebar ─────────────────────────────────────
-function buildSidebar() {
-  const el = document.getElementById('sb-cats');
-  el.innerHTML = CATS.map(c => {
-    const count = c.id === 'all' ? TEMPLATES.length : TEMPLATES.filter(t => t.cat === c.id).length;
-    return `<button class="sb-item${c.id===selectedCat?' active':''}" onclick="selectCat('${c.id}')" id="sbi-${c.id}">
-      <span class="sb-dot" style="background:${c.color}"></span>
-      <span class="sb-item-label">${c.label}</span>
-      <span class="sb-count">${count}</span>
+function buildSB(){
+  document.getElementById('sbcats').innerHTML=CATS.map(c=>{
+    const cnt=c.id==='all'?T.length:T.filter(t=>t.cat===c.id).length;
+    return `<button class="sbi${c.id===selCat?' active':''}" onclick="selCat='${c.id}';buildSB();showView('browse')" id="sbi-${c.id}">
+      <span class="sbdot" style="background:${c.color}"></span>
+      <span class="sbil">${c.label}</span>
+      <span class="sbcnt">${cnt}</span>
     </button>`;
   }).join('');
 }
 
-function selectCat(id) {
-  selectedCat = id;
-  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
-  const el = document.getElementById('sbi-'+id);
-  if (el) el.classList.add('active');
-  showView('browse');
+function showView(v){
+  const m=document.getElementById('main');
+  if(v==='browse')renderBrowse(m);
+  else if(v==='run')renderRun(m);
+  else if(v==='admin')renderAdmin(m);
+  const ab=document.getElementById('sbadminbtn');
+  if(ab)ab.classList.toggle('active',v==='admin');
 }
 
-// ─── Views ───────────────────────────────────────
-function showView(view) {
-  activeView = view;
-  const main = document.getElementById('main-area');
-  if (view === 'browse') renderBrowse(main);
-  else if (view === 'run') renderRun(main);
-  else if (view === 'admin') renderAdmin(main);
-}
-
-function catColor(catId) { return CATS.find(c=>c.id===catId)?.color || '#7C6FFF'; }
-function catLabel(catId) { return CATS.find(c=>c.id===catId)?.label || catId; }
-
-// ─── Browse View ─────────────────────────────────
-function renderBrowse(main) {
-  const cat = CATS.find(c=>c.id===selectedCat);
-  const filtered = TEMPLATES.filter(t => {
-    const catMatch = selectedCat==='all' || t.cat===selectedCat;
-    const q = searching.toLowerCase();
-    const searchMatch = !q || t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q);
-    return catMatch && searchMatch;
+function renderBrowse(m){
+  const cat=CATS.find(c=>c.id===selCat);
+  const items=T.filter(t=>{
+    const cm=selCat==='all'||t.cat===selCat;
+    const q=Q.toLowerCase();
+    return cm&&(!q||t.title.toLowerCase().includes(q)||t.desc.toLowerCase().includes(q)||cl(t.cat).toLowerCase().includes(q));
   });
-
-  main.innerHTML = `
+  m.innerHTML=`
     <div class="topbar">
-      <div>
-        <div class="topbar-title">${cat?.label || 'All Templates'}</div>
-        <div class="topbar-sub">${filtered.length} template${filtered.length!==1?'s':''} available</div>
-      </div>
-      <div class="search-wrap">
-        <input type="text" id="search-inp" placeholder="Search templates…" value="${searching}"
-          oninput="searching=this.value;renderBrowse(document.getElementById('main-area'))" />
+      <div><div class="tbtitle">${cat?.label||'All Templates'}</div><div class="tbsub">${items.length} template${items.length!==1?'s':''}</div></div>
+      <div class="swrap">
+        <span class="sico">🔎</span>
+        <input type="text" placeholder="Search…" value="${Q}" oninput="Q=this.value;showView('browse')" />
       </div>
     </div>
     <div class="content">
-      ${filtered.length === 0
-        ? `<div class="empty-state" style="height:60vh"><div class="empty-icon">🔎</div><div style="font-size:15px;font-weight:500">No templates found</div><div style="font-size:13px">Try a different search or category</div></div>`
-        : `<div class="template-grid">${filtered.map(t => `
-          <button class="template-card" onclick="openTemplate('${t.id}')">
-            <div><span class="card-cat" style="background:${catColor(t.cat)}18;color:${catColor(t.cat)}">${catLabel(t.cat)}</span></div>
-            <div><div class="card-title">${t.title}</div><div class="card-desc" style="margin-top:5px">${t.desc}</div></div>
-            <div class="card-meta">${t.vars.length} input${t.vars.length!==1?'s':''} required →</div>
-          </button>`).join('')}</div>`
-      }
+      ${items.length===0
+        ?`<div class="empty" style="height:75%"><div class="eicon">🔎</div><div style="font-size:14px;font-weight:500">No templates found</div></div>`
+        :`<div class="tgrid">${items.map(t=>`
+          <button class="tcard" onclick="openT('${t.id}')">
+            <div><span class="catbadge" style="background:${cc(t.cat)}18;color:${cc(t.cat)}">${cl(t.cat)}</span></div>
+            <div><div style="font-size:13.5px;font-weight:600;color:var(--t1);line-height:1.3">${t.title}</div><div style="font-size:12px;color:var(--t2);line-height:1.45;margin-top:4px">${t.desc}</div></div>
+            <div style="font-size:11px;color:var(--t3)">${t.vars.length} inputs →</div>
+          </button>`).join('')}</div>`}
     </div>`;
 }
 
-// ─── Run View ────────────────────────────────────
-function openTemplate(id) {
-  activeTemplate = TEMPLATES.find(t => t.id === id);
-  varValues = {}; aiResponse = '';
-  showView('run');
+function openT(id){
+  AT=T.find(t=>t.id===id);VV={};AIR='';showView('run');
 }
 
-function renderRun(main) {
-  if (!activeTemplate) { showView('browse'); return; }
-  const t = activeTemplate;
-  main.innerHTML = `
+function renderRun(m){
+  if(!AT){showView('browse');return;}
+  const t=AT;
+  m.innerHTML=`
     <div class="topbar">
-      <div class="topbar-left">
-        <button class="back-btn" onclick="showView('browse')">← Back</button>
-        <div style="width:1px;height:18px;background:var(--b);margin-right:12px"></div>
-        <div>
-          <div class="topbar-title" style="font-size:15px">${t.title}</div>
-          <div class="topbar-sub">${t.desc}</div>
-        </div>
+      <div class="tbleft">
+        <button class="backbtn" onclick="showView('browse')">← Back</button>
+        <div style="width:1px;height:16px;background:var(--b);margin-right:10px"></div>
+        <div><div class="tbtitle" style="font-size:14px">${t.title}</div><div class="tbsub">${t.desc}</div></div>
       </div>
-      <span class="card-cat" style="background:${catColor(t.cat)}18;color:${catColor(t.cat)}">${catLabel(t.cat)}</span>
+      <span class="catbadge" style="background:${cc(t.cat)}18;color:${cc(t.cat)}">${cl(t.cat)}</span>
     </div>
-    <div class="run-layout">
-      <div class="run-inputs">
-        <span class="section-label">Fill in your details</span>
-        ${t.vars.map(v => `
-          <div style="margin-bottom:15px">
-            <label style="display:block;font-size:12.5px;font-weight:500;color:var(--t2);margin-bottom:6px">
-              ${v.l}<span class="var-key">[${v.k}]</span>
-            </label>
-            <input class="var-input" type="text" id="var-${v.k}" placeholder="${v.p}"
-              value="${(varValues[v.k]||'').replace(/"/g,'&quot;')}"
-              oninput="varValues['${v.k}']=this.value" />
+    <div class="rlayout">
+      <div class="rinputs">
+        <span class="slabel">Your Details</span>
+        ${t.vars.map(v=>`
+          <div class="vfield">
+            <label class="vlabel">${v.l}<span class="vkey">[${v.k}]</span></label>
+            <input class="vinput" type="text" placeholder="${v.p}" oninput="VV['${v.k}']=this.value" />
           </div>`).join('')}
-        <button class="btn-gen" id="gen-btn" onclick="runGenerate()">
-          <span>⚡</span> Generate with Claude
-        </button>
-        ${!anthropicKey ? `<div style="margin-top:12px;padding:10px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:8px;font-size:12px;color:var(--err)">
-          ⚠ No API key set. Ask your admin to add the Anthropic API key in Admin Panel → Settings.
-        </div>` : ''}
+        <button class="bgen" id="gbtn" onclick="runGen()">⚡ Generate with Claude</button>
+        ${!AK?`<div class="nokey">⚠ No API key set. Admin Panel → Settings to add your Anthropic key.</div>`:''}
       </div>
-      <div class="run-output" id="run-output">
-        <div class="empty-state" style="height:100%">
-          <div class="empty-icon">⚡</div>
-          <div style="font-size:14px">Fill in the fields and click Generate</div>
-          <div style="font-size:12px">Your AI output will appear here</div>
+      <div class="routput" id="routput">
+        <div class="empty" style="height:100%">
+          <div class="eicon">⚡</div>
+          <div style="font-size:13.5px;font-weight:500">Ready to generate</div>
+          <div style="font-size:12px">Fill in the fields and click Generate</div>
         </div>
       </div>
     </div>`;
 }
 
-async function runGenerate() {
-  if (!activeTemplate) return;
-  if (!anthropicKey) { alert('No Anthropic API key configured. Contact your admin.'); return; }
-
-  const btn = document.getElementById('gen-btn');
-  const out = document.getElementById('run-output');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> Generating…';
-  out.innerHTML = `<div style="display:flex;align-items:center;gap:10px;color:var(--t2);padding:8px 0">
-    <div style="width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 1s infinite"></div>
-    Claude is thinking…
-  </div>`;
-
-  let prompt = activeTemplate.prompt;
-  for (const v of activeTemplate.vars) {
-    const val = varValues[v.k] || `[${v.k}]`;
-    prompt = prompt.replaceAll(`[${v.k}]`, val);
-  }
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': anthropicKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
-    });
-    const data = await res.json();
-    aiResponse = data.content?.filter(b => b.type === 'text').map(b => b.text).join('\n') || 'No response.';
-
-    // Track usage
-    await db.from('template_usage').insert({
-      user_id: currentUser.id, user_email: currentUser.email,
-      template_id: activeTemplate.id, template_title: activeTemplate.title,
-      template_category: activeTemplate.cat
-    });
-  } catch (e) {
-    aiResponse = '⚠ Error: ' + (e.message || 'Could not get response. Please try again.');
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '<span>⚡</span> Generate with Claude';
-  out.innerHTML = `
-    <div class="output-actions">
-      <button class="btn-sm" onclick="copyOutput(this)">📋 Copy</button>
-      <button class="btn-sm" onclick="runGenerate()">↺ Regenerate</button>
-    </div>
-    <div class="output-box">${escHtml(aiResponse)}</div>`;
-}
-
-function copyOutput(btn) {
-  navigator.clipboard.writeText(aiResponse).catch(()=>{});
-  btn.textContent = '✓ Copied!';
-  setTimeout(() => btn.textContent = '📋 Copy', 2000);
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ─── Admin View ───────────────────────────────────
-async function renderAdmin(main) {
-  if (currentProfile?.role !== 'admin') {
-    main.innerHTML = `<div class="empty-state" style="height:100vh"><div class="empty-icon">🛡</div><div>Admin access required</div></div>`;
+async function runGen(){
+  if(!AT)return;
+  if(!AK){
+    document.getElementById('routput').innerHTML=`<div style="padding:16px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:9px;color:var(--err);font-size:13px">⚠ No Anthropic API key set. Go to Admin Panel → Settings to add it.</div>`;
     return;
   }
+  const btn=document.getElementById('gbtn'),out=document.getElementById('routput');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span> Generating…';
+  out.innerHTML=`<div style="display:flex;align-items:center;gap:9px;color:var(--t2);font-size:13px"><div style="width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 1s infinite"></div>Claude is thinking…</div>`;
+  let p=AT.prompt;
+  for(const v of AT.vars) p=p.replaceAll(`[${v.k}]`,VV[v.k]||`[${v.k}]`);
+  try{
+    // Use serverless proxy to avoid CORS
+    const res=await fetch('/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:p,apiKey:AK})
+    });
+    const data=await res.json();
+    AIR=data.content?.filter(b=>b.type==='text').map(b=>b.text).join('\n')||(data.error?.message||JSON.stringify(data.error)||'No response received.');
+    await db.from('template_usage').insert({user_id:CU.id,user_email:CU.email,template_id:AT.id,template_title:AT.title,template_category:AT.cat});
+  }catch(e){AIR='⚠ Error: '+e.message;}
+  btn.disabled=false;btn.innerHTML='⚡ Generate with Claude';
+  out.innerHTML=`
+    <div class="oacts">
+      <button class="bsm" onclick="doCopy(this)">📋 Copy</button>
+      <button class="bsm" onclick="runGen()">↺ Regenerate</button>
+    </div>
+    <div class="obox">${esc(AIR)}</div>`;
+}
 
-  main.innerHTML = `<div style="padding:20px 28px;border-bottom:1px solid var(--b)">
-    <div class="topbar-title">🛡 Admin Panel</div>
-    <div class="topbar-sub">User management & usage analytics</div>
-  </div>
-  <div class="content" id="admin-content"><div style="color:var(--t3);padding:40px 0;text-align:center">Loading data…</div></div>`;
+function doCopy(btn){
+  navigator.clipboard.writeText(AIR).catch(()=>{});
+  btn.textContent='✓ Copied!';
+  setTimeout(()=>btn.textContent='📋 Copy',2000);
+}
 
-  // Fetch data
-  const [{ data: users }, { data: usage }, { data: settings }] = await Promise.all([
-    db.from('profiles').select('*').order('created_at', { ascending: false }),
-    db.from('template_usage').select('*').order('created_at', { ascending: false }).limit(200),
+async function renderAdmin(m){
+  if(CP?.role!=='admin'){
+    m.innerHTML=`<div class="empty" style="height:100%"><div class="eicon">🛡</div><div>Admin access required</div></div>`;return;
+  }
+  m.innerHTML=`<div style="padding:13px 22px;border-bottom:1px solid var(--b)"><div class="tbtitle">🛡 Admin Panel</div><div class="tbsub">User management & analytics</div></div>
+  <div class="content" id="admcon"><div style="color:var(--t3);text-align:center;padding:40px">Loading…</div></div>`;
+  const [{data:users},{data:usage},{data:settings}]=await Promise.all([
+    db.from('profiles').select('*').order('created_at',{ascending:false}),
+    db.from('template_usage').select('*').order('created_at',{ascending:false}).limit(200),
     db.from('app_settings').select('*'),
   ]);
-
-  const today = new Date(); today.setHours(0,0,0,0);
-  const activeToday = (users||[]).filter(u => u.last_seen && new Date(u.last_seen) >= today).length;
-  const savedKey = (settings||[]).find(s=>s.key==='anthropic_api_key')?.value || '';
-
-  const catMap = {};
-  (usage||[]).forEach(u => { catMap[u.template_category] = (catMap[u.template_category]||0)+1; });
-  const topCat = Object.entries(catMap).sort((a,b)=>b[1]-a[1])[0];
-
-  document.getElementById('admin-content').innerHTML = `
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value">${(users||[]).length}</div><div class="stat-sub">registered accounts</div></div>
-      <div class="stat-card"><div class="stat-label">Active Today</div><div class="stat-value">${activeToday}</div><div class="stat-sub">visited today</div></div>
-      <div class="stat-card"><div class="stat-label">Total Runs</div><div class="stat-value">${(usage||[]).length}</div><div class="stat-sub">templates generated</div></div>
-      <div class="stat-card"><div class="stat-label">Top Category</div><div class="stat-value" style="font-size:18px">${topCat ? catLabel(topCat[0]) : '—'}</div><div class="stat-sub">${topCat?topCat[1]+' runs':''}</div></div>
+  const today=new Date();today.setHours(0,0,0,0);
+  const at=(users||[]).filter(u=>u.last_seen&&new Date(u.last_seen)>=today).length;
+  const sk=(settings||[]).find(s=>s.key==='anthropic_api_key')?.value||'';
+  const cm={};(usage||[]).forEach(u=>{cm[u.template_category]=(cm[u.template_category]||0)+1;});
+  const tc=Object.entries(cm).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('admcon').innerHTML=`
+    <div class="sgrid">
+      <div class="scard"><div class="slbl">Total Users</div><div class="sval">${(users||[]).length}</div><div class="ssub">registered</div></div>
+      <div class="scard"><div class="slbl">Active Today</div><div class="sval">${at}</div><div class="ssub">visited today</div></div>
+      <div class="scard"><div class="slbl">Total Runs</div><div class="sval">${(usage||[]).length}</div><div class="ssub">generated</div></div>
+      <div class="scard"><div class="slbl">Top Category</div><div class="sval" style="font-size:15px">${tc?cl(tc[0]):'—'}</div><div class="ssub">${tc?tc[1]+' runs':''}</div></div>
     </div>
-
-    <!-- API Key Settings -->
-    <div class="settings-section">
-      <div class="settings-title">⚙ API Key Settings</div>
-      <p style="font-size:13px;color:var(--t2);margin-bottom:14px">The Anthropic API key is used by all logged-in users to generate content. Get yours from <a href="https://console.anthropic.com" target="_blank" style="color:var(--acc)">console.anthropic.com</a>.</p>
-      <div class="settings-row">
-        <input type="password" id="api-key-input" value="${savedKey}" placeholder="sk-ant-api03-…" />
-        <button onclick="saveApiKey()">Save Key</button>
+    <div class="ssec">
+      <div class="stitle">⚙ Anthropic API Key</div>
+      <p style="font-size:12px;color:var(--t2);margin-bottom:10px">Get your key from <a href="https://console.anthropic.com" target="_blank" style="color:var(--acc)">console.anthropic.com</a></p>
+      <div class="srow">
+        <input type="password" id="akinput" value="${sk}" placeholder="sk-ant-api03-…"/>
+        <button onclick="saveKey()">Save Key</button>
       </div>
-      <div id="key-msg" style="font-size:12px;margin-top:8px"></div>
+      <div id="kmsg" style="font-size:12px;margin-top:7px"></div>
     </div>
-
-    <!-- Users Table -->
-    <div class="table-wrap">
-      <div class="table-head">
-        <div class="table-title">Users (${(users||[]).length})</div>
-      </div>
+    <div class="twrap">
+      <div class="thead">Users (${(users||[]).length})</div>
       <table>
-        <thead><tr>
-          <th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Last Active</th><th>Runs</th><th>Action</th>
-        </tr></thead>
-        <tbody>
-          ${(users||[]).map(u => {
-            const userRuns = (usage||[]).filter(r => r.user_id === u.id).length;
-            const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) : '—';
-            const lastSeen = u.last_seen ? timeAgo(u.last_seen) : '—';
-            const isMe = u.id === currentUser.id;
-            return `<tr>
-              <td>${u.full_name||'—'}${isMe?' <span style="font-size:10px;color:var(--acc)">(you)</span>':''}</td>
-              <td style="font-size:12px">${u.email}</td>
-              <td><span class="role-badge role-${u.role||'user'}">${u.role||'user'}</span></td>
-              <td>${joined}</td>
-              <td>${lastSeen}</td>
-              <td>${userRuns}</td>
-              <td>${isMe?'—':`<button class="btn-tiny${u.role==='admin'?'':' promote'}" onclick="toggleRole('${u.id}','${u.role||'user'}')">${u.role==='admin'?'Revoke Admin':'Make Admin'}</button>`}</td>
-            </tr>`;
-          }).join('')}
-        </tbody>
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Last Active</th><th>Runs</th><th>Action</th></tr></thead>
+        <tbody>${(users||[]).map(u=>{
+          const runs=(usage||[]).filter(r=>r.user_id===u.id).length;
+          const jd=u.created_at?new Date(u.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short'}):'—';
+          const me=u.id===CU.id;
+          return `<tr><td>${u.full_name||'—'}${me?' <span style="font-size:9.5px;color:var(--acc)">(you)</span>':''}</td><td style="font-size:11.5px">${u.email}</td><td><span class="rbadge ${u.role==='admin'?'radmin':'ruser'}">${u.role||'user'}</span></td><td>${jd}</td><td>${u.last_seen?tAgo(u.last_seen):'—'}</td><td>${runs}</td><td>${me?'—':`<button class="btiny${u.role==='admin'?'':' promote'}" onclick="toggleRole('${u.id}','${u.role||'user'}')">${u.role==='admin'?'Revoke':'Make Admin'}</button>`}</td></tr>`;
+        }).join('')}</tbody>
       </table>
     </div>
-
-    <!-- Recent Usage -->
-    <div class="table-wrap">
-      <div class="table-head"><div class="table-title">Recent Activity (last 50)</div></div>
+    <div class="twrap">
+      <div class="thead">Recent Activity</div>
       <table>
-        <thead><tr><th>User</th><th>Template</th><th>Category</th><th>Time</th></tr></thead>
-        <tbody>
-          ${(usage||[]).slice(0,50).map(u => `<tr>
-            <td style="font-size:12px">${u.user_email||'—'}</td>
-            <td>${u.template_title||'—'}</td>
-            <td><span class="card-cat" style="background:${catColor(u.template_category)}18;color:${catColor(u.template_category)};font-size:10.5px;padding:2px 8px;border-radius:99px">${catLabel(u.template_category)}</span></td>
-            <td style="font-size:12px;color:var(--t3)">${timeAgo(u.created_at)}</td>
-          </tr>`).join('')}
-          ${(usage||[]).length===0?'<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px">No usage data yet</td></tr>':''}
-        </tbody>
+        <thead><tr><th>User</th><th>Template</th><th>Category</th><th>When</th></tr></thead>
+        <tbody>${(usage||[]).length===0
+          ?'<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:20px">No activity yet</td></tr>'
+          :(usage||[]).slice(0,40).map(u=>`<tr><td style="font-size:11.5px">${u.user_email||'—'}</td><td>${u.template_title||'—'}</td><td><span class="catbadge" style="background:${cc(u.template_category)}18;color:${cc(u.template_category)};font-size:10px;padding:2px 7px;border-radius:99px">${cl(u.template_category)}</span></td><td style="font-size:11.5px;color:var(--t3)">${tAgo(u.created_at)}</td></tr>`).join('')
+        }</tbody>
       </table>
     </div>`;
 }
 
-async function saveApiKey() {
-  const val = document.getElementById('api-key-input').value.trim();
-  const msg = document.getElementById('key-msg');
-  if (!val) { msg.style.color='var(--err)'; msg.textContent='Please enter a valid API key.'; return; }
-  const { error } = await db.from('app_settings').upsert({ key: 'anthropic_api_key', value: val, updated_at: new Date().toISOString() });
-  if (error) { msg.style.color='var(--err)'; msg.textContent='Error saving: '+error.message; }
-  else { msg.style.color='var(--ok)'; msg.textContent='✓ API key saved! Users can now generate content.'; anthropicKey = val; }
+async function saveKey(){
+  const v=document.getElementById('akinput').value.trim(),msg=document.getElementById('kmsg');
+  if(!v){msg.style.color='var(--err)';msg.textContent='Enter a valid key.';return;}
+  const {error}=await db.from('app_settings').upsert({key:'anthropic_api_key',value:v,updated_at:new Date().toISOString()});
+  if(error){msg.style.color='var(--err)';msg.textContent='Error: '+error.message;}
+  else{msg.style.color='var(--ok)';msg.textContent='✓ Saved! All users can now generate.';AK=v;}
 }
 
-async function toggleRole(userId, currentRole) {
-  const newRole = currentRole === 'admin' ? 'user' : 'admin';
-  const { error } = await db.from('profiles').update({ role: newRole }).eq('id', userId);
-  if (!error) renderAdmin(document.getElementById('main-area'));
+async function toggleRole(uid,role){
+  const nr=role==='admin'?'user':'admin';
+  await db.from('profiles').update({role:nr}).eq('id',uid);
+  renderAdmin(document.getElementById('main'));
 }
 
-function timeAgo(ts) {
-  if (!ts) return '—';
-  const diff = Date.now() - new Date(ts).getTime();
-  const m = Math.floor(diff/60000), h = Math.floor(m/60), d = Math.floor(h/24);
-  if (d > 0) return d + 'd ago';
-  if (h > 0) return h + 'h ago';
-  if (m > 0) return m + 'm ago';
-  return 'just now';
+function tAgo(ts){
+  if(!ts)return'—';
+  const d=Date.now()-new Date(ts).getTime(),m=Math.floor(d/60000),h=Math.floor(m/60),dy=Math.floor(h/24);
+  return dy>0?dy+'d ago':h>0?h+'h ago':m>0?m+'m ago':'just now';
 }
 
-function catLabel(id) { return CATS.find(c=>c.id===id)?.label || id; }
-function catColor(id) { return CATS.find(c=>c.id===id)?.color || '#7C6FFF'; }
+// Init — load Supabase lazily
+const s=document.createElement('script');
+s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
+s.onload=()=>{
+  db=supabase.createClient(SBU,SBK);
+  db.auth.onAuthStateChange(async(ev,ses)=>{
+    document.getElementById('loading').style.display='none';
+    if(ses?.user){
+      CU=ses.user;
+      await loadProfile();await loadKey();showApp();
+    } else {
+      document.getElementById('auth').style.display='flex';
+      document.getElementById('app').style.display='none';
+    }
+  });
+};
+s.onerror=()=>{
+  document.getElementById('loading').innerHTML='<div style="color:var(--err);text-align:center">Failed to load. Check your connection.</div>';
+};
+document.head.appendChild(s);
 </script>
 </body>
 </html>
